@@ -1,0 +1,131 @@
+\newpage % Rozdziały zaczynamy od nowej strony.
+\section{TLDR}
+\setlength{\parskip}{9.96pt}
+
+\begin{itemize}
+    \item Software is complex, services are complex, deployment systems are complex, data processing is complex
+    \item Common and widely accepted tool for understandability of services is distributed tracing a la Dapper/OpenTracing
+    \begin{itemize}[label=---]
+        \item Highlight that in PaaS / IaaS offerings the line between online serving systems and deployment systems is very blurry.
+    \end{itemize}
+    \item It has a flaw of not being able to handle many modern deployment systems, due to their reliance on intent-driven actuation
+    \item PaaS / IaaS offerings expose endpoints operating at large scale, which have modern deployment systems underneath (with intent-driven actuation inside)
+    \item Discuss SotA in the wide area of “understandability” (tracing, provenance, monitoring, logging, causality, etc); we highlight existing solutions which could be used to deal with deployment systems with elements of intent-driven actuation and why we are still exploring another solution
+    \begin{itemize}[label=---]
+        \item Reviewed systems are not built on top of existing industry-accepted approaches
+        \item Reviewed systems are complex and require full provenance instrumentation of code, while Dapper-like tracing is suitable and readily available for 80% of services out there
+    \end{itemize}
+    \item We propose a re-thinking of the most common distributed systems tracing approach to include provenance tracking capabilities, to be able to deal with deployment systems. We are combining findings of two different research fields here.
+    \item We propose the model/approach, compare the model to Dapper/OpenTracing, give an example how it deals with intent-driven actuation
+    \item We present an informal proof for the correctness of proposed model
+    \item We implement the proposed solutions as a framework + server + database + visualization tool
+    \item We show how the solution can be applied to a complex deployment system
+    \item We hypothesize how our model could be used for distributed systems, deployment systems, and data processing systems tracing
+    \item We summarize our findings
+\end{itemize}
+
+\newpage % Rozdziały zaczynamy od nowej strony.
+\section{Introduction}
+\subsection*{Background}
+\setlength{\parskip}{9.96pt}
+
+\textit{Plan:}
+\begin{itemize}
+    \item \textit{Provide historical background}
+    \item \textit{Explain the problem in very high level}
+    \item \textit{Short SotA section criticizing existing solutions to highlight the need for the} thesis
+    \item \textit{Explain tracing and provenance research areas}
+    \item \textit{Explicitly state that we are bringing the areas together in this thesis}
+    \item \textit{Highlight problems which are related, but not in scope of the thesis}
+    \item \textit{Highlight areas where the tool *could* be used}
+\end{itemize}
+
+\subsection*{Motivation}
+
+\par 
+
+We believe that a mix of distributed systems tracing approach and provenance tracking approach (see “State of the art chapter” for an overview of existing solutions in these areas) is the right solution to the problem of debugging modern automation systems, and hierarchical control plane systems specifically. We are looking for a solution which has the following properties:
+
+\begin{itemize}
+    \item Correctness if protocol is followed [correctness]
+    \item Handle coalescing effects [coalescing] MERGE
+    \begin{itemize}
+        \item Can not rely on tainting to scale in their presence
+        \item Supports provenance
+    \end{itemize}
+    \item Suitable for use in existing systems via engineering-in instrumentation without a need for a full rewrite [instrumentation]
+    \item An incremental extension over OpenTracing model for easier industry adoption [adoption]
+    \item Supports distributed tracing to deal with distributed systems [distributed]
+    \item Supports multi-layer architecture to be able to debug modern software systems [multi-layer]
+    \begin{itemize}
+        \item  (via generic common data model?) 
+    \end{itemize}
+    \item Supports hierarchical traces to be able to debug hierarchical control plane systems [hierarchical]
+    \item Supports provenance aggregation to handle provenance information coming from multiple sources (e.g. a distributed system) [aggregation]
+    \item Support visualization of large traces, while still being sound and meaningfully to a software developer [large-visualizations]
+    \item Low data processing latency to make the system suitable for incident response [low-latency]
+    \item Support for eventually consistent view of incoming data to deal with inevitable faults in distributed systems (e.g. ability to incrementally refine data in global data model) [eventual-consistency]
+    \item Support variable tracing and provenance data fidelity as chosen by application developer for a specific use case [variable-fidelity]
+    \item Scalable with tracing data volume [data-scaling]
+\end{itemize}
+
+\par 
+
+Use cases we would like to address:
+
+\begin{itemize}
+    \item tracing of modern automation systems 
+    \item tracing of hierarchical control plane systems employing intent-based actuation
+    \item tracing of on-line serving systems
+    \item tracing of work performed by workflow engines, e.g. scientific ones
+\end{itemize}
+
+\newpage % Rozdziały zaczynamy od nowej strony.
+\section{Outside of scope}
+\subsection*{Outside of the scope of the work}
+\setlength{\parskip}{9.96pt}
+
+TODO: move to the end of thesis near the related work?
+\par
+
+\subsubsection*{Tamper-resistance}
+Tamper-resistance is a non-goal. IaaS / PaaS control plane systems are typically owned and operated by a single entity, hence there is a reasonable trust for individuals operating the system. Such enterprise deployments would typically have other mechanisms to ensure safety, privacy and security of any internal systems (e.g. access control, audit logging, etc).
+\par
+
+\subsubsection*{Audit logging application}
+Audit logging. Although there is a large overlap between what audit logging and provenance-enhanced distributed tracing are aiming to record, the user experience and requirements towards security of the systems are vastly different.
+\par
+
+\subsubsection*{Security application}
+Security. The data model proposed in this thesis might be suitable as a foundation for Advanced Persistent Threat attack detection and investigation solutions, but this is not the use case we are addressing explicitly here. Could be a future work.
+\par
+
+\subsubsection*{Large-scale deployment}
+We\ exclude the problem of large-scale deployments, be it sampling, ingestion, processing and querying of the data generated by the tracing system. We expect that a Dapper-inspired implementation to deal with the volume of generated data to be sufficient. Additional work is to be necessary to analyze effects of sampling on the provenance tracking aspects of Kha. Given a more expressive data model, additional work is necessary to understand  more complex graph-based - and potentially recursive - queries over the data.
+\par
+
+\subsubsection*{Library-level instrumentation}
+The Kha model is suitable for library-level instrumentation, e.g. in RPC libraries and context propagation libraries, and should be able to follow distributed control paths with near-zero intervention from application developers. Similarly as any OpenTracing implementation distributed tracing can be provided out of the box to application developers who use Kha-instrumented libraries.
+\par
+
+
+\begin{comment}
+
+%MP: co tu robi logo PW?
+%GP: Przykład dla mnie jak robić obrazki, labels i figury. Nie trafia do końcowego PDFa przez \begin{comment}
+
+\begin{figure}[h]
+    \label{fig:tradycyjne-logo-pw}
+    \centering \includegraphics[width=0.5\linewidth]{logopw.png}
+    \caption{Tradycyjne godło Politechniki Warszawskiej}
+\end{figure}
+\lipsum[2-3]
+\begin{figure}[!h]
+	\label{fig:nowe-logo-pw}
+	\centering \includegraphics[width=0.5\linewidth]{logopw2.png}
+	\caption{Współczesne logo Politechniki Warszawskiej}
+\end{figure}
+\lipsum[4-6]
+
+
+\end{comment}

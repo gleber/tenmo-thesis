@@ -1,0 +1,23 @@
+Ability to reason about software systems is paramount. Hierarchical control plane systems (HCPS) are hard to debug and reason about because of their particularities, such as prevalence of intent-based actuation. Industry adopted distributed systems tracing model called OpenTracing, which has been tailored for usage in online serving systems. OpenTracing does not handle activity tracing in presence of coalescing effects of request trees. These effects are prevalent in control plane systems -- including cloud platforms -- and in build systems. Making things worse, control plane systems often employ elements of build systems. Similarly, existing debuggability mechanisms also do not satisfy particularities of HCPS employing intent-based actuation. The goal of this thesis is to provide a solution for reasoning about such systems by creating a novel distributed systems tracing mechanism, based on an extension of OpenTracing model. Related research area of provenance tracking provides a hint for the solution. A good debugging system for HCPS needs to satisfy a specific set of requirements. A novel provenance-enhanced distributed systems tracing model has been proposed, along with a sketch of its graph-theoretical formalization. The model is capable of tracing systems in presence of coalescing effects. A supporting architecture has been defined. The model implemented as a framework called Tenmo following the proposed architecture. It is a activity tracing and object provenance tracking framework based on white-box instrumentation and distributed asynchronous ingestion pipeline. Applicability of Tenmo is proven on a set of software systems representative of HCPS employed by cloud providers. The provenance-enhanced distributed systems tracing solves the debuggability problem for HCPS and occupies an previously empty point in the design space of debugging solutions.
+
+\noindent \textbf{Keywords:} Distributed systems tracing. Provenance tracking in hierarchichal control plane systems. Distributed systems, Cloud. PaaS/IaaS. Declarative infrastructure management. Build systems.
+
+
+
+
+
+
+
+
+
+
+\begin{comment}
+ORIGINAL BEFORE PP
+
+
+Ability to reason about software systems is paramount. Hierarchical control plane systems have their peculiarities making it harder to debug and reason about them. Prevalence of intent-based actuation is a major source of issues. Industry adopted distributed systems tracing OpenTracing model, which has been tailored for tracing of online serving systems. OpenTracing does not handle activity tracing in presence of coalescing effects of request trees. These effects are prevalent in control plane systems -- including cloud platforms -- and in build systems. Control plane systems often employ elements of build systems. Existing debuggability mechanisms do not satisfy peculiarities of hierarchical control plane systems employing intent-based actuation. The goal of this thesis is to provide a solution for reasoning about such systems by creating a novel distributed systems tracing mechanism, based on an extension of OpenTracing model. Related research area of provenance tracking provides a hint for the solution. Debugging system for hirearchichal control plane systems needs to satisfy a specific set of requirements. A novel provenance-enhanced distributed systems tracing model has been proposed, along with a sketch of its graph-theoretical formalization. The model is capable of tracing systems in presence of coalescing effects. A supporting architecture has been defined and implemented into a Tenmo framework. Tenmo is a tracing framework based on white-box instrumentation and distributed asynchronous ingestion pipeline. Applicability of Tenmo has been proven on a set of software systems representative of hierarchical control plane system employed by cloud providers. The provenance-enhanced distributed systems tracing solves the debuggability problem for hierarchical control plane systems and occupies an empty point in the design space of debugging solutions.
+
+\noindent \textbf{Słowa kluczone:} Distributed systems tracing. Provenance tracking in hierarchichal control plane systems. Distributed systems, Cloud. PaaS/IaaS. Declarative infrastructure management. Build systems.
+
+
+\end{comment}

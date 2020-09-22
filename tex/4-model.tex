@@ -1,0 +1,896 @@
+\newpage
+\chapter{Provenance-enhanced distributed systems tracing model}\label{sec:pedst-model}
+
+In~\fullref{sec:reqs}, we have discussed the features and properties that we would like to see in a debuggability solution applicable to modern automation systems, including hierarchical cloud control plane systems employing intent-based actuation. In this chapter, we propose a model satisfying these requirements.
+
+We present Provenance-Enhanced Distributed Systems Tracing (PEDST) model as a foundation for the debuggability solution. PEDST extends OpenTracing model with minimal provenance-tracking capabilities, to address the use case~(\cref{sec:use-case}) of tracing hierarchical control plane systems employing intent-based actuation. The extension is focusing on ability to record interactions between logical work performed by the system and objects the system interacts with. As we extend it, we maintain the fundamentals of distributed systems tracing aspects (e.g. activities used as the main tracing vehicle).
+
+\section{Data model}\label{sec:data-model}
+
+We propose the following set of concepts (see \cref{fig:concepts}) used in PEDST model. These concepts are an evolution of the OpenTracing model concepts with provenance information incorporated to satisfy properties we chose in \fullref{sec:reqs}.
+
+\begin{figure}[t]
+    \caption{Model concepts.}
+    \centering
+\digraph[scale=0.8]{concepts9}{
+    rankdir=BT;
+    execution -> execution [label=" child of"];
+    operation -> execution [label=" performed by"];
+    operation -> incarnation [label=" reads / writes"];
+    execution -> process [label=" instance of"];
+    annotation -> execution [label=" attached to"];
+    incarnation -> entity [label=" instance of"];
+    incarnation -> incarnation [label=" part of"];
+    interaction -> execution [label=" refers to"];
+    message -> interaction [label=" part of"];
+    message -> incarnation [label=" carries"];
+}
+    \label{fig:concepts}
+\end{figure}
+
+We introduce a concept of \textit{execution} to track units of work (similar to the OpenTracing ``span''  concept), whose \textit{operations} on \textit{entities} are explicitly recorded. An execution is typically nested in a parent execution. \textit{Entity} is any kind of thing, which is important-enough to track, in a given system. Read and write \textit{operations}, performed by an \textit{execution}, allow to track provenance of objects they operate on. Each write \textit{operation}, on an entity, gives rise to a new \textit{incarnation} -- an immutable revision of an \textit{entity}. Entities are mutable. \textit{Executions} of the same logic are grouped by their association with a \textit{process}, which describes a predefined procedure, such as recipe, tutorial, business logic, workflow, or instructions. A pair of \textit{executions} can interact with each other and is recorded as an \textit{interaction}, which consist of a number of \textit{messages}. A \textit{message} may carry an \textit{incarnation} as a payload.
+
+The proposed PEDST model supports both activity tracing and provenance tracking. The main vehicles of tracing are executions and their parent-child relationships~\cite{dapper2010}. Correspondingly, the main vehicle for provenance tracking are read and write operations, performed by executions on individual incarnations. This places the provenance tracking capability of this model in the ``data provenance'' type~\cite{herschel2017survey}. The capability to dynamically track provenance of objects (e.g. files, configs, resources, collections, etc) addresses contributes to the ``support for abstract entities''.
+
+Concepts of executions, incarnations, and operations, are sufficient to perform both execution tracing and provenance tracking and thus such model satisfies our requirements. Other concepts are useful for the model, as based on our real-world experience: \textit{process} and \textit{entity} concepts allow us to improve the usability of tools built on top of this model. \textit{Annotations} are necessary for the model to be a superset of OpenTracing model. \textit{Interactions} and \textit{messages} are necessary to track provenance propagation through RPCs and other message passing mechanisms present in distributed systems.
+
+Furthermore, use of OpenTracing model as the foundation allows us to partially satisfy ``minimal mental burden'' requirement due to familiarity of general audience of industry software development with this model. Nevertheless PEDST model is more complex than OpenTracing model, but we consider this complexity inherent for the problem. We believe that \textit{entities} concept, their versioning mechanism with \textit{incarnations} and \textit{operations} as a link between activity tracking and object provenance tracking are the minimal extension on top of OpenTracing model, which would make a model comply with other requirements.
+
+Let us now describe in more detail each of the elements of the PEDST model.
+
+\subsection{Execution}\label{sec:model-execution}
+
+\textit{Execution} records a unit of work performed by a component of the system, at the granularity chosen by the developer. Execution can be thought of as an instantiation of a \textit{process} (see,~\cref{sec:model-process}), similarly as an instance is an instantiation of a class, in Object Oriented Programming. Similarly to the OpenTracing ``span'' objects~\cite{openTracingOnline}, executions are represented hierarchically, as a tree, via parent-child relationship. Executions have a beginning and an end in time. As execution records a unit of work in progress, or finished, as soon as the work finishes the corresponding execution gets an end timestamp and becomes immutable. Good candidates for being recorded as executions include:
+%
+\begin{itemize}
+	\item work performed by an RPC handler of an application server for a specific RPC request;
+	\item compilation phase performed by a language compiler when compiling a specific executable;
+	\item execution of a user-provided code for handling a GET request in a HTTP server like Apache for a specific RPC request;
+	\item specific execution of a workflow step in a workflow engine;
+	\item main loop of a network server responsible for accepting network connections in a specific Unix process;
+	\item query execution of a specific SQL statement on a specific database engine at specific time sent by a specific user.
+\end{itemize}
+
+An execution tree -- an execution with its children -- represents a logical chunk of work. It may be a simple record of a primitive operation with no children, or it can be a large and complex chunk of work, e.g. record of a large scale database migration. This hierarchical representation of executions allows to gradually improve fidelity of execution tracing -- starting with tracing ``large chunk'' executions covering large and complex work units, and later on gradually adding more fine-grained executions covering elements of the large work units. This satisfies the ``gradual fidelity execution tracing`` requirement.
+
+% \todo{IMAGE: Executions used for Dapper’s span example}
+
+\begin{figure}[t]
+    \centering
+\digraph[scale=0.6]{unownedExecution20}{
+    rankdir=BT; 
+    node [shape=rectangle,bgcolor="#FFD9B2"];
+
+    handler1 -> listener [label="creator",style=dotted];
+    handler2 -> listener [label="creator",style=dotted];
+    handler1 -> client1 [label="parent"];
+    handler2 -> client2 [label="parent"];
+    subgraph cluster_client1 {
+    style=dotted;
+    label="HTTP Client 1";
+    client1 [label="GET /foo"];
+    };
+    subgraph cluster_client2 {
+    style=dotted;
+    label="HTTP Client 2";
+    client2 [label="GET /bar"];
+    };   
+    subgraph cluster_server {
+    style=dotted;
+    label="HTTP Server";
+    listener [label="HTTP Listener"];
+    handler1 [label="Handler /foo"];
+    handler2 [label="Handler /bar"];
+
+ };
+}
+    \caption{Unowned executions example.}
+    \label{fig:unowned-execution}
+\end{figure}
+
+An execution can have a creator execution associated with it (see \cref{fig:unowned-execution}). For a given execution, a creator execution and a parent execution can differ. For example an execution recording a thread performing an RPC service listen loop will be a creator a number of individual executions, while these executions record work performed by each individual RPC handler. In this case, the creator execution is not the same as parent execution, since the parent execution will be an execution recording work performed by a networking client, which opened a socket.
+
+A pair of executions can interact (see~\cref{sec:model-interaction}). An execution can also perform operations (see~\cref{sec:model-operation}).
+
+\subsection{Incarnation}\label{sec:model-incarnation}
+
+\begin{wrapfigure}{h}{0.45\textwidth}
+\resizebox{0.45\textwidth}{!}{%
+\begin{tikzpicture}[node distance=2cm, yscale=-1]
+
+\node at (0, 0) (file1) [decision] {\begin{tabular}{c} file.txt \\ $t_0$ \end{tabular}};
+\node at (4, 0) (file2) [decision] {\begin{tabular}{c} file.txt \\ $t_1$ \end{tabular}};
+\node at (8, 0) (file3) [decision] {\begin{tabular}{c} file.txt \\ $t_2$ \end{tabular}};
+
+\draw[->,thick] (3,2.5)--(5,2.5) node[right]{time};
+
+\end{tikzpicture}
+}
+\caption{Incarnations of \mintinline{shell}{file.txt}.}
+\label{fig:incarnations}
+\end{wrapfigure}
+
+Incarnation represent a specific state of an entity (see~\cref{sec:model-entity}) in time (see \cref{fig:incarnations}). Hence, it has a creation timestamp and it is immutable. When an entity is modified, a new incarnation is recorded. In case of entity deletion, the incarnation will be marked as a tombstone, thus marking the represented entity as no-longer existent. A sequence of incarnations, of a given entity, gives rise to the object timeline. Incarnations are the vehicles of provenance tracking in the model (that is they are nodes in the provenance graph; see,~\cref{sec:theory}).
+
+One can conceptualize entities and incarnations through the lens of version control systems (VCS). In our model, a resource -- usually a file -- versioned by the VCS is tracked as an entity, while each revision of a given resource stored in a VCS is tracked as an incarnation of this entity.
+
+\paragraph{Sub-incarnations.}\label{sec:model-subincarnation}
+
+An incarnation can be a part of another incarnation (see~\cref{fig:sub-incarnations}). In such relationship, a parent incarnation consists of multiple sub-incarnations. Sub-incarnations are indivisible parts of the parent incarnation. Whenever a new incarnation is created for the parent incarnation’s entity, new incarnations are created for all sub-incarnations. An example: a single file -- a sub-incarnation -- in an archive -- a parent incarnation -- being an output of a build system step. 
+%%MG: tu akurat lepiej/zrozumialej byłby schemacik/rysuneczek
+%%GP: A fig. 4.4?
+This relationship does propagate provenance, hence if a sub-incarnation is read by an execution, the parent incarnation becomes part of the provenance set of the said execution.
+
+Sub-incarnations mechanism satisfies the ``gradual fidelity provenance tracking adoption'' requirement by allowing developers to initially track objects at coarse level (e.g. a Docker image as a whole), and gradually improve implementation to track sub-incarnations of these objects for finer grained tracking (e.g. track individual files in said Docker image). Additionally it directly addresses the ``support for composite entities'' requirement.
+
+Implementations of the model are allow to apply the following optimizations without the loss of correctness:
+\begin{itemize}
+    \item If an ought-to-be-created child incarnation does not differ from the previous incarnation -- as an optimization -- no new incarnation has to be created and the parent can point to an already-existing child incarnation. Think about sharing in functional data structure updates.
+    \item Writing all of the sub-incarnation into a datastore can be expensive, so an implementation of this model can use implicit sub-incarnation creation optimization, where a sub-incarnation existence is recorded only when it is referred to.
+\end{itemize}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[node distance=2cm, yscale=-1, scale=0.8, every node/.style={scale=0.8}]
+
+\node at (3, 0) (archive) [decision] {archive.tar.gz};
+\node at (0, 3) (fileA) [decision] {thesis.tex};
+\node at (6, 3) (fileB) [decision] {thesis.bib};
+
+\draw [arrow] (fileA) -- (archive) node [midway, fill=white] {part of};
+\draw [arrow] (fileB) -- (archive) node [midway, fill=white] {part of};
+
+\end{tikzpicture}
+\caption{Representation of result of \mintinline{shell}{tar -czf archive.tar.gz thesis.tex thesis.bib} as incarnations in our model.}
+\label{fig:sub-incarnations}
+\end{figure}
+
+It is worth noting that this is different from an aggregation relationship, where an aggregating incarnation refers to a number of entities, which are related via some form of a hierarchical relation, but their lifetimes are independent (i.e. imperative updates). Such aggregation relationships do not propagate provenance and are not considered in this work.
+
+\subsection{Operation}\label{sec:model-operation}
+
+Operations are used to record reads and writes, performed by an execution on incarnations. The operation concept connects activity tracing with object provenance tracking. Write operation on an entity creates a new incarnation of the entity. 
+
+\begin{wrapfigure}[8]{h}{0.4\textwidth}
+\resizebox{0.4\textwidth}{!}{%
+\begin{tikzpicture}[node distance=2cm, yscale=-1]
+
+\node at (0, 0) (fileA) [decision] {fileA};
+\node at (3, 2) (cat) [process] {cp};
+\node at (6, 4) (fileB) [decision] {fileB};
+
+\draw [arrow] (fileA) -- (cat) node [midway, fill=white] {read};
+\draw [arrow] (cat) -- (fileB) node [midway, fill=white] {write};
+
+\end{tikzpicture}
+}
+\caption{\mintinline{shell}{cp fileA fileB} representation in our model.}
+\label{fig:cp-files}
+\end{wrapfigure}
+
+For example, an execution recording work of \mintinline{shell}{cp fileA fileB} shell command would have two operations associated with it (see,~\cref{fig:cp-files}):
+%
+\begin{itemize}
+	\item Read operation on an incarnation of file named ``fileA'' 
+	\item Write operation of an newly-created incarnation of file named ``fileB'' 
+\end{itemize}
+%
+This representation captures only the semantics of \texttt{cp} -- that is copying files -- and completely ignores work performed by Linux kernel when loading \texttt{cp} binary into a Unix process. It is up to a software developer using the model to decide on the level of details they need (see~\cref{sec:process-definitions-as-inputs} for discussion).
+
+If a given incarnation is written in an operation of an execution, all incarnations read by all operations of the same execution are considered to be part of the provenance set of the given incarnation. An incarnation's indirect provenance set is defined by read operations of the given execution, and all parents of the execution. The indirect provenance set is an over-approximation of a provenance set, but it provides a very useful, and easy to implement provenance tracking technique~(see \cref{sec:model-extensions}). As an instrumentation coverage in a given system improves, indirect provenance can be used less and less, in favor of direct provenance, hence satisfying the ``gradual fidelity provenance tracking'' requirement of the system.
+
+The ability to track relationships between \textit{executions} and \textit{incarnations} using \textit{operations} addresses the ``coalescing effects support'' requirement. When these relationships are tracked, a debugging solution is capable of capturing knowledge that evolution of an intent entity can be related to a number of executions. This allows to track a causality chain between an incoming requesting updating an intent and any executions performed while adapting the state of the managed objects to match the intent.
+
+\subsection{Process}\label{sec:model-process}
+
+A \textit{process} describes a predefined procedure, such as recipe, instruction, business logic, or workflow, typically with a human-consumable description (equivalent to OPM's ``Plan''~\cite{opm-moreau2011743}). 
+%%MP: drobizg: masz źle napisany cudzysłów (wszędzie): z lewej strony jest lewy apostrof ``, z prawej - prawy (prosty) ''
+%%GP: źle pisałem na początku, teraz poprawiam jak widzę
+%%GP: Poprawiłem wszędzie.
+\textit{Processes} are instantiated as \textit{executions}~\footnote{One can conceptualize \textit{process} as a class in OPP and an \textit{execution} as an instance of a class.}. A \textit{process} can be executed multiple times, causing multiple \textit{executions} to be recorded. A \textit{process} has no timestamps, and may evolve over time, leading to multiple \textit{executions} being recorded for it with varying shape or content. A concept of a \textit{process} can be thought of as a way to group a set of recorded \textit{executions} into a historically related collection. For example, a code stored in a binary file can be recorded as a \textit{process}, when this code is executed it gets recorded an \textit{execution}.
+
+Another use for processes is to aggregate a large number of parallel executions of virtually the same unit of work (e.g. same data processing workflow step operating on different data rows). These are useful for cutting down the noise, when visually representing a large number of executions to a user, e.g. represent them as a single node in the visualization of an execution graph.
+
+If the model is to be used to track interactions triggered by humans in a computer system (e.g. for audit logging), humans could be represented as ``processes'' , and their individual interactions with a system can be represented as ``executions''.
+
+Let us specify few examples of processes:
+%
+\begin{itemize}
+	\item implementation of ``zip'' archive creation procedure stored in a 7zip binary file;
+	\item logic of Unix tool ``cat'';
+	\item abstract query execution as implemented in a database engine;
+	\item implementation of a game main rendering loop stored in an executable of a game;
+	\item RPC handler for creation of a VM in a cloud API;
+	\item implementation of a scientific workflow in a Apache Pig.
+\end{itemize}
+
+% \todo{Image: Process as a grouping of executions}
+
+\subsection{Interactions and messages}
+\label{sec:model-interaction}\label{sec:model-message}
+
+\textit{Interaction} is used to record any form of interactions between two concurrent executions. For example, a remote procedure call, performed from unix process A to Unix process B, e.g. a gRPC method call, is an interaction between two executions, which record the work done by these Unix processes. An interaction consists of a sequence of messages. 
+
+\textit{Message} captures a one-way information transfer, between two executions, as a part of an interaction. For instance, a synchronous RPC interaction would have two messages -- a request from the client to the server and a reply in the other direction. In case of streaming RPCs, e.g. gRPC bidirectional streaming, a single interaction representing a single bidirectional stream, can have an arbitrary number of messages recorded.
+
+%% BRAK CZASU \todo{IMAGE: Dapper’s span example with explicit interactions and messages}
+
+\subsection{Entity}\label{sec:model-entity}
+
+\begin{wrapfigure}[6]{h}{0.5\textwidth}
+\resizebox{0.5\textwidth}{!}{%
+\begin{tikzpicture}[node distance=2cm, yscale=-1]
+
+\draw[dashed] (-2,-1) -- (10,-1) -- (10,1.5) -- node[above] {file.txt} (-2,1.5) -- cycle;
+
+\node at (0, 0) (file1) [decision] {$t_0$};
+\node at (4, 0) (file2) [decision] {$t_1$};
+\node at (8, 0) (file3) [decision,draw,cross out,draw] {$t_2$};
+
+\draw[->,thick] (3,2)--(5,2) node[right]{time};
+
+\end{tikzpicture}}
+\caption{Timeline of \mintinline{shell}{file.txt} entity.}
+\label{fig:entity-timeline}
+\end{wrapfigure}
+
+\textit{Entity} is any kind of thing, which is important-enough to be tracked in a given system. Entity is a long-living identifiable object. Entities are mutable, and any change to an entity gives rise to an incarnation. Entity does not have a timestamp on its own, since its life-cycle is recorded by its incarnations. Entity, typically, has a human description and has to have a computer-consumable identifier, which can be used to address it. At any given timestamp, an entity may exist or may not exist (see \cref{fig:entity-timeline}).
+
+Examples of entities:
+%
+\begin{itemize}
+	\item file at a specific location, e.g. Unix file path or a Uniform Resource Identifier (URI)
+	\item intent stored in an automation system for a specific resource, e.g. Kubernetes object ``spec''  field
+	\item state of a resource stored in an underlying system, e.g. Kuberentes object ``status''  field
+	\item file in a Git repository.
+\end{itemize}
+
+It is often the case that the same resource is represented at different resolution/abstraction levels as multiple entities, and there is an automation process recorded as an execution, which translates between the representations. For example, a compiler creating an object file out of a source code file.
+
+It is worth noting that an entity addressing scheme is heavily dependent on a particular use case. However, in general, entity address should be as global as possible in a given system, so that an address is sufficient to identify, locate and access an entity, with no other pre-existing knowledge about this entity. The URI standard is a suitable encoding for entity identifiers.
+
+\subsection{Annotations}\label{sec:model-annotation}
+
+\textit{Annotations} -- similarly as Dapper’s annotations -- are used to enrich executions with additional information. Annotation are an extensibility mechanism, allowing tool- and application-specific information to be attached to executions.  It is useful to store information which does not fit the model, but is useful for a specific application. It allows custom tooling to be developed on top of the model.  Annotations are time-stamped and can hold payload. The payload is an arbitrary value (e.g. using Protocol Buffers \textit{Any} type), but an implementation of the model is allowed to impose limits (e.g. upper limit on size of annotations). Annotations are also useful to associate unstructured line-oriented log entries to executions (see \fullref{sec:nix-implementation} for example).
+
+%% BRAK CZASU \todo{IMAGE: Dapper’s span example with annotations}
+
+\section{Logging data model}\label{sec:logging-model}
+
+The model, above, describes the data resulting from provenance-enhanced distributed tracing. We call this ``the global data model''. This model is not suitable for recording things ``as they happen'' (e.g. an execution represents a long-running activity, and end timestamp is not available until the end of the activity). To record things as they happen, we propose ``the local data model'', which is a structured logging data model.
+
+The local model is incremental, and is sufficient to recover data in the global model. The logging data model is event-based, with a single event being generated by a producer, whenever anything relevant happens. Each event can be recorded immediately, without a need for buffering. For example, the start of an execution and the end of an execution are logged separately, so that long-running executions can be accurately logged in presence of failures. Here is the list of events supported:
+%
+\begin{itemize}[nosep]
+	\item Execution begin
+	\item Execution end
+	\item Operation performed
+	\item Message sent
+	\item Message received
+	\item Execution annotated
+\end{itemize}
+
+Please note that no events directly related to processes, interactions and entities are included, since they are registered in the system implicitly whenever an execution mentions a new process identifier or an interaction identifier in ``message received'', or an incarnation mentions a new entity identifier.
+
+Special care needs to be taken when choosing identifiers, since they are used to compose and aggregate tracing and provenance data originating from different components in the system. The identifiers, used in the system, need to conform to the following requirements:
+%
+\begin{itemize}
+	\item Incarnation identifier needs to be recoverable from an object itself (e.g. a database row representing an entity needs to have an ``id'' column and ``update time'' column). If the underlying storage system is versioned, its internal revision numbers can be used (e.g. version control systems for files). This is to ensure that all services, interacting with a given entity, are capable of logging their interactions with coherent identifiers for entity incarnations~\footnote{This requirement will likely cause a need to re-architecture addressing schemes and access mechanisms for entities in the system, e.g. add at least a rudimentary versioning mechanism (e.g. an ``last updated time''  field in a DB schema). This is a good engineering practice nevertheless, so we accept this restriction of the model. As a future work, we believe it is going to be possible to define a degraded mode for this model, where this requirement is relaxed at the expense of accuracy of tracking of entity versioning.}
+	\item Identifiers of incarnations belonging to a given entity need to be in monotonically increasing order aligned with the time flow in the system. If a system is eventually consistent, it is the responsibility of the business logic of the system to conjure correctly timestamped identifiers.
+	\item The same requirement applies to identifiers of executions of a given process.
+\end{itemize}
+%
+The above requires an execution interacting with another execution (e.g. via RPC messages), to provide the other side of the interaction with its own identifier. This ensures that both sides of the interaction are capable of logging coherent data, when projected to the global data model. This is different from the tainting model, where a single identifier is propagated throughout the whole system. \Cref{sec:patterns} provides more guidance and examples of how logging should be performed for common scenarios.
+
+\section{Theoretical foundations}\label{sec:theory} 
+
+In this section, we sketch how the model can be formalized using graph-theoretical terms. This sketch will help us reason about the model, how logging data model can be used to recover a global view at the traced system. It will give us a set of graph-theoretical tools to perform queries over the data and extend observed data with inferred data.
+
+\begin{comment}
+%% To nie jest potrzebne
+We will analyze the proposed local and global data models to prove a number of properties\todo{Sync with motivation}, which are important for our use cases. BIG TODO:
+
+\begin{itemize}
+	\item Consistency -- traces describe what actually happened during execution ~\cite{cheney2008provenance}
+	\item Local-global coherency -- ensuring that if logging is performed correctly in all agents participating in the system, the global provenance data can be recovered from local logging
+	\item Granular fidelity -- traces explain how the expression would behave if the inputs were changed.
+	\item Variable fidelity -- data fidelity during logging can be adjusted by the implementer of provenance logging in a given agent depending on level of details necessary for a given use case.
+	\item Aggregability -- ability to meaningfully aggregate provenance data in global data model when represented for human consumption
+\end{itemize}
+
+\end{comment}
+
+Here, we will use ``observed'' and ``recorded''  interchangeably. We will start with defining a global model for recorded objects, which reflect knowledge about everything recorded so far in a PEDST model store. Next, we will discuss the local model, which is to be used by individual components at the time of recording of its locally-observable bits of information. We will show how the aggregating all events in the local model is enough to correctly reconstruct a global view on data recorded in PEDST model.
+
+\subsection{Global model}\label{sec:global-model}
+
+In our approach we use the following data model to record information gathered about the system under tracing. In this model $U$ is an observed universe. We use words \textit{reference} and \textit{identifier} interchangeably here, with a bias towards using reference, if a given field is meant to merely refer to another object in the universe.
+
+To satisfy requirements of supporting scalable recording of write operations and of allowing over-approximation of provenance for objects in presence of hierarchical executions, we support implicit relationships in the observed universe. The universe type can represent exactly what is being recorded, and any extension of the recorded data, with implicit relationships.
+
+\subsubsection{Tuples}\label{sec:global-tuples}
+
+First we will provide a set of definitions of all constituent parts of a universe.
+%
+\begin{definition}[Observed universe]\label{def:observed-universe}
+Observed universe $U$ is a tuple $(E, I, O, X, P, N)$, where $E$ is a set of all observed executions, $I$ is a set of all observed incarnations, $O$ is a set of all recorded operations performed by the observed executions, $X$ is a set of all recorded interactions between participating executions, $P$ is a set of all registered processes in the universe, $N$ is a set of all registered entities in the universe.
+\end{definition}
+
+Each of the fields of the universe is a set of tuples.
+
+\begin{definition}[Execution]
+An execution $e \in E$ is a tuple $(id_e, t_{start}, t_{end}, e_p, c, p, a)$, where
+\begin{itemize}
+	\item $id_{e}$ is its identifier
+	\item $t_{start}$ is a timestamp of the beginning of this execution
+	\item $t_{end}$ -- an end
+	\item $e_p$ is an reference to the parent execution
+	\item $e_c$ is an reference to the creator execution
+	\item $p$ is an optional reference to the process this execution instantiates.
+	\item $a$ is a set of annotations associated with this execution.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Incarnation]
+An incarnation $i \in I$ is a tuple $(id_i, t, tombstone, n)$, where
+\begin{itemize}
+	\item $id_{i}$ is its identifier of the incarnation
+	\item $t$ is a timestamp of the incarnation creation
+	\item $tombstone$ is a boolean flag if this incarnation records end of the current lifetime of this entity
+	\item $n$ is an optional reference to the entity of this incarnation.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Operation]
+An operation $o \in O$ is a tuple $(t, id_o, e_{op}, t_{op}, i_{subj})$:
+\begin{itemize}
+	\item $t$ is a timestamp of the operation.
+	\item $e_{op}$ - an execution whose operation given tuple represents
+	\item $t_{op}$ - an operation type, which can be either Write or Read
+	\item $i_{subj}$ - reference to the incarnation which is a subject of the operation.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Interaction]
+An interaction $x \in X$ is a tuple $(id_{x}, e_{init}, e_{target}, M_{x})$:
+\begin{itemize}
+	\item $e_{init}$ - an execution reference which has initiated the interaction.
+	\item $e_{target}$ - an execution reference which is being interacted with.
+	\item $M$ - a set of messages exchanged between $E_{init}$ and $E_{target}$, where each message $\textit{m}$ is a tuple $(t, e_{init}, e_{target}, \textit{Payload})$, which are:
+    \begin{itemize}
+	\item $t$ is a timestamp of the message.
+	\item $Payload$ is a payload value.
+    \end{itemize}
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Process]
+A process $p \in P$ is a tuple $(id_{p}, \textit{description}, e_{d})$, where
+\begin{itemize}
+	\item $id_{p}$ is identifier of the process
+	\item $description$ is a human-readable description of the process
+	\item $e_{d}$ is an entity reference where a given process is defined.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Entity]
+An entity $n \in N$ is a tuple $(id_n, description)$, where
+\begin{itemize}
+	\item $id_n$ is its identifier of the entity
+	\item $description$ is a human-readable description of the entity
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Annotation]
+An annotation is a tuple $(t, Payload)$, where
+\begin{itemize}
+	\item $t$ is a timestamp of the message.
+	\item $Payload$ is a payload value.
+\end{itemize}
+\end{definition}
+
+\subsubsection{Graphs}\label{sec:global-graphs}
+
+Next, we define a set of graphs over information captured in an observed universe. These will be useful to extract information, e.g. answer queries, from the gathered data. We use this as a guide for the, to-be-presented, implementation for the model.
+
+\begin{definition}[Execution graph]
+An execution graph of $U$ is a directed graph where nodes are elements of $E$ and there is an edge between $e_i$ and $e_j$ if $e_j$ is a parent of $e_i$.
+\end{definition}
+
+The execution graph captures the parent-child relationship of executions. It is equivalent to the forest of trace trees in the OpenTracing model.
+
+Let’s call $Edges(U)$ is a multiset of tuples $(e_{init}, e_{target})$ for each element in $X$ of $U$.
+
+\begin{definition}[Interaction graph]
+An interaction graph of $U$ is a multigraph, where nodes are elements of $E$ and edges are $Edges(U)$ each connecting two elements of $E$.
+\end{definition}
+
+\begin{definition}[Effects graph]\label{def:effects-graph}
+An effects graph of U is a bi-partite directed graph, where executions in $E$ form the $U$ partition and incarnations in $I$ form the $V$ partition, and each element of $O$ gives rise of a directed edge:
+\begin{itemize}
+	\item from $U$ partition element to $V$ partition element in case of write operations
+	\item from $V$ partition element to $U$ partition element in case of read operations.
+\end{itemize}
+\end{definition}
+
+Let’s call $Reads(e_{i})$ a set of all incarnations read by a given execution $e_{i}$. Let’s call $Writes(e_{i})$ a set of all incarnations read by a given execution $e_{i}$.
+
+%% Let’s call $Eff(e_{i})$ for an execution $e_{i}$ a set of all incarnations affected by $e_{i}$, which is a union of $Reads(e_{i})$ and $Writes(e_{i})$.
+
+%% Let’s call $ProvD(i_{i})$, for an incarnation $i_{i}$, a set of incarnations, for which there exists an observed operation $o_{i}$, whose $t_{i}$ is WRITE.
+
+$Writer(i_{i}) = \{ e_{op} : \forall\ o_{i} = (e_{op}, t_{op}, i_{subj}): t_{op} = \text{WRITE} \land i_{i} = i_{subj} \} $.
+
+If the size of set $Writer(i_i)$ is larger than 1, it means that the observed dataset contains errors.
+
+
+%% $ProvD(i_{i}) = \{ i_{subj} : \forall\ o_{i} = (e_{op}, t_{op}, i_{subj}): t_{op} = \text{READ} \land e_{op} \in Writer( i_{i} ) \} $.
+
+\begin{definition}[Direct provenance graph]
+A direct provenance graph $P^{d}$ of $U$ is a directed hypergraph corresponding to the effects graph ($E$, $I$, $O$) of $U$, where each incarnation $i \in I$ is a node in $P^d$ and all executions $e_{i} \in E$ incoming-adjacent to $i$ form a directed hyperedge from corresponding outgoing-adjacent incarations to $i$.
+\end{definition}
+
+\begin{definition}[Indirect provenance graph]\label{def:indirect-prov-set}
+An indirect provenance graph $P^{i}$ is a direct provenance graph $P^{d}$ with an additional edge between every two nodes representing incarnations $i_{1}$ and $i_{2} \in I$ whenever there is a path between $Reader(i_{1})$ and $Writer(i_{2})$ in the execution graph of $U$.
+\end{definition}
+
+\begin{definition}[Direct provenance set]
+A direct provenance set $S^{d}(i)$ for an incarnation $i \in I$ of $U$ is a transitive closure of incoming adjacent neighbours of $i \in P^{d}$ of $U$.
+\end{definition}
+
+\begin{definition}[Indirect provenance set]
+An indirect provenance set $S^{i}(i)$ for an incarnation $i \in I$ of $U$ is a transitive closure of incoming adjacent neighbours of $i$ in $P^{i}$ of $U$.
+\end{definition}
+
+\subsubsection{Extensions}\label{sec:model-extensions}
+
+Finally next we will define a set of procedures, to extend an universe with additional implicit information. These universe extensions are mechanisms to infer additional information from the observed dataset. They allow to recover additional information through over-approximation.
+
+These extensions address the ``supports incremental implementation`` requirement by allowing to extract value from minimal tracing instrumentation by trading off accuracy of execution tracing and provenance tracking. The use of the extensions can be reduced (hence improving accuracy) as more and more instrumentation is implemented in the system under tracing.
+
+%%TODO: Replace closure na extension!
+
+\begin{definition}[Sub-incarnation provenance extension] For a given universe $U$, sub-incarnation provenance extension is a universe $U'$ extended with additional imaginary executions: for each sub-incarnation an execution is implied which performs a read operation on parent incarnation of a sub-incarnation and a write operation of the sub-incarnation itself.
+\end{definition}
+
+Sub-incarnation provenance extension is an optimization mechanism, which allows users of the PEDST model to avoid explicitly recording write operations on all sub-incarnations. This optimization is especially useful if the execution represents a some sort of packing operation, where an operation creates a large blob, which has a lot of individual elements embedded. For example an execution of ``tar cfz'' command line fits. This extension allows to maintain a provenance relationship between a writer of a parent incarnation and a reader of a sub-incarnation.
+
+Another example is a case where an execution records a black-box transformation of an composite incarnation $A$ without looking inside it (e.g. file copying) and writes a new incarnation $B$. Next another tool consumes entity $B$ (e.g. the destination file), and extracts a fine-grained information $k_B$ from it (e.g. extracts a single file of the copied archive). Sub-incarnation provenance extension ensures that a provenance relationship between the incarnation $A$ and the fine-grained information $k_B$ is maintained (e.g. a relationship between the original archive and the extracted single file).
+
+\begin{definition}[Sub-execution provenance extension] For a given universe $U$, sub-execution provenance extension is a universe $U'$ extended with additional imaginary read operations for every pair of a execution and an incarnation if there exists a read operation performed by any of execution ancestors on the incarnation, a new read operation is implied between the execution and the incarnation.
+\end{definition}
+
+\begin{comment}
+GP: Niezbyt ważne, nie będę opisywał.
+\begin{definition}[Sub-execution provenance extension with time constraints] For a given universe $U$, sub-execution provenance extension is a universe $U'$ extended with additional imaginary read operations: a read operation is implied between a execution and an incarnation if (1) there exists a read operation performed by any of execution ancestors on the incarnation and (2) if the read original operation has happened before the given child execution creation timestamp.
+\end{definition}
+\end{comment}
+
+Sub-execution provenance extension is an inference mechanism to capture a likely provenance relationship between an object read by a parent execution and an object written by a child execution. It is useful if instrumentation of the traced system is imperfect. It is based on the assumption that a parent process which spawned a child process is likely to have passed information to the child process which was used by the child process when writing an object.
+
+\begin{definition}[Inter-incarnation provenance extension] For a given universe $U$, inter-incarnation provenance extension is a universe $U'$ extended with additional imaginary executions: for each adjacent sub-incarnation a execution is implied which performs a read operation the earlier incarnation and a write operation of the later incarnation if no path exists between these sub-incarnations in a direct provenance graph of $U$.
+\end{definition}
+
+It is likely that whenever two consecutive incarnations of an entity are produced, they have been produced by a repeating process which produces the latter incarnation using the former as an input. This is obviously an incorrect assumption for a number of systems, but this extension is a useful tool to explore a provenance graph of a traced system where the instrumentation is imperfect.
+
+\begin{definition}[Message-passing provenance extension]  For a given universe $U$, message-passing provenance extension is a universe $U'$ extended with additional imaginary executions: for each message sent from execution $e_1$ to $e_2$ in each interaction a new unique incarnation $i$ and two operations $op_w$ and $op_r$ are implied, where $e_1$ performs $op_w$ as a write on $i$ and $e_2$ performs $op_r$ as a read on $i$.
+\end{definition}
+
+This extension is based on the assumption that whenever two processes are communicating, they exchange information, which is relevant for provenance tracking. With it we assume that whenever one execution send a message to another an implicit unit of information is passed, linking two executions in their provenance graph.
+
+\subsection{Local model}\label{sec:local-model}
+
+As described in \fullref{sec:logging-model}, data logged by components is a stream of events called $F$. Hence to construct an \textit{observed universe} we need to perform a \textit{left-fold} operation on the sequence of events starting with an initial universe:
+%%MG: Proponuję najpierw tuple U^0, potem opisać co to U=...na końcu where E^0=\emptyset,...
+\[ E^0 = \emptyset, I^0 = \emptyset, O^0 = \emptyset, X^0 = \emptyset, P^0 = \emptyset, N^0 = \emptyset \]
+\[ U^0 = (E^0,I^0,O^0,X^0,P^0,N^0) \]
+\[ U = \mathrm{leftFold}(\mathrm{observe}, U^0, F) \]%%MG: co to jest F - trzeba przypomniec/sprecyzowac
+%
+Alternatively, for each event $f^{k}$ in $F$, %%MG: in czy from???
+we have
+%
+\[ U^{k+1} = \mathrm{observe}(U^k, f^k) \]
+%
+In industry, this computation pattern is known as Event Sourcing~\cite{EventSourcing2020Aug}.
+
+We assume that a sequence of events $F$ is causally ordered, which means that every event in it is placed after any event it depends on, for example:
+%
+\begin{itemize}
+	\item execution end event, for execution \textit{e}, is after execution start event for execution \textit{e};
+	\item read operation for incarnation \textit{i} is after a write operation, which creates incarnation \textit{i};
+	\item interaction begin targeting execution $e$ is after execution start event for execution $e$;
+	\item and so forth.
+\end{itemize}
+
+Note that the full list of requirements is embedded into the definition of \textit{observe} procedure as checks. In an implementation of the model, it is the responsibility of an application developer to maintain causal ordering of produced events. A vast research body has been produced on this topic~\cite{lamport2019time} and it is out of the scope for this work.
+
+\textit{observe} procedure needs to be embellished with a state, allowing it to maintain the intermediate state information, which is not representable in the global data model. Each event is fed into the \textit{observe} function together with its production timestamp. The \textit{observe} has the following semantics, depending on the type of event $F$.
+
+\paragraph*{Execution begins.}
+Event $f$ is a tuple $ ( id_{e}, e_{parent}, e_{creator}, id_{p} ) $. Observing an event of this type does:
+\begin{itemize}
+	\item Checks if parent execution has been observed so far.
+	\item Checks if creator execution has been observed so far.
+	\item Notes existence of process $id_{p}$.
+	\item Stores this incomplete execution information in the intermediate state with event timestamp as the execution start timestamp.
+\end{itemize}
+
+\paragraph*{Execution ends.}
+Event \textit{f} has the shape of $(id_{e})$. Observing this events does:
+\begin{itemize}
+	\item Checks if an execution with $id_{e}$ has been stored in the intermediate state and retrieves it.
+	\item Appends $(id_{e}, start, finish, e_{parent}, e_{creator}, id_{p})$ to $E$ in $U$, where finish is the event timestamp.
+\end{itemize}
+
+\paragraph*{Operation performed.}
+Event $f$ is a tuple $(t, id_o, e_{op}, t_{op}, i_{subj}, n_{subj})$. Observing an event of this type does:%%MG: Gleb, wydaje mi się, że wcześniej nie mówiłeć co to jest event (tuple), ale we "wzorach" na początku 4.3.2 mówisz o evencie i zbiorze eventów??
+\begin{itemize}
+	\item Checks if execution $e_{op}$ has been observed so far.
+	\item Notes existence of entity $n_{subj}$.
+	\item Appends $(t, id_o, e_{op}, t_{op}, i_{subj})$ to $I$ in $U$.
+	\item Appends $(t, id_o, e_{op}, t_{op}, i_{subj})$ to $I$ in $U$.
+\end{itemize}
+
+\paragraph*{Message sent.} 
+Event \textit{f} has the shape of $(id_{m}, e_{init}, e_{target}, id_{x}, \text{Payload})$. Observing this events does:
+\begin{itemize}
+	\item Checks if executions with $id_{init}$ and $id_{target}$ has been observed so far and retrieves it.
+	\item Adds interaction ${ id_{x}, e_{init}, e_{target}, \emptyset }$ if $id_{x}$ is not yet present in $X$ of $U$.
+	\item Appends $( id_{m}, \mathrm{timestamp}, e_{init}, e_{target}, \text{Payload})$ to $M_x$ of the interaction.
+\end{itemize}
+
+\paragraph*{Execution annotation added.}
+Event \textit{f} has the shape of $(id_{e}, t, id_{x}, \text{Payload})$. Observing this events does:
+\begin{itemize}
+	\item Checks if an execution with $id_{e}$ has been observed so far and retrieves it.
+	\item Appends $( t, \text{Payload})$ to $M_x$ of the $a$ of the execution.
+\end{itemize}
+
+
+
+\begin{comment}
+KOMENTARZ PEWNIE NIE TRAFI DO TEKSTU
+Soundness requirements, towards data produced in the local model, are clear from the \textit{observe} procedure. At the same time, satisfying these requirements does not guarantee that the traces actually represent the work performed by the system.
+
+TODO: define requirements towards how the system needs to be used, relate individual requirements to \textit{where-provenance}  (execution reads object A and writes object A again), \textit{dependency-provenance}  (execution reads), \textit{semiring-provenance}  (ability to ``forget''  stop tracing something) and others.
+%MP: nie uwyzac `` '' tylko italikow -- wszedzie gdzie to jest wlasciwe -- `` '' w wiekszosci przypadkow -- w pracy informatycznej -- w odniesieniu do "notacji" nie maja sensu
+\end{comment}
+
+\section{Motivating examples in PEDST model}
+
+The set of concepts described in~\cref{sec:data-model} and their formalization described in~\cref{sec:theory} allow us to define the answer to the motivating examples from \cref{sec:motivating-examples} in a well-defined way.
+
+\subsection{Buggy deployment}\label{sec:motivating-ex1-pedst}
+
+
+\begin{figure}[p]
+    \centering
+\vspace{-6em}
+\begin{sideways}
+\digraph[scale=0.575]{motivatingEx101}{
+node [style=filled];
+"deploy-script.sh-run-1" [id="deploy-script.sh-run-1" label="run deployment script" shape=rectangle fillcolor=Goldenrod]
+"docker-build-app-1" [id="docker-build-app-1" label="build app container" shape=rectangle fillcolor=Goldenrod]
+"docker-push-app-1" [id="docker-push-app-1" label="docker push app:1" shape=rectangle fillcolor=Goldenrod]
+"ssh-remote-1" [id="ssh-remote-1" label="ssh remote -- docker pull" shape=rectangle fillcolor=Goldenrod]
+"ssh-remote-docker-pull-1" [id="ssh-remote-docker-pull-1" label="docker pull" shape=rectangle fillcolor=Goldenrod]
+"scp1" [id="scp1" label="scp config" shape=rectangle fillcolor=Goldenrod]
+"remote-docker-daemon" [id="remote-docker-daemon" label="remote docker daemon" shape=rectangle fillcolor=Goldenrod]
+"ssh-remote-2" [id="ssh-remote-2" label="ssh remote -- docker stop" shape=rectangle fillcolor=Goldenrod]
+"ssh-remote-docker-stop-1" [id="ssh-remote-docker-stop-1" label="docker stop -n app" shape=rectangle fillcolor=Goldenrod]
+"remote-app-container" [id="remote-app-container" label="app container @ remote" shape=rectangle fillcolor=Goldenrod]
+"ssh-remote-3" [id="ssh-remote-3" label="ssh remote -- docker run" shape=rectangle fillcolor=Goldenrod]
+"ssh-remote-docker-run-1" [id="ssh-remote-docker-run-1" label="docker run -n app" shape=rectangle fillcolor=Goldenrod]
+subgraph "cluster_docker-image-app" {
+id="docker-image-app";
+style=dotted;
+fontsize=7;
+label="docker image app";
+"docker-image-app-1";
+}
+subgraph "cluster_registry-docker-image-app" {
+id="registry-docker-image-app";
+style=dotted;
+fontsize=7;
+label="docker image app @ registry";
+"registry-docker-image-app-1";
+}
+subgraph "cluster_remote-docker-image-app" {
+id="remote-docker-image-app";
+style=dotted;
+fontsize=7;
+label="docker image app @ remote";
+"remote-docker-image-app-1";
+}
+subgraph "cluster_remote-app" {
+id="remote-app";
+style=dotted;
+fontsize=7;
+label="app @ remote";
+"remote-app-1";
+"remote-app-2";
+}
+subgraph "cluster_config" {
+id="config";
+style=dotted;
+fontsize=7;
+label="config";
+"config-1";
+}
+subgraph "cluster_remote-config" {
+id="remote-config";
+style=dotted;
+fontsize=7;
+label="config @ remote";
+"remote-config-1";
+}
+subgraph "cluster_cwd" {
+id="cwd";
+style=dotted;
+fontsize=7;
+label="app sources";
+"cwd-1";
+}
+"docker-image-app-1" [id="docker-image-app-1" fillcolor=YellowGreen label="docker image app:1" style="dotted, filled" shape=diamond];
+"registry-docker-image-app-1" [id="registry-docker-image-app-1" fillcolor=YellowGreen label="docke... app:1 @ registry" style="dotted, filled" shape=diamond];
+"config-1" [id="config-1" fillcolor=YellowGreen label="config 1" style="dotted, filled" shape=diamond];
+"remote-app-1" [id="remote-app-1" fillcolor=YellowGreen label="stopped app @ remote" style="dotted, filled" shape=diamond];
+"remote-docker-image-app-1" [id="remote-docker-image-app-1" fillcolor=YellowGreen label="docke...ge app:1 @ remote" style="dotted, filled" shape=diamond];
+"cwd-1" [id="cwd-1" fillcolor=YellowGreen label="app sources 1" style="dotted, filled" shape=diamond];
+"remote-app-2" [id="remote-app-2" fillcolor=YellowGreen label="updated app @ remote" style="dotted, filled" shape=diamond];
+"remote-config-1" [id="remote-config-1" fillcolor=YellowGreen label="config 1 @ remote" style="dotted, filled" shape=diamond];
+"deploy-script.sh-run-1" -> "docker-build-app-1" [weight=25];
+"deploy-script.sh-run-1" -> "docker-push-app-1" [weight=25];
+"deploy-script.sh-run-1" -> "ssh-remote-1" [weight=25];
+"ssh-remote-1" -> "ssh-remote-docker-pull-1" [weight=25];
+"deploy-script.sh-run-1" -> "scp1" [weight=25];
+"deploy-script.sh-run-1" -> "ssh-remote-2" [weight=25];
+"ssh-remote-2" -> "ssh-remote-docker-stop-1" [weight=25];
+"ssh-remote-docker-run-1" -> "remote-app-container" [weight=25];
+"remote-docker-daemon" -> "remote-app-container" [style=dotted weight=20];
+"deploy-script.sh-run-1" -> "ssh-remote-3" [weight=25];
+"ssh-remote-3" -> "ssh-remote-docker-run-1" [weight=25];
+"docker-build-app-1" -> "docker-image-app-1" [style=dashed weight=15];
+"docker-image-app-1" -> "docker-push-app-1" [style=dashed weight=10];
+"docker-push-app-1" -> "registry-docker-image-app-1" [style=dashed weight=15];
+"registry-docker-image-app-1" -> "ssh-remote-docker-pull-1" [style=dashed weight=10];
+"ssh-remote-docker-pull-1" -> "remote-docker-image-app-1" [style=dashed weight=15];
+"ssh-remote-docker-stop-1" -> "remote-app-1" [style=dashed weight=15];
+"config-1" -> "scp1" [style=dashed weight=10];
+"scp1" -> "remote-config-1" [style=dashed weight=15];
+"remote-app-1" -> "ssh-remote-docker-run-1" [style=dashed weight=10];
+"remote-docker-image-app-1" -> "ssh-remote-docker-run-1" [style=dashed weight=10];
+"ssh-remote-docker-run-1" -> "remote-app-2" [style=dashed weight=15];
+"cwd-1" -> "docker-build-app-1" [style=dashed weight=10];
+"remote-app-2" -> "remote-app-container" [style=dashed weight=10];
+"remote-config-1" -> "remote-app-container" [style=dashed weight=10];
+}
+\end{sideways}
+\vspace{-4em}
+    \caption{Record of a script-based deployment of a simple docker-based service described in \cref{sec:motivating-ex1}}
+    \label{fig:motivating-ex1-dot}
+\end{figure}
+%%MG: w tej sytuacji zwykle podpis jest pod tysunkiem, czy wdłuż dzługiej krawędzi po prawej stronie strony ("pod" rysunkiem)
+\Cref{fig:motivating-ex1-dot} contains a manually crafted record of a single hypothetical deployment from the example from \cref{sec:motivating-examples}.
+
+Here it can be seen how executions (orange rectangles; see \cref{sec:model-execution}) of scripts and tools form an \textit{execution graph} (see \cref{sec:global-graphs}), which represents their hierarchical relationships. For example from reading the graph it can be said that \texttt{docker run} has been executed by the third \textbf{ssh remote} execution (see \cref{sec:motivating-ex1}).
+
+In this representation dotted arrows between executions represent a creation relationship (if parent is not a creator), hence we can observe that a \textit{remote docker daemon} is a creator for \textit{app container @ remote}. The latter is an \textit{unowned execution} (see \cref{sec:model-execution}).
+
+Dashed arrows between executions and incarnations (teal diamonds; see \cref{sec:model-incarnation}) represent operations (see \cref{sec:model-operation}). These arrows form an \textit{effects graph} (see \cref{sec:global-graphs}), where arrows from incarnations to executions represent edges from $V$ to $U$ -- read operations -- and arrows from executions to incarnations represent edges from $U$ to $V$ -- write operations.
+
+\textit{Provenance graphs} can be computed by using all incarnations as nodes of the graph, and forming a hyperedge between each two incarnations from a set of sections each consisting of a dashed arrow from the source incarnation to a execution and a dashed arrow from the execution to the target incarnation. For example, we can see that there is a directed path in the provenance graph consisting of edges:
+%
+\begin{enumerate}[nosep]
+    \item from \texttt{app sources 1} to \texttt{docker image app:1} corresponding to \texttt{build app container} execution;
+    \item from \texttt{docker image app:1} to \texttt{docker image app:1 @ registry} corresponding to execution \texttt{docker push app:1}.
+\end{enumerate}
+
+The representation can be used to manually compute a \textit{indirect provenance set} for an incarnation, by noting all incarnations reachable via dashed arrows traversed in reverse. A \textit{direct provenance set} is the same, but limiting traversal depth to two arrows.
+
+\bigskip
+
+\subsection{Rollback of source of truth.}\label{sec:motivating-ex2-pedst}
+
+\begin{figure}[p]
+    \centering
+\vspace{-4em}
+\begin{sideways}
+\digraph[scale=0.5]{motivatingEx2017}{
+
+node [style=filled];
+"git-commit-and-push-1" [id="git-commit-and-push-1" label="git commit + git push \#1" shape=rectangle fillcolor=Goldenrod]
+"git-commit-and-push-2" [id="git-commit-and-push-2" label="git commit + git push \#2" shape=rectangle fillcolor=Goldenrod]
+"git-commit-and-push-3" [id="git-commit-and-push-3" label="git commit + git push \#3" shape=rectangle fillcolor=Goldenrod]
+"deployment-server" [id="deployment-server" label="deployment server loop" shape=rectangle fillcolor=Goldenrod]
+"deployment-1" [id="deployment-1" label="deployment \#1" shape=rectangle fillcolor=Goldenrod]
+"deployment-3" [id="deployment-3" label="deployment \#3" shape=rectangle fillcolor=Goldenrod]
+"checkout-1" [id="checkout-1" label="checkout \#1" shape=rectangle fillcolor=Goldenrod]
+"checkout-3" [id="checkout-3" label="checkout \#3" shape=rectangle fillcolor=Goldenrod]
+"build-1" [id="build-1" label="build \#1" shape=rectangle fillcolor=Goldenrod]
+"build-3" [id="build-3" label="build \#3" shape=rectangle fillcolor=Goldenrod]
+"diff-3" [id="diff-3" label="diff \#3" shape=rectangle fillcolor=Goldenrod]
+"diff-1" [id="diff-1" label="diff \#1" shape=rectangle fillcolor=Goldenrod]
+"copy-3" [id="copy-3" label="copy \#3" shape=rectangle fillcolor=Goldenrod]
+"stop-3" [id="stop-3" label="stop \#3" shape=rectangle fillcolor=Goldenrod]
+"start-3" [id="start-3" label="start app \#3" shape=rectangle fillcolor=Goldenrod]
+subgraph "cluster_src" {
+id="src";
+style=dotted;
+fontsize=7;
+label="./src/*";
+"src-1";
+"src-2";
+"src-3";
+}
+subgraph "cluster_repo" {
+id="repo";
+style=dotted;
+fontsize=7;
+label="repo";
+"repo-2";
+"repo-1";
+"repo-3";
+}
+subgraph "cluster_tmp-store-3" {
+id="tmp-store-3";
+style=dotted;
+fontsize=7;
+label="temp \#2 src checkout";
+"tmp-store-3";
+}
+subgraph "cluster_tmp-store-1" {
+id="tmp-store-1";
+style=dotted;
+fontsize=7;
+label="temp \#1 src checkout";
+"tmp-store-1";
+}
+subgraph "cluster_tmp-src-1" {
+id="tmp-src-1";
+style=dotted;
+fontsize=7;
+label="temp \#1 ./src/*";
+"tmp-src-1";
+}
+subgraph "cluster_tmp-src-3" {
+id="tmp-src-3";
+style=dotted;
+fontsize=7;
+label="temp \#2 ./src/*";
+"tmp-src-3";
+}
+subgraph "cluster_tmp-bin-1" {
+id="tmp-bin-1";
+style=dotted;
+fontsize=7;
+label="temp \#1 binary";
+"tmp-bin-1";
+}
+subgraph "cluster_tmp-bin-3" {
+id="tmp-bin-3";
+style=dotted;
+fontsize=7;
+label="temp \#2 binary";
+"tmp-bin-3";
+}
+subgraph "cluster_bin" {
+id="bin";
+style=dotted;
+fontsize=7;
+label="deployed binary";
+"bin-0";
+"bin-3";
+}
+subgraph "cluster_app" {
+id="app";
+style=dotted;
+fontsize=7;
+label="app";
+"app-0";
+"app-3";
+}
+"src-1" [id="src-1" fillcolor=YellowGreen label="./src/* \#1" style="dotted, filled" shape=diamond];
+"src-2" [id="src-2" fillcolor=YellowGreen label="./src/* \#2" style="dotted, filled" shape=diamond];
+"repo-2" [id="repo-2" fillcolor=YellowGreen label="repo \#2" style="dotted, filled" shape=diamond];
+"src-3" [id="src-3" fillcolor=YellowGreen label="./src/* \#3" style="dotted, filled" shape=diamond];
+"repo-1" [id="repo-1" fillcolor=YellowGreen label="repo \#1" style="dotted, filled" shape=diamond];
+"repo-3" [id="repo-3" fillcolor=YellowGreen label="repo \#3" style="dotted, filled" shape=diamond];
+"tmp-store-3" [id="tmp-store-3" fillcolor=YellowGreen label="temp \#2 src checkout" style="dotted, filled" shape=diamond];
+"tmp-store-1" [id="tmp-store-1" fillcolor=YellowGreen label="temp \#1 src checkout" style="dotted, filled" shape=diamond];
+"tmp-src-1" [id="tmp-src-1" fillcolor=YellowGreen label="temp \#1 ./src/*" style="dotted, filled" shape=diamond];
+"tmp-store-1" -> "tmp-src-1" [penwidth=0.3 arrowsize=.5 weight=22];
+"tmp-src-3" [id="tmp-src-3" fillcolor=YellowGreen label="temp \#2 ./src/*" style="dotted, filled" shape=diamond];
+"tmp-store-3" -> "tmp-src-3" [penwidth=0.3 arrowsize=.5 weight=22];
+"tmp-bin-1" [id="tmp-bin-1" fillcolor=YellowGreen label="temp \#1 binary" style="dotted, filled" shape=diamond];
+"bin-0" [id="bin-0" fillcolor=YellowGreen label="binary \#0" style="dotted, filled" shape=diamond];
+"tmp-bin-3" [id="tmp-bin-3" fillcolor=YellowGreen label="temp \#2 binary" style="dotted, filled" shape=diamond];
+"app-0" [id="app-0" fillcolor=YellowGreen label="app \#0" style="dotted, filled" shape=diamond];
+"app-3" [id="app-3" fillcolor=YellowGreen label="app \#3" style="dotted, filled" shape=diamond];
+"bin-3" [id="bin-3" fillcolor=YellowGreen label="binary \#3" style="dotted, filled" shape=diamond];
+"deployment-server" -> "deployment-1" [weight=25];
+"deployment-server" -> "deployment-3" [weight=25];
+"deployment-1" -> "checkout-1" [weight=25];
+"deployment-3" -> "checkout-3" [weight=25];
+"deployment-1" -> "build-1" [weight=25];
+"deployment-3" -> "build-3" [weight=25];
+"deployment-3" -> "diff-3" [weight=25];
+"deployment-1" -> "diff-1" [weight=25];
+"deployment-3" -> "copy-3" [weight=25];
+"deployment-3" -> "stop-3" [weight=25];
+"deployment-3" -> "start-3" [weight=25];
+"src-1" -> "git-commit-and-push-1" [style=dashed weight=10];
+"src-2" -> "git-commit-and-push-2" [style=dashed weight=10];
+"git-commit-and-push-1" -> "repo-1" [style=dashed weight=15];
+"git-commit-and-push-2" -> "repo-2" [style=dashed weight=15];
+"git-commit-and-push-3" -> "repo-3" [style=dashed weight=15];
+"src-3" -> "git-commit-and-push-3" [style=dashed weight=10];
+"repo-3" -> "deployment-3" [style=dashed weight=10];
+"repo-1" -> "deployment-1" [style=dashed weight=10];
+"repo-1" -> "checkout-1" [style=dashed weight=10];
+"repo-3" -> "checkout-3" [style=dashed weight=10];
+"checkout-1" -> "tmp-store-1" [style=dashed weight=15];
+"checkout-3" -> "tmp-store-3" [style=dashed weight=15];
+"tmp-src-1" -> "build-1" [style=dashed weight=10];
+"tmp-src-3" -> "build-3" [style=dashed weight=10];
+"build-1" -> "tmp-bin-1" [style=dashed weight=15];
+"build-3" -> "tmp-bin-3" [style=dashed weight=15];
+"tmp-bin-3" -> "diff-3" [style=dashed weight=10];
+"tmp-bin-1" -> "diff-1" [style=dashed weight=10];
+"bin-0" -> "diff-1" [style=dashed weight=10];
+"bin-0" -> "diff-3" [style=dashed weight=10];
+"tmp-bin-3" -> "copy-3" [style=dashed weight=10];
+"copy-3" -> "bin-3" [style=dashed weight=15];
+"stop-3" -> "app-0" [style=dashed weight=15];
+"start-3" -> "app-3" [style=dashed weight=15];
+"bin-3" -> "start-3" [style=dashed weight=10];
+
+subgraph "cluster_interaction_int-msg-1" {
+id="int-msg-1";
+style=dotted;
+fontsize=7;
+label="notify commit \#1";
+"msg-1" [label="" shape=circle fixedsize=true width=0.2 height=0.2 fillcolor=Thistle];
+}
+subgraph "cluster_interaction_int-msg-2" {
+id="int-msg-2";
+style=dotted;
+fontsize=7;
+label="notify commit \#2";
+"msg-2" [label="" shape=circle fixedsize=true width=0.2 height=0.2 fillcolor=Thistle];
+}
+subgraph "cluster_interaction_int-msg-3" {
+id="int-msg-3";
+style=dotted;
+fontsize=7;
+label="notify commit \#3";
+"msg-3" [label="" shape=circle fixedsize=true width=0.2 height=0.2 fillcolor=Thistle];
+}
+"git-commit-and-push-1" -> "msg-1" -> "deployment-server" [weight=5 style=dotted penwidth=0.5 arrowsize=.5];
+"git-commit-and-push-2" -> "msg-2" -> "deployment-server" [weight=5 style=dotted penwidth=0.5 arrowsize=.5];
+"git-commit-and-push-3" -> "msg-3" -> "deployment-server" [weight=5 style=dotted penwidth=0.5 arrowsize=.5];
+
+}
+\end{sideways}
+\vspace{-4em}
+    \caption{Record of a deployment with intent-based actuation based on Gitops approach described in \cref{sec:motivating-ex2}}
+    \label{fig:motivating-ex2-dot}
+\end{figure}
+
+\Cref{fig:motivating-ex2-dot} shows what happens in a system when three consecutive git pushes are performed. One can see that a git commit and push operation takes local source code and pushes it to repository, creating new instances of the repository. It can be seen that the \texttt{deployment server loop} performs two pushes. The first push attempt does not proceed beyond a diff operation, after doing a checkout and a build in a temporary directory. The second push proceeds further: it copies the newly built binary into the well-known location, stops the old version of the application and starts a new version of the application.
+
+This diagram has a new shape of a light purple circle. These represent messages passed between two executions. One can see that a message has been sent from each of \texttt{git commit + git push} executions to \texttt{deployment server loop}. These are notifications sent by the Git hook to trigger a deployment. This is the only direct relation between Git operations and a deployment process (note that the individual deployment operations are owned by \texttt{deployment server loop}!). Moreover there is no provenance relationship between \texttt{app \#3} and any of the source nodes \texttt{./src/*} using just the definitions of indirect provenance set (definition \ref{def:indirect-prov-set}).
+
+To track a relationship between \texttt{app \#3} and \texttt{./src/* \#3} one need to make use of one of the graph extensions (\cref{sec:model-extensions}). Please note that the process of building of the binary does not perform a read operation on an incarnation of the checked out repo, but instead it reads a sub-incarnation of said repo. Source files stored in the repo checkout are tracked as a sub-incarnation \texttt{temp \#2 ./src/*}. Use of ``sub-incarnation provenance extension'' extension allows to track provenance relationship between them due to the aforementioned sub-incarnation relationship.
+
+\begin{comment}
+DROPPED AS IT IS NOT ESSENTIAL
+\subsection{Simple dapper-style execution trace.}
+
+TODO: Use the concepts and graphs to describe how to identify the root cause of the quota error. Pure tracing example, e.g. when a creation request of a VM fails with a quota error.
+
+\subsection{Incorrect flag in production.}
+
+TODO: Use sub-incarnations. Infra as code. Bazel builds kubernetes
+\end{comment}
+

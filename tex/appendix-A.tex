@@ -1,0 +1,146 @@
+\section*{Appendix A}
+\addcontentsline{toc}{section}{Appendix A}\label{appendix:tenmo-sql-queries-impl}
+
+\textbf{get\_all\_paths\_from} function.
+
+\begin{minted}[fontsize=\scriptsize]{plpgsql}
+  CREATE OR REPLACE FUNCTION get_all_paths_from(start text)
+  RETURNS TABLE(depth integer, verbs text[], path text[]) AS $$
+  BEGIN
+  RETURN QUERY
+
+  WITH RECURSIVE search_step(id, link, verb, depth, route, verbs, cycle) AS (
+    SELECT r.source, r.target, r.verb, 1,
+           ARRAY[r.source],
+           ARRAY[r.verb]::text[],
+           false
+      FROM graph r where r.source=start
+
+     UNION ALL
+
+    SELECT r.source, r.target, r.verb, sp.depth+1,
+           sp.route || r.source,
+           sp.verbs || r.verb,
+           r.source = ANY(route)
+      FROM graph r, search_step sp
+     WHERE r.source = sp.link AND NOT cycle
+  )
+  SELECT sp.depth, array_append(sp.verbs, '<end>') AS verbs, sp.route || sp.link AS path
+  FROM search_step AS sp
+  WHERE NOT cycle
+  ORDER BY depth ASC;
+\end{minted}
+
+\textbf{get\_all\_paths\_from\_by\_verbs} function.
+
+\begin{minted}[fontsize=\scriptsize]{plpgsql}
+  CREATE OR REPLACE FUNCTION get_all_paths_from_by_verbs(start text, crawl_verbs text[])
+  RETURNS TABLE(depth integer, verbs text[], path text[]) AS $$
+  BEGIN
+  RETURN QUERY
+
+  WITH RECURSIVE search_step(id, link, verb, depth, route, verbs, cycle) AS (
+    SELECT r.source, r.target, r.verb, 1,
+           ARRAY[r.source],
+           ARRAY[r.verb]::text[],
+           false
+      FROM graph r where r.source=start and r.verb = ANY(crawl_verbs)
+
+     UNION ALL
+
+    SELECT r.source, r.target, r.verb, sp.depth+1,
+           sp.route || r.source,
+           sp.verbs || r.verb,
+           r.source = ANY(route)
+      FROM graph r, search_step sp
+     WHERE r.source = sp.link AND NOT cycle and r.verb = ANY(crawl_verbs)
+  )
+  SELECT sp.depth, array_append(sp.verbs, '<end>') AS verbs, sp.route || sp.link AS path
+  FROM search_step AS sp
+  WHERE NOT cycle
+  ORDER BY depth ASC;
+\end{minted}
+
+\textbf{get\_closure\_from} function.
+
+\begin{minted}[fontsize=\scriptsize]{plpgsql}
+  create or replace function get_closure_from(start text)
+  returns table(depth integer, obj text) as $$
+  begin
+  return query
+  select t.depth, t.path[array_upper(t.path,1)] from get_all_paths_from(start) as t;
+  end;
+  $$ language plpgsql;
+\end{minted}
+
+\textbf{get\_closure\_from\_filtered} function.
+
+\begin{minted}[fontsize=\scriptsize, breaklines]{plpgsql}
+  create or replace function get_closure_from_filtered(start text, filter_verbs text[])
+  returns table(depth integer, obj text) as $$
+  begin
+  return query
+  select t.depth, t.path[array_upper(t.path,1)] from get_all_paths_from(start) as t where t.verbs[array_upper(t.verbs,1)-1] = ANY(filter_verbs);
+  end;
+  $$ language plpgsql;
+\end{minted}
+
+\textbf{get\_closure\_from\_by\_verbs} function.
+
+\begin{minted}[fontsize=\scriptsize]{plpgsql}
+  CREATE OR REPLACE FUNCTION get_closure_from_by_verbs(start text, crawl_verbs text[])
+  RETURNS TABLE(depth integer, obj text) AS $$
+  BEGIN
+  RETURN QUERY
+  select t.depth, t.path[array_upper(t.path,1)] from get_all_paths_from_by_verbs(start, crawl_verbs) as t;
+  END;
+  $$ LANGUAGE plpgsql;
+\end{minted}
+
+\textbf{get\_closure\_from\_by\_verbs\_filtered} function.
+
+\begin{minted}[fontsize=\scriptsize, breaklines]{plpgsql}
+  CREATE OR REPLACE FUNCTION get_closure_from_by_verbs_filtered(start text, crawl_verbs text[], filter_verbs text[])
+  RETURNS TABLE(depth integer, obj text) AS $$
+  BEGIN
+  RETURN QUERY
+  select t.depth, t.path[array_upper(t.path,1)] from get_all_paths_from_by_verbs(start, crawl_verbs) as t where t.verbs[array_upper(t.verbs,1)-1] = ANY(filter_verbs);
+  END;
+  $$ LANGUAGE plpgsql;
+\end{minted}
+
+\textbf{provenance\_set} function.
+
+\begin{minted}[fontsize=\scriptsize, breaklines]{plpgsql}
+ CREATE OR REPLACE FUNCTION provenance_set(start text)
+ RETURNS TABLE(depth integer, obj text) AS $$
+ BEGIN
+ RETURN QUERY
+ select * from get_closure_from_by_verbs_filtered(start, ARRAY['written_by','reads']::text[], '{reads}'::text[]) as t where t.depth <= 2;
+ END;
+ $$ LANGUAGE plpgsql;
+\end{minted}
+
+\textbf{provenance\_set\_indirect} function.
+
+\begin{minted}[fontsize=\scriptsize, breaklines]{plpgsql}
+ CREATE OR REPLACE FUNCTION provenance_set_indirect(start text)
+ RETURNS TABLE(depth integer, obj text) AS $$
+ BEGIN
+ RETURN QUERY
+ select * from get_closure_from_by_verbs_filtered(start, ARRAY['written_by','reads']::text[], '{reads}'::text[]) as t;
+ END;
+ $$ LANGUAGE plpgsql;
+\end{minted}
+
+\textbf{trace} function.
+
+\begin{minted}[fontsize=\scriptsize]{plpgsql}
+  CREATE OR REPLACE FUNCTION trace(start text)
+  RETURNS TABLE(depth integer, obj text) AS $$
+  BEGIN
+  RETURN QUERY
+  select * from get_closure_from_by_verbs(start, ARRAY['child_of']::text[]) as t;
+  END;
+  $$ LANGUAGE plpgsql;
+\end{minted}

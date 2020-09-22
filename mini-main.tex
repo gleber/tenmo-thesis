@@ -1,0 +1,356 @@
+\documentclass[a4paper,11pt,twoside,usenames,dvipsnames]{report}
+% THIS FILE SHOULD BE COMPILED BY pdfLaTeX
+
+% ----------------------   PREAMBLE PART ------------------------------
+
+% ------------------------ ENCODING & LANGUAGES ----------------------
+
+\usepackage{morewrites}
+
+\usepackage[utf8]{inputenc}
+%\usepackage[MeX]{polski} % Not needed unless You have a name with polish symbols or sth
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amsfonts, amsthm, latexsym, amssymb} % MOSTLY MATHEMATICAL SYMBOLS
+\usepackage[english, polish]{babel}
+\usepackage{csquotes}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{rotating}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{executionColor}{HTML}{FFD9B2}
+\definecolor{incarnationColor}{HTML}{B2FFB2}
+
+\usepackage{tablefootnote}
+
+% fix minted red boxes
+\makeatletter
+\AtBeginEnvironment{minted}{\dontdofcolorbox}
+\def\dontdofcolorbox{\renewcommand\fcolorbox[4][]{##4}}
+\makeatother
+
+
+\usepackage[final]{pdfpages}
+
+\usepackage[backend=biber, style=ieee]{biblatex}
+
+% ---------------- MARGINS, INDENTATION, LINESPREAD ------------------
+
+\usepackage[inner=20mm, outer=20mm, bindingoffset=10mm, top=25mm, bottom=25mm]{geometry} % MARGINS
+
+
+\linespread{1.5}
+\allowdisplaybreaks         % ALLOWS BREAKING PAGE IN MATH MODE
+
+\usepackage{indentfirst}    % IT MAKES THE FIRST PARAGRAPH INDENTED; NOT NEEDED
+\setlength{\parindent}{5mm} % WIDTH OF AN INDENTATION
+
+
+%---------------- RUNNING HEAD - CHAPTER NAMES, PAGE NUMBERS ETC. -------------------
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+% PAGINATION: LEFT ALIGNMENT ON EVEN PAGES, RIGHT ALIGNMENT ON ODD PAGES 
+\fancyfoot[LE,RO]{\thepage} 
+% RIGHT HEADER: zawartość \rightmark do lewego, wewnętrznego (marginesu) 
+\fancyhead[LO]{\sc \nouppercase{\rightmark}}
+% lewa pagina: zawartość \leftmark do prawego, wewnętrznego (marginesu) 
+\fancyhead[RE]{\sc \leftmark}
+
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+
+% HEAD RULE - IT'S A LINE WHICH SEPARATES HEADER AND FOOTER FROM CONTENT
+\renewcommand{\headrulewidth}{0 pt} % 0 MEANS NO RULE, 0.5 MEANS FINE RULE, THE BIGGER VALUE THE THICKER RULE
+
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[LE,RO]{\thepage}
+  
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0.0pt}
+}
+
+
+
+% --------------------------- CHAPTER HEADERS ---------------------
+
+\usepackage{titlesec}
+\titleformat{\chapter}
+  {\normalfont\Large \bfseries}
+  {\thechapter.}{1ex}{\Large}
+
+\titleformat{\section}
+  {\normalfont\large\bfseries}
+  {\thesection.}{1ex}{}
+\titlespacing{\section}{0pt}{30pt}{20pt} 
+
+\titleformat{\subsection}
+  {\normalfont \bfseries}
+  {\thesubsection.}{1ex}{}
+
+\usepackage{secdot}
+
+% ----------------------- TABLE OF CONTENTS SETUP ---------------------------
+% \usepackage[toc,page]{appendix}
+
+\usepackage[chapter,nottoc]{tocbibind}
+\usepackage{tocloft}%
+\renewcommand{\cftchapaftersnum}{.}%
+\renewcommand{\cftsecaftersnum}{.}%
+\renewcommand{\cftsubsecaftersnum}{.}%
+
+\def\cleardoublepage{\clearpage\if@twoside
+\ifodd\c@page\else\hbox{}\thispagestyle{empty}\newpage
+\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+
+% ---------------------- TABLES AD FIGURES NUMBERING ----------------------
+
+\renewcommand*{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand*{\thefigure}{\arabic{chapter}.\arabic{figure}}
+
+
+% ------------- DEFINING ENVIRONMENTS FOR THEOREMS, DEFINITIONS ETC. ---------------
+
+\makeatletter
+\newtheoremstyle{definition}
+{3ex}%                           % Space above
+{3ex}%                           % Space below
+{\upshape}%                      % Body font
+{}%                              % Indent amount
+{\bfseries}%                     % Theorem head font
+{.}%                             % Punctuation after theorem head
+{.5em}%                          % Space after theorem head, ' ', or \newline
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+\makeatother
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+% --------------------- END OF PREAMBLE PART (MOSTLY) --------------------------
+
+\usepackage{booktabs}  %% for \toprule and \midrule
+\usepackage{hyphenat}  %% for \hyp{}
+\usepackage{wrapfig}   %% for \begin{wrapfigure}
+\usepackage{minted}    %% for \minted
+\usepackage[pdf]{graphviz}
+\usepackage{todonotes}
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\definecolor{codebgcode}{rgb}{0.97,0.97,0.97}
+
+\setminted{
+    frame=lines,
+    framesep=3mm,
+    baselinestretch=1.2,
+    autogobble,
+    bgcolor=codebgcode,
+    fontsize=\footnotesize,
+    linenos
+}
+
+%% Reduce whitespace above and below minted blocks.
+\AtBeginEnvironment{snugshade*}{\vspace{-\FrameSep}}
+\AfterEndEnvironment{snugshade*}{\vspace{-\FrameSep}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\urlstyle{same}
+% -------------------------- USER SETTINGS ---------------------------
+
+\newcommand{\tytul}{Śledzenie rozproszonych systemów z elementami proweniencji}
+\renewcommand{\title}{Provenance-enhanced distributed systems tracing}
+\newcommand{\type}{Master}
+\newcommand{\supervisor}{dr hab. Maria Ganzha, prof. PW} % TITLE AND NAME OF THE SUPERVISOR
+
+\addbibresource{bibliografia.bib}
+
+\usetikzlibrary{shapes.geometric, arrows, decorations, shapes}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+% \newcommand*{\fullref}[1]{\hyperref[{#1}]{\cref{#1}~''\nameref{#1}''}}
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\cref{#1}~''\nameref{#1}''}}
+\newcommand*{\Fullref}[1]{\hyperref[{#1}]{\Cref{#1}~''\nameref{#1}''}}
+
+\begin{document}
+\sloppy
+\selectlanguage{english}
+
+\includepdf[pages=-]{titlepage} % THIS INPUTS THE TITLE PAGE
+
+
+% ------------------ PAGE WITH SIGNATURES --------------------------------
+
+\thispagestyle{empty}\newpage
+\null
+
+\vfill
+
+\begin{center}
+\begin{tabular}[t]{ccc}
+............................................. & \hspace*{100pt} & .............................................\\
+supervisor's signature & \hspace*{100pt} & author's signature
+\end{tabular}
+\end{center}
+
+
+
+% ---------------------------- ABSTRACTS -----------------------------
+
+{
+\begin{abstract}
+
+\begin{center}
+\title
+\end{center}
+
+\input{tex/abstract-en}
+
+\end{abstract}
+}
+
+\null\thispagestyle{empty}\newpage
+
+
+{\selectlanguage{polish}
+\begin{abstract}
+
+\begin{center}
+\tytul
+\end{center}
+
+\input{tex/abstract-pl}
+
+\end{abstract}
+}
+
+
+% --------------------------- DECLARATION ------------------------------------
+
+
+\null\thispagestyle{empty}\newpage
+
+\null \hfill Warsaw, ..................\\
+
+\par\vspace{5cm}
+
+\begin{center}
+Declaration
+\end{center}
+
+I hereby declare that the thesis entitled ,,\title '', submitted for the \type ~degree, supervised  by \supervisor , is entirely my original work apart from the recognized references.
+\vspace{2cm}
+
+\begin{flushright}
+  \begin{minipage}{50mm}
+    \begin{center}
+      ..............................................
+
+    \end{center}
+  \end{minipage}
+\end{flushright}
+
+\thispagestyle{empty}
+\newpage
+
+\null\thispagestyle{empty}\newpage
+% ------------------- 4. Spis treści ---------------------
+\selectlanguage{english}
+\pagenumbering{arabic}
+\setcounter{page}{9}
+\tableofcontents
+\thispagestyle{empty}
+\newpage % IF YOU HAVE EVEN QUANTITY OD PAGES OF TOC, THEN REMOVE IT OR ADD \null\newpage FOR DOUBLE BLANK PAGE BEFORE INTRODUCTION
+
+
+% -------------------- THE BODY OF THE THESIS --------------------------------
+
+\null\thispagestyle{empty}\newpage
+\pagestyle{fancy}
+%\pagenumbering{arabic}
+%\setcounter{page}{11}
+
+%\input{tex/0-todos}
+\input{tex/1-introduction}
+\input{tex/2-sota}
+\input{tex/3-requirements}
+\input{tex/4-model}
+\input{tex/5-architecture}
+\input{tex/6-implementation}
+\input{tex/7-experimental-results}
+\input{tex/8-conclusion}
+
+% ------------------------------- BIBLIOGRAPHY ---------------------------
+
+\cleardoublepage % Zaczynamy od nieparzystej strony
+\printbibliography[heading=bibintoc]
+
+% \pagenumbering{gobble}
+\thispagestyle{empty}
+
+
+% ----------------------------  LIST OF FIGURES --------------------------------
+\clearpage %or \cleardoublepage
+\listoffigures
+\thispagestyle{empty}
+
+% -----------------------------  LIST OF APPENDICES ---------------------------
+\renewcommand{\cftchapaftersnum}{}%
+\renewcommand{\cftsecaftersnum}{}% 
+\renewcommand{\cftsubsecaftersnum}{}%
+
+% \begin{appendices}
+\chapter*{Appendicies}
+\addcontentsline{toc}{chapter}{Appendicies}
+%\appendix
+\input{tex/appendix-A}
+% \end{appendices}
+\thispagestyle{empty}
+
+
+\begin{comment}
+==================== COMMENTED OUT BELOW=======================
+==================== COMMENTED OUT BELOW=======================
+==================== COMMENTED OUT BELOW=======================
+==================== COMMENTED OUT BELOW=======================
+==================== COMMENTED OUT BELOW=======================
+
+% ----------------------- LIST OF SYMBOLS AND ABBREVIATIONS ------------------
+\chapter*{List of Symbols and Abbreviations}
+\addcontentsline{toc}{chapter}{List of Symbols and Abbreviations}
+
+\begin{tabular}{cl}
+nzw. & nadzwyczajny \\
+* & operator gwiazdka \\
+$\widetilde{}$ & tylda
+\end{tabular}
+\\
+\thispagestyle{empty}
+
+
+
+% -----------------------------  LIST OF TABLES --------------------------------
+% \clearpage %or \cleardoublepage
+% \listoftables
+% \thispagestyle{empty}
+
+
+\end{comment}
+
+\end{document}

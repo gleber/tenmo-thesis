@@ -1,0 +1,51 @@
+\newpage
+\chapter{Requirements}\label{sec:reqs}
+
+Based on the problem statement (see~\cref{sec:problem}) and overview of related work (\cref{sec:sota}) we will now outline the requirements towards a system that is going to address the described use case.
+
+%% Make sure that reqs are "proven" via the implementation!
+%% GP: I believe it is the case, see conclusions and text references to
+
+We believe that a mix of distributed systems tracing and provenance tracking is the right solution to the problem of debugging modern automation systems, and hierarchical control plane systems, specifically. We are looking for a solution, which has the following properties:
+%
+% GP: I do not know how to use \cref to refer to individual items e.g. "we have proven \cref{req:req-coalescing}, so I refer to them by their textual names.
+%
+\begin{enumerate}
+    \item \textit{Coalescing effects support} -- required to support tracing of intent-based actuation logic;
+    \item \textit{Support for abstract entities} -- essential to align well with cloud APIs, which support entities at many levels of abstractions (VMs, containers, clusters, deployments, applications, functions, etc);
+    \item \textit{Support for composite entities} -- required to support objects like archives, VM images, container images, etc. which are prevalent in cloud APIs;
+    \item \textit{Low storage overhead} -- necessary for large-scale systems, deployed as control plane systems at cloud providers;
+    \item \textit{Full coverage} -- ensures that best effort is taken for all activities are tracked and resource state mutations to be recorded (modulo presence of unavoidable infrastructure faults);
+    \item \textit{Gradual fidelity execution tracing} -- allows developers to selectively apply execution tracing, to trade off tracing accuracy and implementation effort;
+    \item \textit{Gradual fidelity provenance tracking} -- allows developers to selectively apply provenance tracking, to trade off provenance tracking accuracy and implementation effort;
+    \item \textit{Minimal mental burden} -- to allow for change of adoption in industry;
+    \item \textit{Cross-host tracking} -- for distributed systems tracing support;
+    \item \textit{Multi-layer systems support} -- to allow tracking across layers in hierarchical systems;
+    \item \textit{Asynchronous data intake} -- to support data ingestion from traced distributed systems in presence of unreliable network, unpredictable latencies, and lack of ordering guarantees in multi-host network communication;
+    \item \textit{Event-based data production} -- to deal with compute nodes and Unix processes faults and to avoid buffering in tracing mechanisms in the application;
+    \item \textit{Flexible control flow support} -- accept tracing of systems as they evolve  over time and to be able to deal with pre-existing complex control flows in control plane systems.
+\end{enumerate}
+
+Based on the problem statement, and analysis of the related work, we can also identify properties, which we are \textbf{not} pursuing in our solution:
+%
+\begin{enumerate}
+    \item \textit{Support for operating in a limited trust environments} -- our use case allows for full trust for the traced system, e.g. allows us to employ white-box instrumentation.
+    \item \textit{Support for systems with ultra-high query rates} -- debugging of control plane systems is mostly concerned with state mutations performed by the system, hence we are focused on faithfully recording all operations relevant to these mutations. State mutations in control plane systems are also inherently not ultra-high query rate, hence supporting such query rates is not a requirement.\footnote{If a given request is not mutating any observable state, the model still can be use to trace it. Moreover such requests can be sampled to support ultra-high query rates, but these will obviously not satisfy ``full coverage'' requirement.}
+\end{enumerate}
+
+We believe that a system, which satisfies these requirements, will address our use case. That is, it will be able to (1) trace non-ultra-large on-line serving systems, and (2) trace hierarchical control plane systems employing intent-based actuation.
+
+Note that this is a full set of requirements towards such a system, and existing solutions like Dapper or CamFlow each satisfy a subset of these requirements, but -- as shown in \fullref{sec:sota} none of them satisfies all of these requirements (see \cref{sec:system-comparison} for more discussion).
+
+We will address the requirements outlined above as we propose, analyze, develop and test the solution.
+
+
+\begin{comment}
+ZOSTAWIAM NA WSZELKI WYPADEK, PEWNIE UZYJE ELEMENTOW W ROZNYCH MIEJSCACH.
+
+\begin{itemize}
+	\item Correctness if protocol is followed [\textit{correctness}]
+	\item Suitable for use in existing systems via engineering-in instrumentation without a need for a full rewrite \textit{instrumentation}]
+    \item Support for eventually consistent view of incoming data to deal with inevitable faults in distributed systems (e.g. ability to incrementally refine data in global data model) [\textit{eventual-consistency}]
+\end{itemize} 
+\end{comment}

@@ -1,0 +1,184 @@
+\newpage
+\chapter{Related work}\label{sec:sota}
+
+So far we have outlined the problem, and the area of the proposed research. In this section we will discuss related approaches explored in scientific literature, and in the industry. Overall, this is a well-studied area, with a lot of research, so we will refer only to the works most relevant to the problem of debugging (reasoning about) hierarchical control plane systems, employing intent-driven actuation.
+
+Here, let us note that, in general, \textit{distributed systems tracing} and \textit{provenance tracking} are useful tools that allow developers reason about complex software systems. The former has evolved in the industry, as a pragmatic tool to solve day-to-day needs of companies running complex software systems. Provenance tracking, on the other hand, has been researched extensively in academia, in numerous fields. Both approaches (and developed tools) overlap (e.g. both use the concept of record of work, as a fundamental building block) and can be used to address different aspects of ``debuggability''. In this work, we combine them into a suitable tool for our use case (\cref{sec:use-case}). 
+%MP: mam nadzieje, ze ten use case zostanie calosciowo sformulowany -- explicite sformulowany, bo na razie on sie przewija ale nei jest dobrze opisany jako taki
+%%GP: opisałem to w "Problem Statement"
+The proposed solution is based on a widely adopted industry-standard distributed systems tracing mechanisms, with extensions drawn from the provenance tracking research. Let us now review related works in both areas.
+
+\section{Tracing in distributed systems}
+
+\subsection{OpenTracing and its implementations} \label{sec:tainting} 
+
+As mentioned in~\cref{sec:intro}, the state of the art solution, in the industry, for debugging (reasoning about) distributed systems, are tracing solutions following the OpenTracing model~\cite{openTracingOnline}, for example Google's Dapper, Uber’s Jaeger, or Twitter’s Zipkin. These implementations are based on white-box tracing, where a traced service is instrumented with explicit logging statements in appropriate places in the control flow of the service. Dapper instrumentation is integrated in the common RPC layer of internal Google services. Open-source implementations assume that instrumentation is added into the business logic of the traced service.
+
+This model has been standardized by the W3C standards body, as the W3C Recommendation Trace Context~\cite{w3c-trace-context2020Feb} standard, for tracing HTTP requests. This form of distributed system tracing was originally introduced by Sigelman et al.~\cite{dapper2010} and the model does not provide a solution for tracing coalescing effects. It is important to stress that none of the existing open source implementations of this model provide a solution to this problem.
+
+Dapper has been optimized for tracing in large scale online serving systems, which are heavily skewed towards scatter-gather read operations. One of the central optimizations in Dapper is a built-in sampling mechanism, which is used to probabilisticly limit number of traces gathered throughout the system. Control plane systems are different, since they are not skewed towards reads as much. Their main use case is management of compute, storage, networking, and other cloud resources. This also means that their query rates are not as high as of online serving systems. Henceforth, debugging control plane systems involves different trade-offs. Ability to trace all activities is highly desirable (since most of them are mutating operations) and achievable (since their query rates are lower).
+
+The approach taken by OpenTracing is called ``tainting''. Here, all work performed in response to the original incoming request, is tainted with a single unique (or unique-enough random) identifier, called a trace identifier. The identifier is propagated across all systems and activities transitively participating in handling the request.
+
+Although Dapper is built and is being used to trace activity triggered by RPCs, interaction tracking is not a first class citizen of the Dapper model. Dapper's annotations are used to track interactions between processes, but annotations are technically an extensibility mechanism and their payload is not part of the model.
+
+\begin{wrapfigure}{r}{0.3\textwidth}
+\resizebox{0.3\textwidth}{!}{%
+\begin{tikzpicture}[node distance=2cm, yscale=-1]
+
+\node at (0, 0) (request1) [startstop] {\begin{tabular}{c} Request 1 \\ \{abc\} \end{tabular}};
+\node at (4, 0) (request2) [startstop] {\begin{tabular}{c} Request 2 \\ \{123\} \end{tabular}};
+\node at (2, 2) (state) [decision] {State};
+\node at (2, 4) (step1) [process] {\begin{tabular}{c} Step  1 \\ \{abc, 123\} \end{tabular}};
+\node at (2, 6) (step2) [process] {\begin{tabular}{c} Step  2 \\ \{abc, 123\} \end{tabular}};
+
+\draw [arrow] (request1) -- (state);
+\draw [arrow] (request2) -- (state);
+\draw [arrow] (state) -- (step1);
+\draw [arrow] (step1) -- (step2);
+
+\end{tikzpicture}
+}
+\caption{Naive extension of the tainting model in presence of coalescing effect}
+\label{fig:tracing-extended}
+\end{wrapfigure}
+
+Typical tainting approach supports propagation of a single identifier only, hence its inability of tracing of coalescing effects. It's storage requirements are linear in number of work units. The tainting approach supports only tree-shaped traces. Here, let us notice that a tree-shaped trace is too restrictive for intent-based systems. This is because the coalescing effects are inherently present in intent-based systems, make their control flow to not be representable as a tree. This means that any intent-based actuation performed in a system can be often linked with more than one incoming request, hence \textbf{necessitating a more flexible model}.
+
+A naive extension to the tainting approach introduced to handle coalescing is to perform propagation of a set of trace identifiers (see \cref{fig:tracing-extended}) to child spans. However, this exhibits a number of problems:
+%
+\begin{itemize}
+    \item has super-linear storage requirement in presence of coalescing effects, since each recorded work units, caused directly or indirectly by a work unit where a coalescing occurred, needs to store multiple trace identifiers;
+    \item duplicates records of some units of work in multiple trace trees, making it harder to analyze traces;
+    \item does not capture relationship between work units and the state, which was used for coalescing.
+\end{itemize}
+
+Moreover, this model is not capable of dealing with intent-based systems, since causality relationship from an incoming API request to a work unit in intent-based systems is not surjective.
+
+\subsection{OpenTelemetry and it's observability mechanisms} 
+
+Other mechanisms, aiding developers in reasoning about their services, are well represented by the OpenTelemetry project, which provides capabilities for capturing metrics, distributed traces, and logs. The OpenTelemetry provides a single set of APIs, libraries, agents, and collector services, to capture distributed traces, metrics and logs from a system. 
+
+Distributed tracing of OpenTelemetry follows the OpenTracing model~\footnote{Actually OpenTracing project has been merged into OpenTelemetry project while this thesis has been worked on.}, hence inheriting its shortcomings.
+
+Metrics observability mechanism is most suitable to capture aggregated statistics about the behaviour of the system.  Metrics can be labeled with additional information, allowing for finer-grained view, but it is still focused on over-time aggregated numbers~\cite{prometheus-turnbull2018monitoring}.
+
+Logging observability mechanism, on other hand, is typically not structured, i.e. the content of a log message is a free-form string.  OpenTelementry logging mechanisms allows one to associate a log entry with a trace span, providing a more structured information~\cite{opentelemetry-logging-Grinshteyn2020Feb}.
+
+Neither of the aforementioned mechanisms are suitable to track relationship between individual incoming requests and individual work units performed by a system.
+
+\section{Provenance and provenance tracking}
+
+Provenance tracking is an extensive field of research, which provides useful mental models, to reason about operations of complex systems. Let us review how these relate to our use case~(\cref{sec:use-case}).
+
+\subsection{Provenance in Cloud}
+
+Usage of Cloud brings additional challenges into the area of provenance tracking: clouds are, typically, build in multi-layered architecture of IaaS, PaaS, and SaaS layers. Imran et al~\cite{imran2018aggregated} highlighted the need for aggregated provenance tracking, across multiple layers of cloud environment. The paper talks about the problem, and sketches a number of properties a solution needs to have. They show that provenance tracking, for individual layers, has been researched extensively, and points out that to track provenance in cloud setting it is necessary to be able to aggregate provenance information across the layers at the query time. They present a use case, where the needed mechanism is implemented.
+
+Our goal is to provide a generic solution to the problem described in this work.
+%
+\begin{itemize}
+    \item Cloud service providers often employ both imperative and declarative APIs. Declarative API often allows users to declare their arbitrary complex intent, e.g. a desired shape of a deployment of a set of virtual machines, with a single API call, which results in asynchronous work done by the service provider servers, to change the deployment to match the desired state.
+    \item These systems consist of a large number of servers communicating with each other via network RPC interfaces, where some systems are traditional imperative systems and some systems implement intent-based actuation.
+\end{itemize}
+
+\subsection{Provenance in network control plane systems}
+
+Network control plane systems have been moving towards intent-based paradigm. Intent-based networking (IBN) is an approach for automated and policy-aware network management. IBN extends the software-defined networking (SDN) model, by allowing engineers to specify \textit{what} policies they want their network to implement, rather than \textit{how} their network’s underlying mechanisms will implement such policies~\cite{concepts-network-intent-sivakumar2017}.
+
+ProvIntent~\cite{intent-network-ujcich2020provenance} is a framework extension for the SDN control plane tools that accounts for intent semantics. It extends the ProvSDN~\cite{provsdn-ujcich2018}, to explicitly incorporate intent evolution as intent state machines into provenance tracking.
+
+\subsection{OpenProvenance}
+
+OpenProvenance defines the W3C PROV data model for provenance interchange on the Web. It is primarily the data model, a number of interchange formats, and a set of libraries to work with these formats. PROV data model is focused on provenance information interchange for Web documents, but it can be used for other types of data. OpenProvenance model (OPM) is sufficiently expressive to deal with the coalescing effects problem, since it is possible to represent non-tree-shaped activities with it and it allows to record objects as triggers for activities.
+
+However, we find PROV model to not be suitable for our use case~(\cref{sec:use-case}) for the following reasons.
+%
+\paragraph*{Storage overhead.} Large scale control plane systems are mostly-hierarchical systems, where most of the work is performed in a tree-shaped control flow. PROV Activities are not structurally hierarchical, but one could represent this relationship with consistent usage of \textit{wasStartedBy} and \textit{wasEndedBy} relations. However, the storage overhead of this is considerable: in the OpenTracing model, this relationship is represented by a single identifier stored once per child ``span'', while the OPM requires recording two relations, with 1 required and 5 optional fields each, to achieve the same. We conjure that it would preclude its usage in large scale control plane systems of Cloud providers.
+
+\paragraph*{Verbosity.} "Representing distributed systems using the Open Provenance Model"~\cite{distributed-prov-Groth2011Jun} describes application of the OpenProvenance model to represent some aspects of distributed systems, focusing on representing message passing communication between services. This extension shows how the model can be applicable to our use case~(\cref{sec:use-case}). The paper describes that a naive representation of messages passing in OPM requires 8 nodes to represent two messages. The paper introduces D-profile -- an OPM 1.1 profile -- which acts as an abstraction over the naive OPM graph, reducing the verbosity of the representation. This means that, when using the OPM, we need to trade off verbosity versus mental burden of using the tool. This leads us to the next point.
+
+\paragraph*{Complexity.} The OPM model is very expressive and supports tracking much more complex interactions. It supports concepts like Alternates, Bundles, Communication, derivations, relations sub-typing and much more. In contrast to this OpenTracing model uses just three concepts (trace, span, annotation) to represent traced activities.
+
+\bigskip
+
+We believe that a tool introduced into a toolbelt of software engineers to aid with reasoning about the system should be easy to reason about itself, or it defeats the purpose. We also believe that the optimal solution should be an incremental extension of the OpenTracing model, to give it a chance of adoption in the industry. Hence, the optimal solution to our use case~(\cref{sec:use-case}) lies somewhere in between the OpenTracing and the OpenProvenance models in the design space of debuggability tools.
+
+\subsubsection{SPADE}%%MG właściwie też nie ma po co to wyodrępbiać w osobną malusienką podsekcje. Logicznie również to nie układa się z tytułem i zawartością następnych sekcji...
+
+SPADE~\cite{gehani2012spade} is a practical implementation of the Open Provenance Model, to capture provenance data in distributed settings, using PROV model. SPADE is focused on gathering low-level information from OS audit logs, network artifacts, LLVM instrumentation, etc. SPADE provides support for tracking provenance in distributed systems, but the focus is on low-level information and on automated provenance gathering mechanisms persisted. SPADE’s syscall and library call level instrumentation would not scale for a large scale production system.
+
+\subsection{Provenance formalisms}
+
+Provenance tracking has been also researched from the perspective of formal systems. We will take a look at a few selected works in this area.
+
+\paragraph*{$ \pi $ -calculus.} Souilah et al, 2009~\cite{souilah2009formal} present a formal provenance in distributed systems, based on the $\pi$-calculus. The approach is based on enriching exchanged data with provenance information, similar to the tainting approach. Hence this approach is not suitable for our use case (see \cref{sec:tainting}).
+
+\paragraph*{Why-across-time provenance.} Why-across-time provenance (wat-provenance)~\cite{whittaker2018debugging} provides a mechanism to track data provenance in the realm of state machines, in time-varying stateful distributed systems. It provides a formal model, which could be a foundation to implement a provenance-enhanced distributed systems tracing solution. Wat-provenance requires determinism, while a lot of large scale distributed systems involve a fair share of non-determinism in load balancing, bin-packing, resource allocation, load shedding, etc.
+
+Additionally both 
+%MP: both czyli ktore?
+these formalisms require a large departure from the well-established OpenTracing paradigm.
+
+\subsection{Database provenance}
+
+Database provenance is typically concerned with tracking what input data has been used to produce a given output data. This is similar to our goal of tracking how a configuration is used through multiple layers of control plane systems to affect the state of a deployment. Hence let us consider it is some detail.
+
+Provenance traces~\cite{cheney2008provenance} research database provenance at the query time. Approach taken by Cheney et. al. is a bottom-up approach -- the traced system needs to be written from scratch, using the formal language defined in the paper. The solution generates very large traces, since all data transformations performed by a database engine is recorded. The data gathered during query execution is later analyzed using a \textit{slice}  operator, to extract useful information. 
+
+If applied naively, the bottom-up approach and very large traces of ``provenance traces'' solution make it infeasible to be used in an established large-scale control plane system, since it (1) requires rewrite from scratch, and (2) does not allow developer to fine tune which tracking data is gathered. This makes it much less likely to be adopted in industry.
+
+%%GP: Maybe mention "Provenance traces allow extracting where-provenance, dependency provenance, etc."?
+
+\subsection{Provenance in security}
+
+Provenance and provenance tracking in security is focused on threat detection and protection areas. This puts a number of constraints on provenance tracking approaches used in this area.
+
+ProTracer~\cite{protracer-ma2016} uses a mix of logging and tainting approaches, and is focused solely on the Advanced Threat Protection area. It makes use of kernel-level audit logging and syscall interception that is a black-box approach with zero trust towards the processes observed. ProTracer traces usage of OS-level objects like files, IPCs and network sockets. Tracing of network operations allows ProTracer to reconstruct causality across hosts. ProTracer generates a very detailed dataset about an observed process.
+
+ProTracer does not provide a general data model, making it impossible to represent abstract entities, like cloud resources or Kuberentes objects. Simple operations on these entities -- e.g. create a disk image -- in control plane systems, often involve thousands of kernel-level operations, across multiple hosts. This means that the kernel-level objects provenance tracking does not scale, up to the needs of large scale control plane systems, since the signal-to-noise ratio in the produced dataset will inevitably be low. For these reasons ProTracer approach is not applicable to our use case~(\cref{sec:use-case}).
+
+CamFlow~\cite{camflow-pasquier-socc2017} is an automated provenance capture system, implemented as a Linux Security Module (LSM), designed for the purpose of system audit. It tracks whole system provenance, by constructing a provenance graph. Here, vertices are states of kernel objects, while edges capture information flow between them. It focuses on a single machine provenance tracking and outputs results in W3C PROV format, but is specialized for the kernel objects. CamFlow allows to integrate application-level provenance into the generated dataset. This is done by configuring an application to log to a pseudo-file provided by the CamFlow kernel module. This allows CamFlow to associate individual log records with a process activity tracked, incorporating them into the CamFlow provenance graph.
+
+ProTracer, CamFlow and other provenance tracking solutions used in security context are taking different trade-offs than are necessary in provenance tracking of control plane systems. Security usage requires zero trust towards the traced system, while our main use case allows for full trust. This forces security provenance solutions to focus on observed provenance, while it is infeasible for large scale control plane systems to use observed provenance due to prevalent use of abstract entities.
+
+\begin{comment} GP: Myślę, że tego nie użyję w ogóle.
+Provenance segmentation
+\url{https://www.usenix.org/system/files/conference/tapp16/tapp16-paper-abreu.pdf} as a mechanism to deal with data volumes.
+\end{comment}
+
+\subsection{Provenance for workflows and data transformation pipelines} 
+
+One more area, where provenance has been researched extensively, is scientific workflow management systems, and the wider area of data transformation pipelines. Let us summarize relevant research in this area.
+
+RAMP is a data intensive scalable computing (DISC) provenance framework~\cite{ramp-ikeda2011provenance}. This system is restricted to the domain of data intensive computations, over static data. It is implemented as a set of wrappers around Hadoop primitives, which produce provenance data, as data items are acted upon by these primitives, in a form of out-of-bounds metadata.  These wrappers are automatically applied to a Hadoop flow. The control flow captured by the provenance metadata reflexes that of the executed flow itself. Therefore, it cannot be applied to other distributed systems components, like storage systems, coordination services, load balancers, etc. where control flow graphs are not fixed, they evolve as the system evolves, and data passes through the system via a large set of mechanisms (RPCs, databases, pubsub systems, etc).
+
+LogProv is a provenance logging system, implemented for Apache Pig and Apache Hadoop~\cite{logprov-wang2016}. It supports dynamically shaped big data workflows and pipelines. It does not store provenance information directly into a graph database. Instead, it is using structured logging into the ElasticSearch. LogProv data model can be represented with the OpenProvenance data model only if inspected workflows and pipelines are fixed. LogProv allows to maintain low overhead (which is important in our use case~(\cref{sec:use-case})), and keep flexibility to handle frequently changing pipelines. LogProv is focused on DISC provenance and is not built for distributed systems tracing.
+
+Overall, RAMP is a very specialized framework for DISC provenance tracking, while LogProv is an example of a less specialized and more flexible solution to the same problem. LogProv still focuses on DISC provenance, but we believe it can be extended to handle other use cases. LogProv's approach of requiring explicit use of provenance-enhanced logging entries in Pig Latin script that flexibility.
+
+\section{Build systems}
+
+As discussed in~\cref{sec:intro}, build systems are directly related to the research topic of this thesis. Additionally, tools developed for the needs of reasoning about build systems, combine elements of tracing and provenance tracking.
+
+\subsection{Build systems tracing}
+
+Ability to reason about actions of build systems is important for optimization of a software development lifecycle in any company.  Build systems are inherently intent-based, since a build target is described declaratively, and the build systems perform necessary steps to create the target.  Build systems, typically~\cite{Mokhov2020}, rely heavily on coalescing effects. Memorization and incremental recomputation are coalescing effects, and are used to achieve a minimality property. 
+%MP: what is minimality property?
+%GP: Opisane w cited pracy. Czy muszę też u tu opsiać?
+%MG: nie, nie ma potrzeby opisywać
+The early cutoff optimization is a coalescing effect, which is used to avoid rebuilding downstream build targets, if changes in a given target are inconsequential.
+
+Some build systems, like Bazel~\cite{bazelPerf:online}, Nix~\cite[p.~176]{dolstra2006nixThesis}, or redo~\cite{redolog} provide mechanisms to reason about, debug and optimize their operations. These trace mechanisms are implementation-specific, informal, and do not guarantee composability with other provenance sources, when aggregated. Hence they do not address our use case~(\cref{sec:use-case}).
+
+Tracing build processes have been used to uncover licence compliance inconsistencies~\cite{vanderBurg2014Sep}, which is a form of provenance tracing operating in a build system context.  This approach does not address hierarchical nature of control plane systems, and captures only two specialized levels of provenance for build tasks and files used in builds.
+
+In \fullref{sec:nix-implementation} we will, however, describe an application of the same approach as CBDG build trace collection and graph construction to capture hierarchical relationship between package-level build process and individual build processes.
+
+\subsection{Dependency tracking}
+
+Finally, let us note that build system dependency tracking can be considered a provenance tracking technique, for build targets based on their inputs. It falls into the disclosed provenance category~\cite{braun2006issues}. However, at best, it works at the level of the build graph. An observed build-time provenance tracking mechanism would be necessary to achieve better granularity. Each dependency between packages, in a build system, is equivalent to one or more usages of one or more files from a package A, when building a package B, where execution of a build is performed by a process (e.g. ``gcc''  or a similar file-based compilation tool).  In cases where build systems are operating as a part of control plane system, an ability to track relationship between build system outputs and actions of a control plane component is necessary.
+
+\section{Summary}
+
+We were unable to find a solution to the thesis problem in the literature, as sown in the overview of the related work. There are multiple works which address various aspects of the problem, but none addresses all of the needs of the use case this thesis is focused on (see~\cref{sec:use-case}). The next section will explicitly list requirements for the sought-after solution.

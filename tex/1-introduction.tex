@@ -1,0 +1,221 @@
+\newpage
+\chapter{Introduction}\label{sec:intro}
+
+Complexity of computer systems has been growing~\cite{complexity-dvorak2009nasa}, along with ever-increasing usage of computers, in all areas of life. First, computer programs were written in low-level languages, targeting single CPU computers. Moreover, they were often written and used by the same person. Increase in size of developed programs, combined with growing power of computing resources, resulted in individuals losing the ability to fully comprehend computer systems they have been creating/using. Today, some programs are developed by tens of thousands developers~\cite{google-billions,facebook-99millio41:online}, both directly and indirectly, due to the reuse of code libraries, services interactions, and use of cloud computing. In large technology corporations, there are services comprising millions of lines of code. They inevitably employ hundreds of different Remote Procedure Call (RPC) interfaces across and between their components~\cite{datacenter-36626}. In what follows, systems, which directly serve user requests -- e.g. Google Search services -- will be called \textit{on-line serving systems}.
+
+Along with the growth of complexity of the systems, software automation has been increasing in complexity. Nowadays, it ranges from simple build systems, like Make~\cite{caseformake1990}, through imperative deployment automation systems, like Ansible~\cite{ansible-hall2013} and Puppet~\cite{puppet-loope2011managing}, and ending with complex multi\hyp{}cloud deployment systems, like Terraform~\cite{terraform-brikman2019}. These automation systems, when used in the context of large enough services and software development processes (for example building, testing, and deploying to production in a cloud), are also becoming too complex to understand by an individual developer. For instance, thorough understanding of a sufficiently complex service deployment would require expertise in Terraform, Docker~\cite{docker-merkel2014}, Linux kernel, Kubernetes~\cite{burns2016borg}, one or more cloud provider APIs, deployment requirements of the deployed servers and, potentially, in multiple additional areas. Moreover, these automation systems, typically, differ from usual serving systems, which makes it harder to reason about them.
+
+Among the most complex automation systems, out there, are the implementations of cloud services~\cite{cloud-adoption-low2011understanding,cloud-complexity-wood2011understanding,complexity-cloud-Commentary2019Sep}. These systems serve public APIs to cloud customers and drive all of the infrastructure underpinning the cloud. These advanced automation systems, share a lot of properties of deployment systems -- not to mention that some of cloud public APIs actually \textbf{are} deployment systems' APIs. The main difficulties with reasoning about systems, which implement cloud services, are discussed in the following sections. Let us start from the intent-driven actuation.
+
+\section{Intent-driven actuation}\label{sec:intent} 
+
+Deployment systems -- as today's automation systems in general -- are shifting from a mostly-imperative execution model (like Ansible), to a declarative-first model (like Terraform). The latter are intent-driven in nature. They follow a scheduling policy to reach an intended state, via execution of a sequence of, usually small and restricted, imperative steps. Such systems will be called \textit{intent-based} and their execution -- an \textit{intent-driven actuation}.
+
+For example, increasingly popular~\cite{openshift-k8s-trend} Kuberentes -- an open-source platform for managing containerized workloads and services that facilitates both declarative configuration and automation -- uses a form of intent-based actuation. Kuberentes API objects~\cite{k8sObjects2020} are used to describe the desired state of the cluster -- the user intent. Based on this intent, Kubernetes performs the necessary work (it actuates) to make the current state of the cluster to match the desired state.
+
+Furthermore, select deployment systems -- like NixOps~\cite{dolstra2013charon} -- and most modern build systems~\cite{Mokhov2020} -- like Bazel~\cite{bazel-McNerney2020} -- are examples of automation systems employing intent-driven actuation most profoundly. In essence, they build a new instance of a target object from the scratch, based on a declared specification, and only the final operation of replacing the current version of the object with the newly created one is an imperative operation.
+
+Decoupling of intent-setting and actuation through a scheduling policy makes it harder to track causality between intent-setting requests and scheduled work. This is due to presence of coalescing effects in these systems.
+
+\section{Coalescing effects}
+
+\begin{wrapfigure}{r}{0.3\textwidth}
+\resizebox{0.3\textwidth}{!}{%
+\begin{tikzpicture}[node distance=2cm, yscale=-1]
+
+\node at (0, 0) (request1) [startstop] {Request 1};
+\node at (4, 0) (request2) [startstop] {Request 2};
+\node at (2, 2) (state) [decision] {State};
+\node at (2, 4) (process) [process] {Execution};
+
+\draw [arrow] (request1) -- (state);
+\draw [arrow] (request2) -- (state);
+\draw [arrow] (state) -- (process);
+
+\end{tikzpicture}
+}
+\caption{Coalescing effect}
+\label{fig:coalescing-effect}
+\end{wrapfigure}
+
+Systems which employ intent-driven actuation inevitably will exhibit the \textit{coalescing effects}~(see~\cref{fig:coalescing-effect}) in their control flow. In general, coalescing occurs when work units, related to multiple incoming requests, are batched over time, before being executed ``all-together''. Here, batching of disk writes, to achieve higher throughput, is a typical example.  In build systems coalescing effect occur in a case of ``diamond-shaped dependency graph'', since the shared dependency will be built in response to both incoming dependency edges.  In these cases, no singular attribution of causality is possible, from a write request to the write of the batch. Each write request contributes, to some extent, to the actual disk write.
+
+In general, presence of coalescing effects changes relationship, between incoming requests and activity performed by the system, from one-to-many to many-to-many, hence making it harder to associate causality between the requests and the activity. Lack of clear association between requests and activities prevents capturing and visualizing causality in the system.
+
+In the case of intent-driven actuation, coalescing effects materialize since actuation is a result of aggregation of intent changes over time, based on multiple user requests. When a certain number of user requests is accumulated, the actuation is executed, according to a scheduling policy. The problem is that the policy can drive actuation over an arbitrary path between current state and the desired state, of the automated system. This decouples handling of individual user requests, and execution of the intent conveyed through these requests. The automation system can choose -- based on the scheduling policy, and properties of the system -- to batch all user requests and satisfy them all at once, to execute multiple actions based on a single user request, or do ``something in-between''. Hence, the relationship between user requests and actuation actions no longer is $1$ to $M$, but can become $N$ to $M$, instead.
+
+\begin{figure}[t]
+\centering
+\scalebox{0.8}{%
+\begin{tikzpicture}[node distance=2cm, yscale=-1]
+
+\node at (0, 0) (request1) [startstop] {Request 1};
+\node at (5, 0) (request2) [startstop] {Request 2};
+\node at (10, 0) (request3) [startstop] {Request 3};
+
+\node at (0, 3) (state1) [decision] {\begin{tabular}{c} Intent \\ $t_1$ \end{tabular}};
+\node at (5, 3) (state2) [decision] {\begin{tabular}{c} Intent \\ $t_2$ \end{tabular}};
+\node at (10, 3) (state3) [decision] {\begin{tabular}{c} Intent \\ $t_3$ \end{tabular}};
+
+\node at (0, 7) (process1) [process] {Execution 1};
+
+\node at (7.5, 5.8) (process2) [process] {Execution 2};
+\node at (10, 7) (process3) [process] {Execution 3};
+\node at (12.5, 8.2) (process4) [process] {Execution 4};
+
+\draw [arrow, dotted] (state1) -- (state2);
+\draw [arrow, dotted] (state2) -- (state3);
+\draw [arrow] (request1) -- (state1);
+\draw [arrow] (request2) -- (state2);
+\draw [arrow] (request3) -- (state3);
+
+\draw [arrow] (state1) -- (process1);
+\draw [arrow] (state3) -- (process2);
+\draw [arrow] (state3) -- (process3);
+\draw [arrow] (state3) -- (process4);
+
+\end{tikzpicture}
+}
+\caption{Decoupling of requests and execution through state.}
+\label{fig:request-execution-decoupling}
+\end{figure}
+
+Unsurprisingly, the coalescing behaviours in modern automation systems are complex. Let us illustrate this with a few examples:
+%
+\begin{itemize}
+    \item If two consecutive user requests set exactly the same desired state of a service deployment, only one actuation action will be (and should be) performed. The second request causes no change in an intent, hence no action is scheduled.
+
+    \item If two consecutive user requests modify the same property of a desired state in a quick succession, only the latter actuation is likely to occur, due to the, so called, debouncing, typically enabled in a scheduling policy.
+    
+    \item If three consecutive user requests modify the desired state from $A$ to $B$, next to $C$, and next back to $B$, typically only the actuation from $A$ to $B$ will be executed. Scheduling policy will typically not trigger any competing actions while $A$ to $B$ transformation is being actuated.
+    
+    \item If a single user request changes a desired state, of a complex object, to large-enough extent, the automation system is likely to perform a series of actions over a long period of time, to reach the desired state. For example, if one changes replication factor, for a group of cloud virtual machines, from 1 to 10000, the cloud would not be able to start 9999 VMs instantaneously. Allowing for an instantaneous increase in size would cause a large surge of utilization of internal systems. Additionally allowing all customers to do this would require keeping a very large unutilized reserved capacity, which is not economical. Hence, the process of bringing online additional machines is realized is such a way to not to destabilize the cloud ecosystem.
+\end{itemize}
+%
+Observe also that a combination of such behaviours can lead to \textit{arbitrary relationships between user requests and actuation actions} (see \cref{fig:request-execution-decoupling}). As mentioned above, these effects make it harder to reason about systems exhibiting them, making many (if not majority of) existing debugging tools ineffective. 
+
+In this context, a widely adopted industry approach to aid reasoning about distributed systems is \textit{distributed systems tracing}. Here, the most popular tools are modeled after Google’s Dapper~\cite{dapper2010}. However, the original paper, in which Dapper was introduced, notes that the proposed model does not handle coalescing effects (see,~\fullref{sec:tainting}). This fact was one of the reasons for work completed in this thesis.
+
+\section{Control plane systems}
+
+Coalescing effects are often present also in another type of software systems, which we will call \textit{control plane systems}. These systems have additional properties making them harder to reason about.
+
+\textit{Control plane systems} materialize most often as upper layers of cloud service stacks. They accepts API requests and translate those into a series of requests sent to lower-level systems. These cloud services are handled by a multi-layered software system. Each layer, itself, is a distributed system, often deployed in a microservices architecture. Here, each layer handles some aspects of the API request, e.g. authentication, authorization, request routing, billing, underlying containers management, cluster-level VM machine orchestration, node-level VM management, networking configuration, and so forth.
+
+Cloud APIs can be both imperative and declarative, but in many cases they have elements of both paradigms. Imperative API allows user to perform direct actions on cloud resources. These can range from simple operations like ``shut down a virtual machine'' to complex long-running and multi-staged operations like ``live-migrate a VM to another region''.
+
+Declarative API allow users to declare their intent with a single API call. These intents can be arbitrarily complex. An example of such desired intent is a shape of a service deployment, e.g. size and regional distribution of a group of virtual machines. A desired intent can -- besides virtual machines -- declare resources like networks, VPNs, virtual IPs, load balances, persistent volumes, SQL databases, etc. Declarative API calls typically trigger long-running asynchronous work, performed by the service provider servers, to change the deployment to match the desired state.
+
+Additionally with the advent of Platform\hyp{}as-a\hyp{}Service~(PaaS) and Infrastructure\hyp{}as-a\hyp{}Service~(IaaS) solutions, deployment systems are being provided to customers, as services. For example, any PaaS offering exposing Kubernetes~API, effectively exposes an intent-based automation solution. It can safely be assumed that PaaS offerings from Amazon Web Services~(AWS), Google, or Azure -- given size of their customer base -- in practice, combine the scale of big serving systems with complex execution model of intent-based systems.
+
+All of the aspects described above, and knowledge gathered from practical use of intent-based actuation, make the cloud control plane systems one of the most complex systems in existence. Hence, they are particularly hard to reason about. Finally, it is worthy noting that one more aspect, which makes some control plane systems hard to reason about, is their hierarchical nature.
+
+%% TODO IMAGE: Control plane systems => layered structure => scheduling of async work based on a request%%MG: nie musisz
+
+\section{Hierarchical control plane systems}
+
+In deployment practice, some cloud service API are implemented on top of other cloud services. For example, Google Cloud Functions~(GCF) runs on top of Google Cloud Run~(GCR), which runs on top of Google Kuberentes Engine~(GKE). In turn, GKE runs on top of Google Cloud Engine~(GCE). Hence some control plane system are not only \textit{hierarchical}, but the hierarchy can have quite a complex structure of dependencies.
+
+As discussed in~\cref{sec:intent}, Kuberentes is a system employing intent-driven actuation. This makes GKE -- as a Kubernetes implementation -- a prominent example of a hierarchical control plane system employing intent-based actuation, combining multiple properties. As it can be easily realized, such structure of the system makes it hard to, holistically, reason about it.
+
+TODO IMAGE: Hierarchical control plane system.
+
+\section{Build systems in control plane systems}
+
+Let us now consider the fact that control plane systems, with declarative APIs, need to be provided with the desired state, to be actuated. Build system outputs are often used as the desired state, provided to the control plane system. For example, Infrastructure-as-Code (IasC) model recommends treating service deployment as any other type of code -- to be be built and tested using \textit{build systems}. Here, Bazel build system is being used to define desired shape of Kubernetes deployments~\cite{bazelbuildrulesk8s,stripeskycfg}. Immutable infrastructure~\cite{immutable-infra-mikkelsen2019} model -- a model related to the IasC model -- often prescribes use of Docker containers, which are built in Docker's primitive build system~\cite{Mokhov2020}. These containers are then provided to a control plane system to be deployed. Build systems typically output composite objects as outputs (e.g. a directory, an archive, or a container image), but cloud management tools typically extract individual components of these composite object then send them to cloud APIs.
+
+Furthermore, \textit{build systems} -- or build-like systems -- are often used as parts of control plane systems. For example, Terraform Cloud~\cite{terraform-cloud-2020Aug} and EPAM Cloud~\cite{epamterraformasacloud} execute Terraform planning process, on behalf of users as part of their API. Terraform planning process is a build process, which builds an artifact describing a set of actions to be performed to reach a desired state, declared in the input files, and the actual state. It is worth noting that the EPAM Cloud product is a multi-cloud orchestration solution, making it a hierarchical control plane system employing the intent-based actuation.
+
+Tools like NixOps~\cite{dolstra2013charon}, Disnix~\cite{disnix-vanderburg2014} and Kubenix~\cite{kubenix-xtruder2020Sep} take this approach even further, blurring the lines between the build process and the deployment process. They allow to define a deployment of a cluster of VMs, or containers, end-to-end, starting with individual binaries, through the content of deployed VM, or containers images, all the way to the shape of deployment in a cloud.
+
+With this background, it should be clear that ability to reason about build system actions, and their inputs and outputs, is an important element in the overall ability to reason about modern automation systems in Cloud.
+
+\section{Data processing pipeliens}
+
+As a side note, it can be observed that the complexity of data and data processing pipelines, within cloud infrastructures, in particular, as been growing exponentially. The growth affects both sizes of data repositories and complexity of data processing systems (e.g. workflows). One of the important tools to deal with the growth is tracking provenance of data used in e-science~\cite{simmhan2005survey}. Provenance has been researched in a diverse set of areas, can be implemented at various levels, and used for a range of applications (see~\cite{herschel2017survey} for more details). This adds one more aspect to the overall image of modern IT deployments and will serve as a source of ideas for this work.
+
+\section{Problem statement}\label{sec:problem}\label{sec:use-case}
+
+To summarize, the need to be able to reason about software systems is an ever-growing concern in the industry. For the reasons described above, \textit{hierarchical control plane systems employing intent-based actuation} -- deployed in large-scale clouds -- are especially hard to reason about.
+
+%%GP: Some of the below is taken almost verbatim from the dapper paper. Needs rephrasing.
+%MP: no to kiedy to bedzie???? i dokad to siega to "zapozyczenie"?
+
+Ability to obtain information about the behavior of hierarchical control plane systems is crucial to be able to reason about them. These systems are usually deployed as layered collections of small servers. Understanding system behavior in this context requires observing related activities across many different programs and machines. An engineer, looking only at the overall behaviour of the system may know there is a problem, but may not be able to guess which service of which layer is at fault, nor why it is behaving poorly. Given that these systems are developed by large organizations comprising of multiple teams, the engineer may not be aware precisely which services are in use; new services and pieces may be added and modified from week to week, both to add user-visible features and to improve other aspects such as performance or security. The engineer will not be an expert on the internals of every service; each one is built and maintained by a different team.
+
+Given the hierarchical nature of some control plane systems a tool providing information about its behaviour needs to be ubiquitously deployed across the layers and services. Moreover services and machines may be shared simultaneously by many different clients, so a performance artifact may be due to the behavior of another application. A control plane system deployed as part of a cloud service is inevitably a multi-tenant system. Behaviour of individual tenants can affect how other tenants are being served by the control plane system, and it can affect health of the overall control plane system. Such interactions are difficult or impossible to reproduce, hence requiring the tools providing information about the control plane system to be always on.\looseness=-1
+
+Control plane systems have a unique property as they actions are primarily focus on managing a state. That is their APIs deal with reads and mutations to resources; these APIs change the state of resources and depend on these states; that is to say that they heavily depend on side effects. Debugging such systems requires full coverage of tracked activities and recorded state changes (e.g. sampling technique employed in Dapper is not suitable here).
+
+Debugging tools are most useful during incident response (e.g. finding the root cause of SLA violation for a given tenant). This puts a soft requirement onto a debugging tool to make tracing data available for analysis quickly after it is generated. Availability of fresh information enables faster reaction to production anomalies.
+
+Given the above and author's experience in industry, this work is addressing the needs of a software engineer developing, maintaining and operating hierarchical control plane system employing intent-based actuation in a large-scale cloud deployment. The deployment is structured into hundreds of microservices layered in groups on top of each other, moreover it depends on dozens of infrastructure services providing IaaS-level mechanisms. The system is cumulatively owned by tens of teams. Teams evolve over time, with people joining and leaving, making onboarding time an important business consideration, hence making knowledge transfer between engineers both crucial and sometimes imperfect.
+
+\subsection{Goal of work}\label{sec:thesis-goal}
+
+Taking into account what has been said thus far, the following research goal can be formulated.
+
+\bigskip
+
+\textbf{\textit{The aim of undertaken work is to propose a debugging solution, applicable to hierarchical control plane system employing intent-based actuation.}}
+
+\bigskip
+
+The final purpose of the sought-after solution is support the aforementioned software engineers, more effective at developing and operating hierarchical control plane systems, and allow them to be more efficient throughout the whole software development lifecycle.
+
+\subsection{Hypothesis}
+
+A number of approaches to problem of reasoning about complex software systems have been developed in the industry and researched in the academia. Our hypothesis is that the problem of debugging of hierarchical control plane system employing intent-based actuation can be solved using elements from distributed systems tracing area and elements from provenance tracking area.
+
+\subsection{Motivating example}\label{sec:motivating-examples}
+
+This section will describe a motivating example, which will be use throughout this work to evaluate various aspects of the problem and a proposed solution. We will model, formalize, implement and analyze these throughout this thesis.
+
+%% TODO: Przykłady obecnie nie pokazują:
+%% - process
+%% - entity
+%% chyba można je olać, bo są banalne
+
+\subsubsection{Buggy deployment}\label{sec:motivating-ex1}
+
+Let us start with the a guestbook service -- a classic service in which visitors can leave a message that will then be written to a database and subsequently shown to later visitors of the same site. It is deployed on top of two containers, using \texttt{docker run} to run them and using \texttt{scp} to deploy configs. Docker containers run on a single remote host. Docker is configured to use a private image repository. Application container contains a guestbook implementation and expects a configuration file provided at \texttt{/data/configs} volume. Database container runs MySQL and stored its data on \texttt{/data/mysql} volume. A full deployment script for this system looks like this:
+%
+\begin{minted}{shell}
+docker build -f Dockerfile
+docker push
+ssh remote -- docker pull guestbook-app:alpine
+ssh remote -- docker stop --name app
+scp ./config/app.conf remote:/opt/guestbook/configs/
+ssh remote -- docker run --name app \
+    -v /opt/guestbook/configs:/data/configs -d guestbook-app:latest --rm
+\end{minted}
+
+A typical deployment contains updates both to the source code and updates to application configuration. Changes to these are performed by two independent software engineer teams. A DevOps engineer is observing that guestbook has suddenly started returning HTTP 500 error code when accessed. In this scenario the root cause is a new bug in the source code of the application causing application to try to connect to a incorrect database port.
+
+This sample is not a control plane system, but it is useful as it allows to show a major part of the problem using familiar mechanisms on a simple system.
+
+\subsubsection{Rollback of source of truth}\label{sec:motivating-ex2}
+
+A second example used in this work is a heavily simplified intent-based deployment system, which has enough elements of a control plane systems to be representative of one. A system consisting of an application is deployed using the Gitops approach\cite{gitops-limoncelli2018}. A git repository is used to store code and configuration of the application. The deployment service is responsible to perform a deployment whenever new version of the code is pushed. The deployment process gets informed about a new commits in the repository by a message by a server-side Git repository hook. When notification is received, the server checks out a repository at the most recent commit hash and performs a build of an application in a temporary directory. It compares the resulting binary and the new config with the currently running binary and the currently used config. If they differ, the application is stopped, the new binary and the new config are copied on top of the old ones, and the new binary is started. The deployment process is slow and concurrent runs are not permitted.
+
+In this scenario a problem is observed after a series of commits are pushed to production in quick succession by a team. The bug has been introduced in one of these commits. An engineer is responsible for identifying the root cause and fixing the service by reverting the offending commit.
+
+In a realistic system using infrastructure as code deployments with automatic pushes to production, typically more complex setups are used involving more complex systems like Kubernetes, Bazel, Terraform or similar. Describing in details operations of these complex systems is infeasible in a thesis. Both the system in the example and these complex systems employ intent-based actuation. In the example the intended state is stored in the HEAD a Git branch, and the actuation is the deployment process which does whatever necessary to make the desired state a reality.
+
+\begin{comment}
+BRAK czasu, ale
+% \subsubsection{Incorrect flag value in production.}\label{sec:motivating-ex3}
+
+TODO: Use intent-based actuation of a simple object (one coalescing). Example of a system using intent-based actuation, where a bunch of desired state updates were sent quickly and it brought the system down. Engineer was playing with `kubectl apply` repeatedly.
+
+\end{comment}
+
+\section{Outline of the thesis}
+
+\Fullref{sec:sota} looks into the research areas relevant to the problem and identifies shortcomings of existing solutions.  
+\Fullref{sec:reqs} summarizes requirements we have identified for the solution.  
+\Fullref{sec:pedst-model} introduces a data model for tracking of work, interactions, and objects in control plane systems systems as a set of concepts; provides a sketch of formalization based on graph theory; it defines a set of extensions which allow to infer additional information from a dataset.  
+\Fullref{sec:arch} presents an architecture of the software supporting the described model and being required to satisfy the requirements.  
+\Fullref{sec:impl} describes select details of the proof-of-concept implementation of the solution.  
+\Fullref{sec:results} reports how the system was applied to a set of real-life software that is representative of our use case.  
+\Fullref{sec:conclusion} summarizes our research and practical experience of using the proposed model and its implementation.

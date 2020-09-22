@@ -1,0 +1,222 @@
+\newpage
+\chapter{Concluding remarks}\label{sec:conclusion}
+
+As shown in~\cref{sec:results}, Tenmo can be applied to a variety of software packages. Tenmo has been shown to be suitable for debugging of build systems, cluster deployment tooling, and cluster orchestration services. We believe that these use cases are representative of a hierarchical control plane system employing intent-based actuation.
+
+\section{System comparison}\label{sec:system-comparison}
+
+Below, we provide a comparison between Tenmo, Dapper~\cite{dapper2010} and ProTracer~\cite{protracer-ma2016}. Dapper and ProTracer are two systems, which we believe are the closest match to our use case. The~\Cref{tbl:comparison} on \cpageref{tbl:comparison} presents a comparison of these systems. As can be seen, they occupy distinct points, in the design space for debuggability solutions.
+
+Section ``HCSP support'' 
+%
+%MP: odwolanie przez \ref{}
+%GP: Tu chodzi o sekcje tabelki, do której odwołuje się 2 słowa dalej. Nie widzę sensu używać \ref tu
+%
+of~\cref{tbl:comparison} summarizes how these systems compare to the requirements defined in~\cref{sec:reqs}.  We have shown that Tenmo satisfies requirements for a debuggability solution for hierarchical control plane systems employing intent-based actuation.
+%%MG: wytłumaczyć co oznacza "--" w tabelce
+
+%%MG: Opisać co to jest kreska w tabeli
+\begin{table}[pht]
+\centering
+\begin{tabular}[t]{  p{5cm}  p{3cm}  p{3cm}  p{3cm}  }
+\toprule
+&Dapper&ProTracer&Tenmo\\
+\midrule
+Focus use case&Distributed serving systems&Advanced Persistent Threat&Control plane systems\\
+\hline
+\multicolumn{4}{c}{Model} \\
+\hline
+Execution tracing&Yes&Yes&Yes\\
+Object tracking&No&Yes&Yes\\
+Object versioning&--&No&Yes\\
+Interaction tracking&No~$^{1}$&Yes&Yes\\
+\hline
+\multicolumn{4}{c}{HCSP support} \\
+\hline
+Coalescing effects support&--&Yes&Yes\\
+Support for abstract entities&--&No&Yes\\
+Support for composite entities&--&Yes&Yes\\
+Low storage overhead&Yes&No&Yes\\
+Full coverage&No&Yes&Yes\\
+Gradual fidelity execution tracing&Yes&No&Yes\\
+Gradual fidelity provenance tracking&--&Yes&Yes\\
+Minimal mental burden&Yes&No&Yes\\
+Cross-host tracking&Yes&Yes&Yes\\
+Multi-layer systems support&Yes&No&Yes\\
+Asynchronous data intake&No&No&Yes\\
+Event-based data production&Yes&No&Yes\\
+Flexible control flow support&Yes&Yes&Yes\\
+\hline
+\multicolumn{4}{c}{Application} \\
+\hline
+Mode&RPC Instrumentation&Auto&Opt-in\\
+Trust&Trusted&Untrusted&Trusted\\
+\hline
+\multicolumn{4}{c}{Other} \\
+\hline
+Trace sampling&Yes&No&No\\
+Maturity&Production&Academic&Academic\\
+\bottomrule
+\hline
+\multicolumn{4}{l}{$^{1}$\footnotesize{Dapper does record RPCs, but they are not a first class citizen of the Dapper model.}} \\
+\end{tabular}
+\caption{Summary system comparison.}
+\label{tbl:comparison}
+\end{table}%
+
+\section{Model comparison}
+
+Below we discuss how the PEDST model compares to the OpenTracing and to the OpenProvenance models. These comparisons are not meant to be comprehensive, and have introductory nature. However, they provide some birds-eye overview which cna be of value to the reader. Specifically, we show that the Tenmo model is a ``middle-ground'' between the practicality of the OpenTracing, and the high complexity of the OpenProvenance model. Our model is an extension of the OpenTracing model, and can be reduced to a subset of the PROV data model.
+
+\subsection{OpenTracing model}
+
+In the OpenTracing model the main concept is a trace tree, which is a tree of spans, which represent units of work. Edges in the tree indicate a parent-child relationship between spans. An individual ``span is also a log of timestamped records, which encode the span’s start and end time, any RPC timing data, and zero or more application-specific annotations''~\cite[p.3]{dapper2010}.
+
+The main difference of our model is that our model allows not only for the execution tree to be represented, but also allows us to relate execution trees to each other, whenever they interact with each other via read and write operations on entities in the system. Additionally, interactions between executions are modeled more explicitly and independently of the execution of the parent-child relationship. This allows us to recover more than just a trace tree, out of recorded data, but also a causality graph, interaction graph, effects graph and provenance graph (see \fullref{sec:global-graphs} below for definitions).
+
+In implementations of the OpenTracing model, all RPC messages are recorded as payload in annotations, but RPC interactions are not explicitly part of the model. Our model explicitly records messages, since they are often used as a vehicle for propagating information and, hence, are relevant from the perspective of provenance tracking (see~\cref{sec:model-extensions} for details on how messages relate to provenance tracking in PEDST model).
+
+Data for a single OpenTracing span is populated by two processes -- both RPC client and server. In the PEDST model, each side is represented by an \textit{execution}, and their RPC exchange is represented as a single interaction with an appropriate number of messages (usually two for a single synchronous RPC call).
+
+On top of execution tracing, PEDST model enables capturing interactions with objects, in a system, via \textit{operations} and \textit{incarnation}, allowing it to handle coalescing effects and, henceforth, control plane systems with the intent-based actuation.
+
+In this work we have shown that PEDST model is a superset of OpenTracing model, capable of implementing OpenTracing activity tracing and more. Major difference between Tenmo -- as an implementation of the PEDST model -- and all implementations of OpenTracing is lack of sampling, which allows OpenTracing implementations to scale to ultra-large online serving systems at the cost of tracing coverage. Tenmo -- being focused on control plane systems -- is built to provide full coverage of all -- usually mutating -- activities.
+
+% OpenTracing is typically used via tight integration with core libraries, e.g. RPC libraries. Google’s Dapper main strength is ubiquitous availability to all engineers via its deep integration with Google’s infrastructure.
+
+\begin{comment}
+BRAK CZASU
+\todo{IMAGE: Translation of an example from OpenTracing to Tenmo}
+\todo{TABLE: Maybe add translation table}
+\end{comment}
+
+\subsection{OpenProvenance}
+
+The OpenProvenance’s PROV data model is a very elaborate model to track provenance, accommodating three different uses of provenance -- agent-centered provenance, object-centered provenance, and process-centered provenance. Our provenance-enhanced distributed systems tracing model has the most similarities with the process-centered provenance. An example of the difference is that our model does not allow to record provenance of an object without capturing a process, which transforms an input object into a given object.
+
+PEDST incarnations can be represented by PROV entities. In PROV, the result of each revision of a thing, in a system, is a new entity. PEDST \textit{entity concept} can be translated to PROV's \textit{specialization concept}. Alternatively PEDST entity concept can  or by marking a group of PROV entities with a description that one was a revision of another. 
+%powyzej zdanie -- sprawdzic czy ma sens
+The PROV model allows to explicitly track ``wasDerivedFrom'', relationship between its entities, while PEDST model treats this relationship to be implicit, whenever an execution reads one incarnation and writes another. PEDST's sub-incarnations can be represented with PROV’s collections.
+
+PEDST’s executions can be represented by PROV activities. PROV \textit{Start} and \textit{End} can represent beginning and end of an execution. Hierarchical nature of PEDST executions can be represented by meticulous use of PROV ``wasStartedBy''  and ``wasEndedBy''  relationships, between activities. PEDST’s processes can be represented as PROV Plans.
+
+PEDST’s interaction can be represented by PROV Communication concept. PROV has no concept which can represent PEDST messages, but those could be, with some loss of information, be packed into attributes of ``wasInformedBy'' relation.
+
+PEDST’s read and write operations can be represented as PROV Usage and Generation concepts, which ties up the PEDST to PROV translation.
+
+PROV contains many other concepts, like agents, responsibility, influence, delegation, bundles, alternate, collections, etc., which are not representable in the Tenmo model. We have not found these concepts to be particularly useful for our use case~(\cref{sec:use-case}).
+
+
+
+
+%ponizej nie robic
+
+\begin{comment}
+BRAK CZASU
+
+\todo{IMAGE: Translation of an example from Tenmo to PROV}
+\todo{TABLE: Maybe add translation table}
+\end{comment}
+
+
+\section{Outside of the scope of the work}
+%% Podzielić na "Outside of the scope" i na "Future development"
+
+Debuggability of software systems is a vast research area. While working on this thesis we have identified a set of related topics, which we did not pursue as part of this research. We will briefly discuss the relation, why we have not addressed these areas and, in some cases, how an area can be researched further.
+
+\subsection{Implementation scalability}
+
+We exclude the problem of large-scale deployments, be it sampling, ingestion, processing and querying of the data generated by the tracing system. We expect that a Dapper-inspired implementation, to deal with the volume of generated data, to be sufficient. Additional work is going to be necessary to analyze effects of sampling on the provenance tracking aspects of Tenmo. Given a more expressive data model, additional work is necessary to understand  more complex graph-based, and potentially recursive, queries over the data. Additional implementation-specific limitations (e.g. annotation payload size limit) would be necessary for Tenmo framework to scale to large-scale systems.
+
+\subsection{Library-level instrumentation}
+
+The Tenmo model is suitable for the library-level instrumentation, e.g. in RPC libraries, and context propagation libraries, and should be able to follow distributed control paths, with near-zero intervention from application developers. Similarly, as any OpenTracing implementation, distributed tracing can be provided out of the box to application developers, who use Tenmo-instrumented libraries.
+
+We found that there is no single RPC library, which is adopted widely enough in the open-source ecosystems related to HCPS, which would allow us to implement such library-level instrumentation and analyse results.
+
+\subsection{Automated provenance gathering}
+
+Although the PEDST model is suitable for use in automated provenance gathering mechanisms, via compiler instrumentation, syscall interception, etc., we believe that automated provenance gathering, if applied to HCPS, will not be successful. Signal-to-noise ratio, in the gathered data, will suffer due to the mismatch between low-level objects, typically suitable for automated provenance gathering, and high-level entities, which HCPS typically operate on. Additionally, it is not obvious how automated provenance gathering will deal with identifying long-living entities and processes, as identifying both is rather subjective, and heavily dependent on the use cases. Moreover, an explosion of data gathered by the system will require additional work to scale the PEDST architecture and the Tenmo framework. 
+
+An alternative research avenue, for automated provenance gathering, is through database instrumentation, which would allow us to track how objects evolve over time, in a system. Kubernetes ecosystem could be suitable for such research, but it is not yet clear how database-based provenance gathering would work in a system using \texttt{etcd} (a NoSQL database). Traditional database provenance research, typically, focuses on relational databases, with built-in query engines, and NoSQL database systems typically do not have these properties.
+
+\subsection{Tamper-resistance}
+
+Tamper-resistance is a non-goal of this work. Control plane systems are typically owned and operated by a single entity, a cloud provider. Hence, there is a reasonable trust for individuals operating the system. These enterprise deployments would, typically, have other mechanisms to ensure safety, privacy and security of any internal systems (e.g. access control, audit logging, etc).
+
+\subsection{Audit logging}
+
+Although there is a large overlap between what audit logging and provenance\hyp{}enhanced distributed tracing are aiming to record, the user experience and requirements towards security of the systems are vastly different. Audit logging research often focuses on security and tamper-resistance of the gathered information.
+
+\subsection{Security}
+
+We believe that the PEDST model, proposed in this thesis, is suitable as a foundation for Advanced Persistent Threat attack detection and investigation solutions (see,~\cite{apt-daly2009}). This could be, one more, direction for future work. The PEDST architecture would have to be adapted to act in a limited trust environment, and will not be able to depend on the white-box instrumentation approach. Clearly, additional work is required to understand implications of switching to a black-box approach.
+
+\subsection{Blockchain provenance}
+
+Blockchain provenance is inherent in the construction of most blockchain systems. Additionally recent blockchain-based systems employing smart contracts have some properties similar to the control plane systems (e.g. interleaving of execution- and object-based interactions). Blockchain systems are inherently based on tracking relationships between blocks -- a property very similar to provenance tracking. This typically happens at a coarse grain of whole blocks. Granular fidelity data provenance tracking could be useful to trace things at smart contract evaluation level, including sub-block data granularity.
+
+\section{Contributions}
+
+The main contribution of this thesis is the development of a provenance-enhanced distributed systems tracing model, which we implemented in the Tenmo tracing system. In this model, we combine industry-standard tracing concepts, with provenance tracking mechanisms, as researched in a wide range of provenance research.
+
+We show that the proposed model is a general solution suitable for debugging modern hierarchical control plane systems, which include heterogeneous components acting both in imperative and declarative paradigm, including use of intent-driven actuation. We show that our model is suitable for implementation and practical usage.
+
+In this thesis, we have researched, designed and proven a useful solution in the debuggability landscape. It occupies a unique point in the design space of debugging systems.
+
+This said, main contributions of this thesis can be summarized as follows:
+%
+\begin{itemize}
+	\item Identified distinguishing characteristics of hierarchical control plane systems (HCPS) with intent-based actuation, making the their debuggability an unsolved problem (\cref{sec:problem}).
+	\item Applied provenance research results, in a practical software engineering problem of tracing in HCPS.
+	\item Identified necessary properties of a debuggability solution, capable of dealing with HCPS (\cref{sec:reqs}).
+	\item Defines a provenance-enhanced distributed systems tracing model, extending the OpenTracing distributed systems tracing model with provenance tracking capabilities (\cref{sec:pedst-model}).
+	\item To track provenance, in a way compared to the Dapper model, read and write operations performed by each component in a system have been recorded explicitly and treated as first-class citizens of a model (\cref{sec:model-incarnation}).
+	% \item To construct a meaningful provenance graph for a HCPS, it is necessary to track revisions of all mutable objects operated on by a system.  [TBD in text, not yet clearly stated]
+	\item Presented an architecture, required to perform provenance-enhanced distributed systems tracing for HCPS (\cref{sec:arch}).
+	\item Showed an implementation, capable of reconstructing a full provenance and execution graphs, given the logs are gathered according to the logging protocol (\cref{sec:arch}, \cref{sec:impl}).
+	% \item Showed necessity to perform logging in a localized manner in relation to each unit of work to allow the tracing model to scale. It is sufficient to perform logging in a localized manner (\cref{sec:logging-model}).
+	\item Showed that if the logging is done according to the protocol, a global view on the provenance graph can be recovered (\cref{sec:logging-model}).
+	\item Showed that the proposed provenance-enhanced distributed systems tracing model is practical (\cref{sec:results}). 
+	% \item Showed correspondence of individual logging protocol requirements with provenance formalisms. [TBD in text]
+	\item Showed that provenance-enhanced distributed systems tracing data can be used to infer additional information through over-approximation mechanisms (\cref{sec:model-extensions}).
+\end{itemize}
+
+\bigskip
+
+\section{Discussion}
+
+Tenmo has been shown to be able to model, gather and analyse provenance-enhanced tracing data. We have shown that Tenmo is applicable to a number of software systems, and can answer practical debugging questions.
+
+In its current implementation Tenmo tracing is either fully enabled or disabled. There is no mechanism of granular control over tracing. Such control could be implemented and made to work akin to standard logging verbosity runtime settings. This mechanism would allow to trade-off tracing coverage and fidelity versus performance penalty of tracing. Additional work is required to understand impact of such runtime controls over correctness of execution tracing and provenance tracking.
+
+Given that Tenmo is a white-box tracing solution dependent on instrumentation inside of the system under tracing, adoption costs needs to be considered. In our limited experience implementing Tenmo for Nix and Kubernetes, we have found that the process is mostly straightforward and adding logging statements is obvious and cheap. On the other hand we have found that the following hurdles needs to be overcame.
+%
+\begin{itemize}[nosep]
+    \item Propagation of execution identifiers across layers of a single system. Instrumentation of a Go project which pervasively uses Go's Context would also have been easier.
+    \item Propagation of a parent execution identifier from the caller to the callee across technologies. A RPC-level instrumentation would simplify integration of Tenmo into a system. W3C Trace Context could be used for HTTP interactions. 
+    \item Entity incarnation versioning is not always obvious, can be hard to added to the system under tracing and be of a can be not important for the system itself. For example reading individual files from disk provides no information about their versioning, besides a modification time. Using it as a incarnation version is possible, but requires use of ``inter-incarnation provenance extension'' extension to maintain provenance relationship.
+    \item Identifiers coherence across systems. It has been hard to maintain coherent identifiers for executions and incarnations across the systems. This should be doable in a single organization via a policy, but is harder to achieve across organizations and/or in open source world.
+\end{itemize}
+%
+Additional research is necessary to address these issues.
+
+During work on integration of Tenmo in services, we have found that it is useful to manually add human-inferred data for the needs of analysis. For example, a human can infer from the context that two incarnations, produced by two different systems, each with unique identifier, are actually provenance-related. It might be useful to allow a human to ``assert'' such relationships into a ``observed universe'', constructed based on a given dataset. Such assertion, for example, could be structured as an imaginary execution, with read-write operations pair similarly as ``inter-incarnation provenance extension'' (\cref{sec:model-extensions} to make sure that provenance relationship is maintained. This would help developers to manually ``connect the dots'', during interactive development sessions in presence of instrumentation imperfections in the traced system.
+
+Concepts of entities, processes, sub-incarnations and sub-executions allow to aggregate data in various ways. Various data aggregations, in the global model, can be useful to visualize the data to a user in abstracted form, while preserving correctness and improving usefulness. These aggregations should help navigating large provenance and execution graph,s generated in the PEDST model. We expect these to be especially useful for exploratory debugging by software developers, not yet knowledgeable about a system under tracing. Provenance segmentation research~\cite{provenance-segmentation-abreu2016} provides additional avenues for improving signal-to-noise ratio levels of gathered data.
+
+Another aspect of this system, which has not been investigated, and seems to have potential value, is temporal analysis of Tenmo traces. An example is ability to compute a difference between two (or more) historical executions of the same complex process, at different times, in somehow different contexts. This could address a practical problem of ``why did it suddenly stop working today although it was working yesterday?''. Additional research is necessary to formulate this problem in a clear manner, and propose a solution.
+
+Moreover the graph data model, obtained during work on this problem, closely resembles the Resource Description Framework (RDF) triples~\cite{rdf-auer2007dbpedia}. We believe that the existing extensive research on knowledge extraction and data retrieval, in the area of RDF and Semantic Web~\cite{rdf-shadbolt2006semantic}, could be used here to drive further usability of the solution~\cite{rdf-powers2003practical}.
+
+\section{Conclusion}
+
+This research aimed at proposing a debugging solution, applicable to hierarchical control plane system employing intent-based actuation. Based on requirements analysis, use case modelling, sketch of model formalization, and empirical usage prototypes, of the proposed solution in a software stack, representative of hierarchical control plane systems deployed at cloud providers, it can be concluded that the proposed solution is successfully applicable to the focus use case of this work. The results indicate that a large scale debuggability solution, for hierarchical cloud control plane systems, is possible and practical.
+
+Based on these conclusions, practitioners should consider looking into provenance and provenance tracking research to adopt ideas for the next generation of observability solutions.
+
+To better understand the usability of data gathered using the proposed solution, future studies could address problem of efficient knowledge retrieval from the large amounts of data the proposed system would acquire. Further research is needed to determine the best ways to query the data for visualizations in debugging tooling, interactively explore the data, annotate the data manually and, overall, help software engineers use the proposed solution to reason about the distributed systems they own.
+
+Existing debuggability solutions used in industry, and proposed in academia, do not address the specific use case of hierarchical control plane systems. This research addresses this gap, by combining two areas of research: distributed systems tracing and provenance tracking.
+
+\hfill$\blacksquare$

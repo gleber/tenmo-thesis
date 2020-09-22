@@ -1,0 +1,76 @@
+\newpage
+\chapter{Architecture}\label{sec:arch}
+
+The model proposed in \cref{sec:pedst-model} is not sufficient on its own to solve the problem stated in \cref{sec:problem}. The model has to be supported by a solution architecture which satisfies the requirements. In this section we describe such architecture, which is Provenance-Enhanced Distributed Systems Tracing architecture (see \cref{fig:arch}).
+
+\begin{figure}[htpb]
+    \centering
+    %%TODO: Replace with Tikz nicer image
+\digraph[scale=0.6]{arch8}{
+    rankdir=TB;
+    subgraph cluster_db {
+        events [label="Events"];
+        model [label="Provenance"];
+        label="Storage";
+    }
+    client [label="Traced system"];
+    pipeline [label="Ingestion pipeline"];
+    client -> pipeline [label=" logs events"];
+    pipeline -> events [label=" collects events"];
+    events -> processor [label=" receives events"];
+    processor -> processor [label=" transforms events to records"];
+    processor -> model [label=" stores records"];
+    model -> query [label=" queries"];
+    query -> viewer [label=" shows results"];
+}
+    \caption{Data flow in the Provenance-Enhanced Distributed Systems Tracing architecture.}
+    \label{fig:arch}
+\end{figure}
+
+The PEDST architecture consists of:
+%
+\begin{itemize}
+	\item Global data model schema to capture the global view of what has been recorded among all systems participating in the data gathering process (see,~\cref{sec:global-tuples}).
+	\item Logging data model schema for structured logging to be performed by each individual component participating in the data gathering process (see,~\cref{sec:local-model}).
+	\item Storage system to store events (using logging schema) and records (using global data schema).
+	\item Logging protocol for event ingestion.
+	\item Ingestion pipeline which ingests events from event producers and stores it in the storage system.
+	\item Events processor which uses events to build up global data based on it, and stores it in the storage system.
+	\item Set of queries defined over global data.
+	\item Visualization tool using of the queries' results of the global data.
+\end{itemize}
+
+The model and the architecture are still not a solution for the problem at hand. The data produced by a traced system has to follow a structured logging protocol and data schema described in \fullref{sec:logging-model}. Even if the protocol is followed, the PEDST model allows for a considerable freedom how data is logged, hence a set of recommendations how to perform logging from traced application is presented in \fullref{sec:patterns}.
+
+To satisfy ``Supports granular fidelity implementation'', ``Supports incremental implementation'' and ``Low storage overhead'' requirements (see,~\cref{sec:reqs}), PEDST architecture assumes a white-box tracing approach. This means that tracing and logging instrumentation is actively engineered into the software whose actions are being inspected. This means that we need to provide a protocol to send events (see,~\cref{sec:logging-model}) from the traced system to a PEDST implementation deployment. Additionally, we have to provide a logging library, to simplify usage of the protocol. The white-box tracing focus puts this work in a ``disclosed provenance'' category~\cite{braun2006issues}.
+
+As per ``Limited trust'' non-goal, the proposed system is designed to be used in the confines of a single stakeholder’s infrastructure. Hence, we are not aiming for a tamper-resistant system and are trusting events logged by and within a traced system.
+
+\paragraph*{Ingestion pipeline.}
+
+Events logged by a traced system are received by an ingestion pipeline (see,~\cref{sec:ingestion-pipeline} for details), which gathers events from all components of the system and stores them in the event storage. The main goal of the ingestion pipeline is a durable delivery of events from all components of the, usually distributed, system under tracing. Hence, it contributes to the ``Full coverage'' requirement. Depending on the requirements, and the scale of the traced system, the ingestion system might be as simple as a shared NFS directory for structured log files with JSON entries, a large Splunk ingestion deployment, or as complex as an ingestion pipeline, used by Google, for Dapper traces. An asynchronous ingestion pipeline satisfies the ``Asynchronous data intake'' requirement and contributes to the ``Event-based data production'' requirement. 
+
+The distributed ingestion pipeline stores the events gathered from the traced system in an event store. The event store is essentially a queue for a processor to act upon. Presence of a distributed ingestion pipeline satisfies the ``cross-host tracking`` requirement by ingesting events from all hosts participating in the traced system.
+
+\paragraph*{Events processor.}
+
+The processor takes out an event from the events store, processes it, and deletes it. In case of a failure to process an event (e.g. if the event depends on something which is not yet recorded), it should be -- after a delay -- stored back in the queue. If it is impossible to process an event after a specified time, the event is discarded.
+
+Processing of events happens according to the procedure defined in~\fullref{sec:local-model}. Whenever processing of an event needs new records to be stored, they are added to the records store.
+
+Events processor may be responsible to transform incoming provenance information into a more convenient or efficient representation and store it in the storage system. The representation should be suitable for efficient graph queries.
+
+%% Should I make RDF representation of the graph part of the architecture? Or should it be an implementation detail?
+%% I am keeping it as an implementation detail, since there are no *direct* requirements forcing us to use the RDF representation.
+
+\paragraph*{Storage.}
+
+Records store stores tuples, which represent an observed universe, defined in~\fullref{sec:global-tuples}. The storage should also be used to store a query-optimized representation of the same data.
+
+\paragraph*{Queries.}
+
+Queries over the record store allow to construct any of the graph representations of the observed universe (see ~\cref{sec:global-graphs}) and their extensions (see ~\cref{sec:model-extensions}).
+
+\bigskip
+
+In \fullref{sec:impl} we present a proof of concept implementation of the PEDST model and architecture.
