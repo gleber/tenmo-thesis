@@ -1,0 +1,437 @@
+digraph u {
+node [style=filled];
+"89154931130416" [id="89154931130416" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130415" [id="89154931130415" label="deriv...son' being evaled" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130435" [id="89154931130435" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130436" [id="89154931130436" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130437" [id="89154931130437" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130438" [id="89154931130438" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130439" [id="89154931130439" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130440" [id="89154931130440" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130441" [id="89154931130441" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130442" [id="89154931130442" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130443" [id="89154931130443" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130444" [id="89154931130444" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130445" [id="89154931130445" label="copying referenced file" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130433" [id="89154931130433" label="deriv...nux' being evaled" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130424" [id="89154931130424" label="deriv...ibc' being evaled" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130739" [id="89154931130739" label="deriv...p23' being evaled" shape=rectangle fillcolor="#FFD9B2"]
+"89154931130883" [id="89154931130883" label="deriv...nux' being evaled" shape=rectangle fillcolor="#FFD9B2"]
+"60967060766726" [id="60967060766726" label="overa...stdenv-linux.drv'" shape=rectangle fillcolor="#FFD9B2"]
+"60967060766725" [id="60967060766725" label="overa...bash-4.4-p23.drv'" shape=rectangle fillcolor="#FFD9B2"]
+"60967060766727" [id="60967060766727" label="build...nerated.json.drv'" shape=rectangle fillcolor="#FFD9B2"]
+"60967060766724" [id="60967060766724" label="overa...nerated.json.drv'" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" [id="ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" label="kube DC Run" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" [id="ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" label="kube DC worker" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" [id="ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" label="kube DC worker" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" [id="ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" label="kube DC worker" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9DQMVTFBF07CYJQM5CF" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9DQMVTFBF07CYJQM5CF" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDSXB6Z116C8JAEG6CRF" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDSXB6Z116C8JAEG6CRF" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RTNH8ERENR0A5JR7W7FJ" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RTNH8ERENR0A5JR7W7FJ" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE72V4KXXSKCYZ6PDSEZ" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE72V4KXXSKCYZ6PDSEZ" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RXYFQKCGXANTJXHM6S6Y" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RXYFQKCGXANTJXHM6S6Y" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" [id="ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" label="kubec...resource building" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" [id="ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" label="kubectl apply one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" [id="ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" label="kubectl apply one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" [id="ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" label="kubectl apply one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" [id="ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" label="kubectl apply one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" [id="ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" label="kubectl apply" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RR0SB8V90BRMKW65F7D9" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RR0SB8V90BRMKW65F7D9" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV4813SGSYFYRYV49J0X" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV4813SGSYFYRYV49J0X" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVQ4HGWHP60XA2J5CSNZ" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVQ4HGWHP60XA2J5CSNZ" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV7AQX4HN3MYH19P8P5V" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV7AQX4HN3MYH19P8P5V" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVHA6DK0V7GN9WH4HFGD" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVHA6DK0V7GN9WH4HFGD" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVM1VE5XY8YYDJR4DVC1" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVM1VE5XY8YYDJR4DVC1" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RAMKA8S8S5BMJA0E5MTE" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RAMKA8S8S5BMJA0E5MTE" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY0NMZ9J8C72FES14C7Y" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY0NMZ9J8C72FES14C7Y" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX737YVMRJNW04W8MM0Q" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX737YVMRJNW04W8MM0Q" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY2FDEW8G382AJECQ03Z" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY2FDEW8G382AJECQ03Z" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9GH6AWYYQ725XW5A32M" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9GH6AWYYQ725XW5A32M" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDXFMFD27ERA78811GTE" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDXFMFD27ERA78811GTE" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE98R4XKYN7NV8HP95D9" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE98R4XKYN7NV8HP95D9" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVX4KHT1D9DY967NSGFY" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVX4KHT1D9DY967NSGFY" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX9EXDE6QB3NK1MMCKFC" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX9EXDE6QB3NK1MMCKFC" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9FV2M20K553R4BE5CQ5" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9FV2M20K553R4BE5CQ5" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+subgraph "cluster_e:///nix/store/9krlzvny65gdc8s7kpb6lkx8cd02c25b-default-builder.sh" {
+id="e:///nix/store/9krlzvny65gdc8s7kpb6lkx8cd02c25b-default-builder.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...5gdc8s7kpb6lkx8cd02c25b-default-builder.sh";
+"i:///nix/store/9krlzvny65gdc8s7kpb6lkx8cd02c25b-default-builder.sh";
+}
+subgraph "cluster_e:///nix/store/mjjy30kxz775bhhi6j9phw81qh6dsbrf-move-docs.sh" {
+id="e:///nix/store/mjjy30kxz775bhhi6j9phw81qh6dsbrf-move-docs.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...y30kxz775bhhi6j9phw81qh6dsbrf-move-docs.sh";
+"i:///nix/store/mjjy30kxz775bhhi6j9phw81qh6dsbrf-move-docs.sh";
+}
+subgraph "cluster_e:///nix/store/kxw6q8v6isaqjm702d71n2421cxamq68-make-symlinks-relative.sh" {
+id="e:///nix/store/kxw6q8v6isaqjm702d71n2421cxamq68-make-symlinks-relative.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...2d71n2421cxamq68-make-symlinks-relative.sh";
+"i:///nix/store/kxw6q8v6isaqjm702d71n2421cxamq68-make-symlinks-relative.sh";
+}
+subgraph "cluster_e:///nix/store/rvg5a5nwa7cihpmbzlwzh931w3g4q108-compress-man-pages.sh" {
+id="e:///nix/store/rvg5a5nwa7cihpmbzlwzh931w3g4q108-compress-man-pages.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...hpmbzlwzh931w3g4q108-compress-man-pages.sh";
+"i:///nix/store/rvg5a5nwa7cihpmbzlwzh931w3g4q108-compress-man-pages.sh";
+}
+subgraph "cluster_e:///nix/store/4ygqr4w06zwcd2kcxa6w3441jijv0pvx-strip.sh" {
+id="e:///nix/store/4ygqr4w06zwcd2kcxa6w3441jijv0pvx-strip.sh";
+style=dotted;
+fontsize=7;
+label="NSO /.../4ygqr4w06zwcd2kcxa6w3441jijv0pvx-strip.sh";
+"i:///nix/store/4ygqr4w06zwcd2kcxa6w3441jijv0pvx-strip.sh";
+}
+subgraph "cluster_e:///nix/store/6k829xz9v508ncxfcf2p1b8g1wq54946-patch-shebangs.sh" {
+id="e:///nix/store/6k829xz9v508ncxfcf2p1b8g1wq54946-patch-shebangs.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...v508ncxfcf2p1b8g1wq54946-patch-shebangs.sh";
+"i:///nix/store/6k829xz9v508ncxfcf2p1b8g1wq54946-patch-shebangs.sh";
+}
+subgraph "cluster_e:///nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh" {
+id="e:///nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...41nqxb0rxilc46svw1n-prune-libtool-files.sh";
+"i:///nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh";
+}
+subgraph "cluster_e:///nix/store/8zxndz5ag0p6s526c2xyllhk1nrn4c3i-audit-tmpdir.sh" {
+id="e:///nix/store/8zxndz5ag0p6s526c2xyllhk1nrn4c3i-audit-tmpdir.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...5ag0p6s526c2xyllhk1nrn4c3i-audit-tmpdir.sh";
+"i:///nix/store/8zxndz5ag0p6s526c2xyllhk1nrn4c3i-audit-tmpdir.sh";
+}
+subgraph "cluster_e:///nix/store/1i5y55x4b4m9qkx5dqbmr1r6bvrqbanw-multiple-outputs.sh" {
+id="e:///nix/store/1i5y55x4b4m9qkx5dqbmr1r6bvrqbanw-multiple-outputs.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...m9qkx5dqbmr1r6bvrqbanw-multiple-outputs.sh";
+"i:///nix/store/1i5y55x4b4m9qkx5dqbmr1r6bvrqbanw-multiple-outputs.sh";
+}
+subgraph "cluster_e:///nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh" {
+id="e:///nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh";
+"i:///nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh";
+}
+subgraph "cluster_e:///nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh" {
+id="e:///nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...yjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh";
+"i:///nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh";
+}
+subgraph "cluster_e:///nix/store/ngg1cv31c8c7bcm2n8ww4g06nq7s4zhm-set-source-date-epoch-to-latest.sh" {
+id="e:///nix/store/ngg1cv31c8c7bcm2n8ww4g06nq7s4zhm-set-source-date-epoch-to-latest.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...q7s4zhm-set-source-date-epoch-to-latest.sh";
+"i:///nix/store/ngg1cv31c8c7bcm2n8ww4g06nq7s4zhm-set-source-date-epoch-to-latest.sh";
+}
+subgraph "cluster_en://https://192.168.1.1/api/v1/namespaces/default/services/nginx" {
+id="en://https://192.168.1.1/api/v1/namespaces/default/services/nginx";
+style=dotted;
+fontsize=7;
+label="resource services/nginx";
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REKAW44WKNW8CC1A80V0";
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REP7AB85EW3554GWPR7H";
+}
+subgraph "cluster_e:///nix/store/4qry96ap0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv" {
+id="e:///nix/store/4qry96ap0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv";
+style=dotted;
+fontsize=7;
+label="NSO /...p0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv";
+"i:///nix/store/4qry96ap0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv";
+}
+subgraph "cluster_e:///nix/store/6ik4ci6d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv" {
+id="e:///nix/store/6ik4ci6d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv";
+style=dotted;
+fontsize=7;
+label="NSO /...d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv";
+"i:///nix/store/6ik4ci6d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv";
+}
+subgraph "cluster_e:///nix/store/mkfqzlb86s6c1vr0llagsm2dsqiz36vp-kubenix-generated.json.drv" {
+id="e:///nix/store/mkfqzlb86s6c1vr0llagsm2dsqiz36vp-kubenix-generated.json.drv";
+style=dotted;
+fontsize=7;
+label="NSO /...lagsm2dsqiz36vp-kubenix-generated.json.drv";
+"i:///nix/store/mkfqzlb86s6c1vr0llagsm2dsqiz36vp-kubenix-generated.json.drv";
+}
+subgraph "cluster_e:///nix/store/yzpn99zj5sr6i4y1zgwkzd8d0yjnkn0v-stdenv-linux" {
+id="e:///nix/store/yzpn99zj5sr6i4y1zgwkzd8d0yjnkn0v-stdenv-linux";
+style=dotted;
+fontsize=7;
+label="NSO /...n99zj5sr6i4y1zgwkzd8d0yjnkn0v-stdenv-linux";
+"i:///nix/store/yzpn99zj5sr6i4y1zgwkzd8d0yjnkn0v-stdenv-linux";
+}
+subgraph "cluster_e:///nix/store/ca3s86mhhwmjs5ksry8s3arzaf9s3dcw-gnutar-1.32" {
+id="e:///nix/store/ca3s86mhhwmjs5ksry8s3arzaf9s3dcw-gnutar-1.32";
+style=dotted;
+fontsize=7;
+label="NSO /...3s86mhhwmjs5ksry8s3arzaf9s3dcw-gnutar-1.32";
+"i:///nix/store/ca3s86mhhwmjs5ksry8s3arzaf9s3dcw-gnutar-1.32";
+}
+subgraph "cluster_e:///nix/store/cgldmnm5lf0bfjdjjm7p66v7aaxkj948-diffutils-3.7" {
+id="e:///nix/store/cgldmnm5lf0bfjdjjm7p66v7aaxkj948-diffutils-3.7";
+style=dotted;
+fontsize=7;
+label="NSO /...mnm5lf0bfjdjjm7p66v7aaxkj948-diffutils-3.7";
+"i:///nix/store/cgldmnm5lf0bfjdjjm7p66v7aaxkj948-diffutils-3.7";
+}
+subgraph "cluster_e:///nix/store/ql9k257fsgjsrc2dq2cbhhsayis7q66a-findutils-4.7.0" {
+id="e:///nix/store/ql9k257fsgjsrc2dq2cbhhsayis7q66a-findutils-4.7.0";
+style=dotted;
+fontsize=7;
+label="NSO /...7fsgjsrc2dq2cbhhsayis7q66a-findutils-4.7.0";
+"i:///nix/store/ql9k257fsgjsrc2dq2cbhhsayis7q66a-findutils-4.7.0";
+}
+subgraph "cluster_e:///nix/store/rgq5nvs1p96yaap9c9yayymjjrx3a2xp-ed-1.16" {
+id="e:///nix/store/rgq5nvs1p96yaap9c9yayymjjrx3a2xp-ed-1.16";
+style=dotted;
+fontsize=7;
+label="NSO /...e/rgq5nvs1p96yaap9c9yayymjjrx3a2xp-ed-1.16";
+"i:///nix/store/rgq5nvs1p96yaap9c9yayymjjrx3a2xp-ed-1.16";
+}
+subgraph "cluster_e:///nix/store/ib4k4scpagnidi7f0imsplfa6zw39vrq-kubenix-generated.json" {
+id="e:///nix/store/ib4k4scpagnidi7f0imsplfa6zw39vrq-kubenix-generated.json";
+style=dotted;
+fontsize=7;
+label="NSO /...i7f0imsplfa6zw39vrq-kubenix-generated.json";
+"i:///nix/store/ib4k4scpagnidi7f0imsplfa6zw39vrq-kubenix-generated.json";
+}
+subgraph "cluster_en:///apis/apps/v1/namespaces/kube-system/deployments/coredns" {
+id="en:///apis/apps/v1/namespaces/kube-system/deployments/coredns";
+style=dotted;
+fontsize=7;
+label="deployment coredns";
+"i:///apis/apps/v1/namespaces/kube-system/deployments/coredns?gen=1";
+}
+subgraph "cluster_en://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx" {
+id="en://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx";
+style=dotted;
+fontsize=7;
+label="in-me...ps/v1/namespaces/default/deployments/nginx";
+"i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ";
+}
+subgraph "cluster_en://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config" {
+id="en://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config";
+style=dotted;
+fontsize=7;
+label="in-me...namespaces/default/configmaps/nginx-config";
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW";
+}
+subgraph "cluster_en://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static" {
+id="en://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static";
+style=dotted;
+fontsize=7;
+label="in-me...namespaces/default/configmaps/nginx-static";
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC";
+}
+subgraph "cluster_en://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx" {
+id="en://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx";
+style=dotted;
+fontsize=7;
+label="in-me...1/api/v1/namespaces/default/services/nginx";
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA";
+}
+subgraph "cluster_en:///apis/apps/v1/namespaces/default/deployments/nginx" {
+id="en:///apis/apps/v1/namespaces/default/deployments/nginx";
+style=dotted;
+fontsize=7;
+label="resource deployments/nginx";
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX";
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDS7VP68NAQGK4CFW6VH";
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1";
+}
+subgraph "cluster_en://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config" {
+id="en://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config";
+style=dotted;
+fontsize=7;
+label="resource configmaps/nginx-config";
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDTFQFNCK6GYB5DNJY0Z";
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RE2ZXX51FPC9WT303FQB";
+}
+subgraph "cluster_en://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static" {
+id="en://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static";
+style=dotted;
+fontsize=7;
+label="resource configmaps/nginx-static";
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REFBRQDS6A0JNZF73E80";
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REHF3W1074H5NWN2MF90";
+}
+subgraph "cluster_en://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json" {
+id="en://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json";
+style=dotted;
+fontsize=7;
+label="file ...yf82fvpzfw7p7bzgjm3-kubenix-generated.json";
+"i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C";
+}
+"i:///nix/store/4ygqr4w06zwcd2kcxa6w3441jijv0pvx-strip.sh" [id="i:///nix/store/4ygqr4w06zwcd2kcxa6w3441jijv0pvx-strip.sh" fillcolor="#B2FFB2" label="NSO /...jijv0pvx-strip.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/6k829xz9v508ncxfcf2p1b8g1wq54946-patch-shebangs.sh" [id="i:///nix/store/6k829xz9v508ncxfcf2p1b8g1wq54946-patch-shebangs.sh" fillcolor="#B2FFB2" label="NSO /...patch-shebangs.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/8zxndz5ag0p6s526c2xyllhk1nrn4c3i-audit-tmpdir.sh" [id="i:///nix/store/8zxndz5ag0p6s526c2xyllhk1nrn4c3i-audit-tmpdir.sh" fillcolor="#B2FFB2" label="NSO /...i-audit-tmpdir.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/9krlzvny65gdc8s7kpb6lkx8cd02c25b-default-builder.sh" [id="i:///nix/store/9krlzvny65gdc8s7kpb6lkx8cd02c25b-default-builder.sh" fillcolor="#B2FFB2" label="NSO /...efault-builder.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh" [id="i:///nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh" fillcolor="#B2FFB2" label="NSO /...-libtool-files.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh" [id="i:///nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh" fillcolor="#B2FFB2" label="NSO /...m3y0-move-sbin.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/kxw6q8v6isaqjm702d71n2421cxamq68-make-symlinks-relative.sh" [id="i:///nix/store/kxw6q8v6isaqjm702d71n2421cxamq68-make-symlinks-relative.sh" fillcolor="#B2FFB2" label="NSO /...links-relative.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/mjjy30kxz775bhhi6j9phw81qh6dsbrf-move-docs.sh" [id="i:///nix/store/mjjy30kxz775bhhi6j9phw81qh6dsbrf-move-docs.sh" fillcolor="#B2FFB2" label="NSO /...sbrf-move-docs.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/rvg5a5nwa7cihpmbzlwzh931w3g4q108-compress-man-pages.sh" [id="i:///nix/store/rvg5a5nwa7cihpmbzlwzh931w3g4q108-compress-man-pages.sh" fillcolor="#B2FFB2" label="NSO /...ress-man-pages.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh" [id="i:///nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh" fillcolor="#B2FFB2" label="NSO /...pd6-move-lib64.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/ngg1cv31c8c7bcm2n8ww4g06nq7s4zhm-set-source-date-epoch-to-latest.sh" [id="i:///nix/store/ngg1cv31c8c7bcm2n8ww4g06nq7s4zhm-set-source-date-epoch-to-latest.sh" fillcolor="#B2FFB2" label="NSO /...poch-to-latest.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/4qry96ap0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv" [id="i:///nix/store/4qry96ap0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv" fillcolor="#B2FFB2" label="NSO /...-bash-4.4-p23.drv" style="dotted, filled" shape=diamond];
+"i:///nix/store/mkfqzlb86s6c1vr0llagsm2dsqiz36vp-kubenix-generated.json.drv" [id="i:///nix/store/mkfqzlb86s6c1vr0llagsm2dsqiz36vp-kubenix-generated.json.drv" fillcolor="#B2FFB2" label="NSO /...enerated.json.drv" style="dotted, filled" shape=diamond];
+"i:///nix/store/6ik4ci6d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv" [id="i:///nix/store/6ik4ci6d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv" fillcolor="#B2FFB2" label="NSO /...-stdenv-linux.drv" style="dotted, filled" shape=diamond];
+"i:///nix/store/1i5y55x4b4m9qkx5dqbmr1r6bvrqbanw-multiple-outputs.sh" [id="i:///nix/store/1i5y55x4b4m9qkx5dqbmr1r6bvrqbanw-multiple-outputs.sh" fillcolor="#B2FFB2" label="NSO /...ltiple-outputs.sh" style="dotted, filled" shape=diamond];
+"i:///nix/store/ca3s86mhhwmjs5ksry8s3arzaf9s3dcw-gnutar-1.32" [id="i:///nix/store/ca3s86mhhwmjs5ksry8s3arzaf9s3dcw-gnutar-1.32" fillcolor="#B2FFB2" label="NSO /...s3dcw-gnutar-1.32" style="dotted, filled" shape=diamond];
+"i:///nix/store/cgldmnm5lf0bfjdjjm7p66v7aaxkj948-diffutils-3.7" [id="i:///nix/store/cgldmnm5lf0bfjdjjm7p66v7aaxkj948-diffutils-3.7" fillcolor="#B2FFB2" label="NSO /...948-diffutils-3.7" style="dotted, filled" shape=diamond];
+"i:///nix/store/ql9k257fsgjsrc2dq2cbhhsayis7q66a-findutils-4.7.0" [id="i:///nix/store/ql9k257fsgjsrc2dq2cbhhsayis7q66a-findutils-4.7.0" fillcolor="#B2FFB2" label="NSO /...a-findutils-4.7.0" style="dotted, filled" shape=diamond];
+"i:///nix/store/rgq5nvs1p96yaap9c9yayymjjrx3a2xp-ed-1.16" [id="i:///nix/store/rgq5nvs1p96yaap9c9yayymjjrx3a2xp-ed-1.16" fillcolor="#B2FFB2" label="NSO /...jjrx3a2xp-ed-1.16" style="dotted, filled" shape=diamond];
+"i:///nix/store/yzpn99zj5sr6i4y1zgwkzd8d0yjnkn0v-stdenv-linux" [id="i:///nix/store/yzpn99zj5sr6i4y1zgwkzd8d0yjnkn0v-stdenv-linux" fillcolor="#B2FFB2" label="NSO /...kn0v-stdenv-linux" style="dotted, filled" shape=diamond];
+"i:///nix/store/ib4k4scpagnidi7f0imsplfa6zw39vrq-kubenix-generated.json" [id="i:///nix/store/ib4k4scpagnidi7f0imsplfa6zw39vrq-kubenix-generated.json" fillcolor="#B2FFB2" label="NSO /...ix-generated.json" style="dotted, filled" shape=diamond];
+"i:///apis/apps/v1/namespaces/kube-system/deployments/coredns?gen=1" [id="i:///apis/apps/v1/namespaces/kube-system/deployments/coredns?gen=1" fillcolor="#B2FFB2" label="deployment coredns" style="dotted, filled" shape=diamond];
+"i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ" [id="i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ" fillcolor="#B2FFB2" label="in-me...deployments/nginx" style="dotted, filled" shape=diamond];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX" [id="i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX" fillcolor="#B2FFB2" label="resou...deployments/nginx" style="dotted, filled" shape=diamond];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDS7VP68NAQGK4CFW6VH" [id="i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDS7VP68NAQGK4CFW6VH" fillcolor="#B2FFB2" label="resou...deployments/nginx" style="dotted, filled" shape=diamond];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW" [id="i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW" fillcolor="#B2FFB2" label="in-me...maps/nginx-config" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDTFQFNCK6GYB5DNJY0Z" [id="i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDTFQFNCK6GYB5DNJY0Z" fillcolor="#B2FFB2" label="resou...maps/nginx-config" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RE2ZXX51FPC9WT303FQB" [id="i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RE2ZXX51FPC9WT303FQB" fillcolor="#B2FFB2" label="resou...maps/nginx-config" style="dotted, filled" shape=diamond];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC" [id="i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC" fillcolor="#B2FFB2" label="in-me...maps/nginx-static" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REFBRQDS6A0JNZF73E80" [id="i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REFBRQDS6A0JNZF73E80" fillcolor="#B2FFB2" label="resou...maps/nginx-static" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REHF3W1074H5NWN2MF90" [id="i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REHF3W1074H5NWN2MF90" fillcolor="#B2FFB2" label="resou...maps/nginx-static" style="dotted, filled" shape=diamond];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA" [id="i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA" fillcolor="#B2FFB2" label="in-me...lt/services/nginx" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REKAW44WKNW8CC1A80V0" [id="i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REKAW44WKNW8CC1A80V0" fillcolor="#B2FFB2" label="resource services/nginx" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REP7AB85EW3554GWPR7H" [id="i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REP7AB85EW3554GWPR7H" fillcolor="#B2FFB2" label="resource services/nginx" style="dotted, filled" shape=diamond];
+"i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C" [id="i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C" fillcolor="#B2FFB2" label="file ...ix-generated.json" style="dotted, filled" shape=diamond];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" [id="i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" fillcolor="#B2FFB2" label="deployment nginx" style="dotted, filled" shape=diamond];
+"89154931130415" -> "89154931130416" [weight=25];
+"89154931130433" -> "89154931130435" [weight=25];
+"89154931130433" -> "89154931130436" [weight=25];
+"89154931130433" -> "89154931130437" [weight=25];
+"89154931130433" -> "89154931130438" [weight=25];
+"89154931130433" -> "89154931130439" [weight=25];
+"89154931130433" -> "89154931130440" [weight=25];
+"89154931130433" -> "89154931130441" [weight=25];
+"89154931130433" -> "89154931130442" [weight=25];
+"89154931130433" -> "89154931130443" [weight=25];
+"89154931130433" -> "89154931130444" [weight=25];
+"89154931130433" -> "89154931130445" [weight=25];
+"89154931130424" -> "89154931130433" [weight=25];
+"89154931130415" -> "89154931130424" [weight=25];
+"89154931130415" -> "89154931130739" [weight=25];
+"89154931130415" -> "89154931130883" [weight=25];
+"60967060766724" -> "60967060766727" [weight=25];
+"ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" -> "ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" [weight=25];
+"ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" -> "ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" [weight=25];
+"ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" -> "ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9DQMVTFBF07CYJQM5CF" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDSXB6Z116C8JAEG6CRF" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RTNH8ERENR0A5JR7W7FJ" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE72V4KXXSKCYZ6PDSEZ" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RXYFQKCGXANTJXHM6S6Y" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RR0SB8V90BRMKW65F7D9" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV4813SGSYFYRYV49J0X" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVQ4HGWHP60XA2J5CSNZ" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV7AQX4HN3MYH19P8P5V" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVHA6DK0V7GN9WH4HFGD" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVM1VE5XY8YYDJR4DVC1" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RAMKA8S8S5BMJA0E5MTE" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY0NMZ9J8C72FES14C7Y" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX737YVMRJNW04W8MM0Q" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY2FDEW8G382AJECQ03Z" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9GH6AWYYQ725XW5A32M" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDXFMFD27ERA78811GTE" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE98R4XKYN7NV8HP95D9" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVX4KHT1D9DY967NSGFY" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q7E8JR50CQTPKDW2SS" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX9EXDE6QB3NK1MMCKFC" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9FV2M20K553R4BE5CQ5" [weight=25];
+"89154931130416" -> "i:///nix/store/9krlzvny65gdc8s7kpb6lkx8cd02c25b-default-builder.sh" [style=dashed weight=15];
+"89154931130435" -> "i:///nix/store/mjjy30kxz775bhhi6j9phw81qh6dsbrf-move-docs.sh" [style=dashed weight=15];
+"89154931130436" -> "i:///nix/store/kxw6q8v6isaqjm702d71n2421cxamq68-make-symlinks-relative.sh" [style=dashed weight=15];
+"89154931130437" -> "i:///nix/store/rvg5a5nwa7cihpmbzlwzh931w3g4q108-compress-man-pages.sh" [style=dashed weight=15];
+"89154931130438" -> "i:///nix/store/4ygqr4w06zwcd2kcxa6w3441jijv0pvx-strip.sh" [style=dashed weight=15];
+"89154931130439" -> "i:///nix/store/6k829xz9v508ncxfcf2p1b8g1wq54946-patch-shebangs.sh" [style=dashed weight=15];
+"89154931130440" -> "i:///nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh" [style=dashed weight=15];
+"89154931130441" -> "i:///nix/store/8zxndz5ag0p6s526c2xyllhk1nrn4c3i-audit-tmpdir.sh" [style=dashed weight=15];
+"89154931130442" -> "i:///nix/store/1i5y55x4b4m9qkx5dqbmr1r6bvrqbanw-multiple-outputs.sh" [style=dashed weight=15];
+"89154931130443" -> "i:///nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh" [style=dashed weight=15];
+"89154931130444" -> "i:///nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh" [style=dashed weight=15];
+"89154931130445" -> "i:///nix/store/ngg1cv31c8c7bcm2n8ww4g06nq7s4zhm-set-source-date-epoch-to-latest.sh" [style=dashed weight=15];
+"89154931130739" -> "i:///nix/store/4qry96ap0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv" [style=dashed weight=15];
+"89154931130883" -> "i:///nix/store/6ik4ci6d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv" [style=dashed weight=15];
+"i:///apis/apps/v1/namespaces/kube-system/deployments/coredns?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9DQMVTFBF07CYJQM5CF" [style=dashed weight=10];
+"89154931130415" -> "i:///nix/store/mkfqzlb86s6c1vr0llagsm2dsqiz36vp-kubenix-generated.json.drv" [style=dashed weight=15];
+"i:///nix/store/mkfqzlb86s6c1vr0llagsm2dsqiz36vp-kubenix-generated.json.drv" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/4qry96ap0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv" -> "60967060766725" [style=dashed weight=10];
+"i:///nix/store/6ik4ci6d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv" -> "60967060766726" [style=dashed weight=10];
+"i:///nix/store/yzpn99zj5sr6i4y1zgwkzd8d0yjnkn0v-stdenv-linux" -> "60967060766726" [style=dashed weight=10];
+"i:///nix/store/4qry96ap0kpkjwjlsyc8p3m3hh6pg5pv-bash-4.4-p23.drv" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/6ik4ci6d5cy0rymrnqypq4xkl6ls9h6q-stdenv-linux.drv" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/1i5y55x4b4m9qkx5dqbmr1r6bvrqbanw-multiple-outputs.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/4ygqr4w06zwcd2kcxa6w3441jijv0pvx-strip.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/6k829xz9v508ncxfcf2p1b8g1wq54946-patch-shebangs.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/8zxndz5ag0p6s526c2xyllhk1nrn4c3i-audit-tmpdir.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/9krlzvny65gdc8s7kpb6lkx8cd02c25b-default-builder.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/ca3s86mhhwmjs5ksry8s3arzaf9s3dcw-gnutar-1.32" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/cgldmnm5lf0bfjdjjm7p66v7aaxkj948-diffutils-3.7" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/cickvswrvann041nqxb0rxilc46svw1n-prune-libtool-files.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/fyaryjvghbkpfnsyw97hb3lyb37s1pd6-move-lib64.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/kd4xwxjpjxi71jkm6ka0np72if9rm3y0-move-sbin.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/kxw6q8v6isaqjm702d71n2421cxamq68-make-symlinks-relative.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/mjjy30kxz775bhhi6j9phw81qh6dsbrf-move-docs.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/ngg1cv31c8c7bcm2n8ww4g06nq7s4zhm-set-source-date-epoch-to-latest.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/ql9k257fsgjsrc2dq2cbhhsayis7q66a-findutils-4.7.0" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/rgq5nvs1p96yaap9c9yayymjjrx3a2xp-ed-1.16" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/rvg5a5nwa7cihpmbzlwzh931w3g4q108-compress-man-pages.sh" -> "60967060766724" [style=dashed weight=10];
+"i:///nix/store/yzpn99zj5sr6i4y1zgwkzd8d0yjnkn0v-stdenv-linux" -> "60967060766724" [style=dashed weight=10];
+"60967060766724" -> "i:///nix/store/ib4k4scpagnidi7f0imsplfa6zw39vrq-kubenix-generated.json" [style=dashed weight=15];
+"i:///apis/apps/v1/namespaces/kube-system/deployments/coredns?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RAMKA8S8S5BMJA0E5MTE" [style=dashed weight=10];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" -> "i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ" [style=dashed weight=15];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" -> "i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW" [style=dashed weight=15];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" -> "i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC" [style=dashed weight=15];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" -> "i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA" [style=dashed weight=15];
+"i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ" -> "ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX" -> "ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" [style=dashed weight=10];
+"ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" -> "i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDS7VP68NAQGK4CFW6VH" [style=dashed weight=15];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW" -> "ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" [style=dashed weight=10];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDTFQFNCK6GYB5DNJY0Z" -> "ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" [style=dashed weight=10];
+"ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" -> "i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RE2ZXX51FPC9WT303FQB" [style=dashed weight=15];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC" -> "ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" [style=dashed weight=10];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REFBRQDS6A0JNZF73E80" -> "ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" [style=dashed weight=10];
+"ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" -> "i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REHF3W1074H5NWN2MF90" [style=dashed weight=15];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA" -> "ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" [style=dashed weight=10];
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REKAW44WKNW8CC1A80V0" -> "ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" [style=dashed weight=10];
+"ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" -> "i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REP7AB85EW3554GWPR7H" [style=dashed weight=15];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RTNH8ERENR0A5JR7W7FJ" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVQ4HGWHP60XA2J5CSNZ" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/kube-system/deployments/coredns?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RR0SB8V90BRMKW65F7D9" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV4813SGSYFYRYV49J0X" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVM1VE5XY8YYDJR4DVC1" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RXYFQKCGXANTJXHM6S6Y" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVX4KHT1D9DY967NSGFY" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX9EXDE6QB3NK1MMCKFC" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY0NMZ9J8C72FES14C7Y" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/kube-system/deployments/coredns?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9FV2M20K553R4BE5CQ5" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDSXB6Z116C8JAEG6CRF" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE72V4KXXSKCYZ6PDSEZ" [style=dashed weight=10];
+"i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C" -> "ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/kube-system/deployments/coredns?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9GH6AWYYQ725XW5A32M" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV7AQX4HN3MYH19P8P5V" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDXFMFD27ERA78811GTE" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE98R4XKYN7NV8HP95D9" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY2FDEW8G382AJECQ03Z" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVHA6DK0V7GN9WH4HFGD" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX737YVMRJNW04W8MM0Q" [style=dashed weight=10];
+"i:///nix/store/ib4k4scpagnidi7f0imsplfa6zw39vrq-kubenix-generated.json" -> "i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C" [weight=5 label="" style=dashed penwidth=0.5 arrowsize=.5 labelfontsize=10 color=red];
+}

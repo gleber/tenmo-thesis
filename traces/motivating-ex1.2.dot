@@ -1,0 +1,98 @@
+digraph u {
+node [style=filled];
+"deploy-script.sh-run-1" [id="deploy-script.sh-run-1" label="run deployment script" shape=rectangle fillcolor="#FFD9B2"]
+"docker-build-app-1" [id="docker-build-app-1" label="build app container" shape=rectangle fillcolor="#FFD9B2"]
+"docker-push-app-1" [id="docker-push-app-1" label="docker push app:1" shape=rectangle fillcolor="#FFD9B2"]
+"ssh-remote-1" [id="ssh-remote-1" label="ssh remote -- docker pull" shape=rectangle fillcolor="#FFD9B2"]
+"ssh-remote-docker-pull-1" [id="ssh-remote-docker-pull-1" label="docker pull" shape=rectangle fillcolor="#FFD9B2"]
+"scp1" [id="scp1" label="scp config" shape=rectangle fillcolor="#FFD9B2"]
+"remote-docker-daemon" [id="remote-docker-daemon" label="remote docker daemon" shape=rectangle fillcolor="#FFD9B2"]
+"ssh-remote-2" [id="ssh-remote-2" label="ssh remote -- docker stop" shape=rectangle fillcolor="#FFD9B2"]
+"ssh-remote-docker-stop-1" [id="ssh-remote-docker-stop-1" label="docker stop -n app" shape=rectangle fillcolor="#FFD9B2"]
+"remote-app-container" [id="remote-app-container" label="app container @ remote" shape=rectangle fillcolor="#FFD9B2"]
+"ssh-remote-3" [id="ssh-remote-3" label="ssh remote -- docker run" shape=rectangle fillcolor="#FFD9B2"]
+"ssh-remote-docker-run-1" [id="ssh-remote-docker-run-1" label="docker run -n app" shape=rectangle fillcolor="#FFD9B2"]
+subgraph "cluster_docker-image-app" {
+id="docker-image-app";
+style=dotted;
+fontsize=7;
+label="docker image app";
+"docker-image-app-1";
+}
+subgraph "cluster_registry-docker-image-app" {
+id="registry-docker-image-app";
+style=dotted;
+fontsize=7;
+label="docker image app @ registry";
+"registry-docker-image-app-1";
+}
+subgraph "cluster_remote-docker-image-app" {
+id="remote-docker-image-app";
+style=dotted;
+fontsize=7;
+label="docker image app @ remote";
+"remote-docker-image-app-1";
+}
+subgraph "cluster_remote-app" {
+id="remote-app";
+style=dotted;
+fontsize=7;
+label="app @ remote";
+"remote-app-1";
+"remote-app-2";
+}
+subgraph "cluster_config" {
+id="config";
+style=dotted;
+fontsize=7;
+label="config";
+"config-1";
+}
+subgraph "cluster_remote-config" {
+id="remote-config";
+style=dotted;
+fontsize=7;
+label="config @ remote";
+"remote-config-1";
+}
+subgraph "cluster_cwd" {
+id="cwd";
+style=dotted;
+fontsize=7;
+label="app sources";
+"cwd-1";
+}
+"docker-image-app-1" [id="docker-image-app-1" fillcolor="#B2FFB2" label="docker image app:1" style="dotted, filled" shape=diamond];
+"registry-docker-image-app-1" [id="registry-docker-image-app-1" fillcolor="#B2FFB2" label="docke... app:1 @ registry" style="dotted, filled" shape=diamond];
+"config-1" [id="config-1" fillcolor="#B2FFB2" label="config 1" style="dotted, filled" shape=diamond];
+"remote-app-1" [id="remote-app-1" fillcolor="#B2FFB2" label="stopped app @ remote" style="dotted, filled" shape=diamond];
+"remote-docker-image-app-1" [id="remote-docker-image-app-1" fillcolor="#B2FFB2" label="docke...ge app:1 @ remote" style="dotted, filled" shape=diamond];
+"cwd-1" [id="cwd-1" fillcolor="#B2FFB2" label="app sources 1" style="dotted, filled" shape=diamond];
+"remote-app-2" [id="remote-app-2" fillcolor="#B2FFB2" label="updated app @ remote" style="dotted, filled" shape=diamond];
+"remote-config-1" [id="remote-config-1" fillcolor="#B2FFB2" label="config 1 @ remote" style="dotted, filled" shape=diamond];
+"deploy-script.sh-run-1" -> "docker-build-app-1" [weight=25];
+"deploy-script.sh-run-1" -> "docker-push-app-1" [weight=25];
+"deploy-script.sh-run-1" -> "ssh-remote-1" [weight=25];
+"ssh-remote-1" -> "ssh-remote-docker-pull-1" [weight=25];
+"deploy-script.sh-run-1" -> "scp1" [weight=25];
+"deploy-script.sh-run-1" -> "ssh-remote-2" [weight=25];
+"ssh-remote-2" -> "ssh-remote-docker-stop-1" [weight=25];
+"ssh-remote-docker-run-1" -> "remote-app-container" [weight=25];
+"remote-docker-daemon" -> "remote-app-container" [style=dotted weight=20];
+"deploy-script.sh-run-1" -> "ssh-remote-3" [weight=25];
+"ssh-remote-3" -> "ssh-remote-docker-run-1" [weight=25];
+"docker-build-app-1" -> "docker-image-app-1" [style=dashed weight=15];
+"docker-image-app-1" -> "docker-push-app-1" [style=dashed weight=10];
+"docker-push-app-1" -> "registry-docker-image-app-1" [style=dashed weight=15];
+"registry-docker-image-app-1" -> "ssh-remote-docker-pull-1" [style=dashed weight=10];
+"ssh-remote-docker-pull-1" -> "remote-docker-image-app-1" [style=dashed weight=15];
+"ssh-remote-docker-stop-1" -> "remote-app-1" [style=dashed weight=15];
+"config-1" -> "scp1" [style=dashed weight=10];
+"scp1" -> "remote-config-1" [style=dashed weight=15];
+"remote-app-1" -> "ssh-remote-docker-run-1" [style=dashed weight=10];
+"remote-docker-image-app-1" -> "ssh-remote-docker-run-1" [style=dashed weight=10];
+"ssh-remote-docker-run-1" -> "remote-app-2" [style=dashed weight=15];
+"cwd-1" -> "docker-build-app-1" [style=dashed weight=10];
+"remote-app-2" -> "remote-app-container" [style=dashed weight=10];
+"remote-config-1" -> "remote-app-container" [style=dashed weight=10];
+}

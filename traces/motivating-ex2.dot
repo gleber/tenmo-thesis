@@ -1,0 +1,148 @@
+digraph u {
+node [style=filled];
+"git-commit-and-push-1" [id="git-commit-and-push-1" label="git commit + git push #1" shape=rectangle fillcolor="#FFD9B2"]
+"git-commit-and-push-2" [id="git-commit-and-push-2" label="git commit + git push #2" shape=rectangle fillcolor="#FFD9B2"]
+"git-commit-and-push-3" [id="git-commit-and-push-3" label="git commit + git push #3" shape=rectangle fillcolor="#FFD9B2"]
+"deployment-server" [id="deployment-server" label="deployment server loop" shape=rectangle fillcolor="#FFD9B2"]
+"deployment-1" [id="deployment-1" label="deployment #1" shape=rectangle fillcolor="#FFD9B2"]
+"deployment-3" [id="deployment-3" label="deployment #3" shape=rectangle fillcolor="#FFD9B2"]
+"checkout-1" [id="checkout-1" label="checkout #1" shape=rectangle fillcolor="#FFD9B2"]
+"checkout-3" [id="checkout-3" label="checkout #3" shape=rectangle fillcolor="#FFD9B2"]
+"build-1" [id="build-1" label="build #1" shape=rectangle fillcolor="#FFD9B2"]
+"build-3" [id="build-3" label="build #3" shape=rectangle fillcolor="#FFD9B2"]
+"diff-3" [id="diff-3" label="diff #3" shape=rectangle fillcolor="#FFD9B2"]
+"diff-1" [id="diff-1" label="diff #1" shape=rectangle fillcolor="#FFD9B2"]
+"copy-3" [id="copy-3" label="copy #3" shape=rectangle fillcolor="#FFD9B2"]
+"stop-3" [id="stop-3" label="stop #3" shape=rectangle fillcolor="#FFD9B2"]
+"start-3" [id="start-3" label="start app #3" shape=rectangle fillcolor="#FFD9B2"]
+subgraph "cluster_src" {
+id="src";
+style=dotted;
+fontsize=7;
+label="./src/*";
+"src-1";
+"src-2";
+"src-3";
+}
+subgraph "cluster_repo" {
+id="repo";
+style=dotted;
+fontsize=7;
+label="repo";
+"repo-2";
+"repo-1";
+"repo-3";
+}
+subgraph "cluster_tmp-store-3" {
+id="tmp-store-3";
+style=dotted;
+fontsize=7;
+label="temp #2 src checkout";
+"tmp-store-3";
+}
+subgraph "cluster_tmp-store-1" {
+id="tmp-store-1";
+style=dotted;
+fontsize=7;
+label="temp #1 src checkout";
+"tmp-store-1";
+}
+subgraph "cluster_tmp-src-1" {
+id="tmp-src-1";
+style=dotted;
+fontsize=7;
+label="temp #1 ./src/*";
+"tmp-src-1";
+}
+subgraph "cluster_tmp-src-3" {
+id="tmp-src-3";
+style=dotted;
+fontsize=7;
+label="temp #2 ./src/*";
+"tmp-src-3";
+}
+subgraph "cluster_tmp-bin-1" {
+id="tmp-bin-1";
+style=dotted;
+fontsize=7;
+label="temp #1 binary";
+"tmp-bin-1";
+}
+subgraph "cluster_tmp-bin-3" {
+id="tmp-bin-3";
+style=dotted;
+fontsize=7;
+label="temp #2 binary";
+"tmp-bin-3";
+}
+subgraph "cluster_bin" {
+id="bin";
+style=dotted;
+fontsize=7;
+label="deployed binary";
+"bin-0";
+"bin-3";
+}
+subgraph "cluster_app" {
+id="app";
+style=dotted;
+fontsize=7;
+label="stopped app";
+"app-0";
+"app-3";
+}
+"src-1" [id="src-1" fillcolor="#B2FFB2" label="./src/* #1" style="dotted, filled" shape=diamond];
+"src-2" [id="src-2" fillcolor="#B2FFB2" label="./src/* #2" style="dotted, filled" shape=diamond];
+"repo-2" [id="repo-2" fillcolor="#B2FFB2" label="repo #2" style="dotted, filled" shape=diamond];
+"src-3" [id="src-3" fillcolor="#B2FFB2" label="./src/* #3" style="dotted, filled" shape=diamond];
+"repo-1" [id="repo-1" fillcolor="#B2FFB2" label="repo #1" style="dotted, filled" shape=diamond];
+"repo-3" [id="repo-3" fillcolor="#B2FFB2" label="repo #3" style="dotted, filled" shape=diamond];
+"tmp-store-3" [id="tmp-store-3" fillcolor="#B2FFB2" label="temp #2 src checkout" style="dotted, filled" shape=diamond];
+"tmp-store-1" [id="tmp-store-1" fillcolor="#B2FFB2" label="temp #1 src checkout" style="dotted, filled" shape=diamond];
+"tmp-src-1" [id="tmp-src-1" fillcolor="#B2FFB2" label="temp #1 ./src/*" style="dotted, filled" shape=diamond];
+"tmp-store-1" -> "tmp-src-1" [penwidth=0.3 arrowsize=.5 weight=22];
+"tmp-src-3" [id="tmp-src-3" fillcolor="#B2FFB2" label="temp #2 ./src/*" style="dotted, filled" shape=diamond];
+"tmp-store-3" -> "tmp-src-3" [penwidth=0.3 arrowsize=.5 weight=22];
+"tmp-bin-1" [id="tmp-bin-1" fillcolor="#B2FFB2" label="temp #1 binary" style="dotted, filled" shape=diamond];
+"bin-0" [id="bin-0" fillcolor="#B2FFB2" label="binary #0" style="dotted, filled" shape=diamond];
+"tmp-bin-3" [id="tmp-bin-3" fillcolor="#B2FFB2" label="temp #2 binary" style="dotted, filled" shape=diamond];
+"app-0" [id="app-0" fillcolor="#B2FFB2" label="app #0" style="dotted, filled" shape=diamond];
+"app-3" [id="app-3" fillcolor="#B2FFB2" label="app #3" style="dotted, filled" shape=diamond];
+"bin-3" [id="bin-3" fillcolor="#B2FFB2" label="binary #3" style="dotted, filled" shape=diamond];
+"deployment-server" -> "deployment-1" [weight=25];
+"deployment-server" -> "deployment-3" [weight=25];
+"deployment-1" -> "checkout-1" [weight=25];
+"deployment-3" -> "checkout-3" [weight=25];
+"deployment-1" -> "build-1" [weight=25];
+"deployment-3" -> "build-3" [weight=25];
+"deployment-3" -> "diff-3" [weight=25];
+"deployment-1" -> "diff-1" [weight=25];
+"deployment-3" -> "copy-3" [weight=25];
+"deployment-3" -> "stop-3" [weight=25];
+"deployment-3" -> "start-3" [weight=25];
+"src-1" -> "git-commit-and-push-1" [style=dashed weight=10];
+"src-2" -> "git-commit-and-push-2" [style=dashed weight=10];
+"git-commit-and-push-1" -> "repo-1" [style=dashed weight=15];
+"git-commit-and-push-2" -> "repo-2" [style=dashed weight=15];
+"git-commit-and-push-3" -> "repo-3" [style=dashed weight=15];
+"src-3" -> "git-commit-and-push-3" [style=dashed weight=10];
+"repo-3" -> "deployment-3" [style=dashed weight=10];
+"repo-1" -> "deployment-1" [style=dashed weight=10];
+"repo-1" -> "checkout-1" [style=dashed weight=10];
+"repo-3" -> "checkout-3" [style=dashed weight=10];
+"checkout-1" -> "tmp-store-1" [style=dashed weight=15];
+"checkout-3" -> "tmp-store-3" [style=dashed weight=15];
+"tmp-src-1" -> "build-1" [style=dashed weight=10];
+"tmp-src-3" -> "build-3" [style=dashed weight=10];
+"build-1" -> "tmp-bin-1" [style=dashed weight=15];
+"build-3" -> "tmp-bin-3" [style=dashed weight=15];
+"tmp-bin-3" -> "diff-3" [style=dashed weight=10];
+"tmp-bin-1" -> "diff-1" [style=dashed weight=10];
+"bin-0" -> "diff-1" [style=dashed weight=10];
+"bin-0" -> "diff-3" [style=dashed weight=10];
+"tmp-bin-3" -> "copy-3" [style=dashed weight=10];
+"copy-3" -> "bin-3" [style=dashed weight=15];
+"stop-3" -> "app-0" [style=dashed weight=15];
+"start-3" -> "app-3" [style=dashed weight=15];
+"bin-3" -> "start-3" [style=dashed weight=10];
+}

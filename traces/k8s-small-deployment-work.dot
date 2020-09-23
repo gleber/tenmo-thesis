@@ -1,0 +1,69 @@
+digraph u {
+node [style=filled];
+"ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" [id="ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" label="kube DC Run" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" [id="ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" label="kube DC worker" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9DQMVTFBF07CYJQM5CF" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9DQMVTFBF07CYJQM5CF" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE72V4KXXSKCYZ6PDSEZ" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE72V4KXXSKCYZ6PDSEZ" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RTNH8ERENR0A5JR7W7FJ" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RTNH8ERENR0A5JR7W7FJ" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVHA6DK0V7GN9WH4HFGD" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVHA6DK0V7GN9WH4HFGD" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RXYFQKCGXANTJXHM6S6Y" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RXYFQKCGXANTJXHM6S6Y" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RAMKA8S8S5BMJA0E5MTE" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RAMKA8S8S5BMJA0E5MTE" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVX4KHT1D9DY967NSGFY" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVX4KHT1D9DY967NSGFY" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" [id="ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" label="kube DC worker" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDSXB6Z116C8JAEG6CRF" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDSXB6Z116C8JAEG6CRF" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY0NMZ9J8C72FES14C7Y" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY0NMZ9J8C72FES14C7Y" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX737YVMRJNW04W8MM0Q" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX737YVMRJNW04W8MM0Q" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9FV2M20K553R4BE5CQ5" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9FV2M20K553R4BE5CQ5" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV4813SGSYFYRYV49J0X" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV4813SGSYFYRYV49J0X" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVM1VE5XY8YYDJR4DVC1" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVM1VE5XY8YYDJR4DVC1" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE98R4XKYN7NV8HP95D9" [id="ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE98R4XKYN7NV8HP95D9" label="kube DC process one" shape=rectangle fillcolor="#FFD9B2"]
+subgraph "cluster_en:///apis/apps/v1/namespaces/kube-system/deployments/coredns" {
+id="en:///apis/apps/v1/namespaces/kube-system/deployments/coredns";
+style=dotted;
+fontsize=7;
+label="deployment coredns";
+}
+subgraph "cluster_en://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx" {
+id="en://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx";
+style=dotted;
+fontsize=7;
+label="in-me...ps/v1/namespaces/default/deployments/nginx";
+}
+subgraph "cluster_en:///apis/apps/v1/namespaces/default/deployments/nginx" {
+id="en:///apis/apps/v1/namespaces/default/deployments/nginx";
+style=dotted;
+fontsize=7;
+label="resource deployments/nginx";
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX";
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1";
+}
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX" [id="i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX" fillcolor="#B2FFB2" label="resou...deployments/nginx" style="dotted, filled" shape=diamond];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" [id="i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" fillcolor="#B2FFB2" label="deployment nginx" style="dotted, filled" shape=diamond];
+"ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" -> "ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9DQMVTFBF07CYJQM5CF" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE72V4KXXSKCYZ6PDSEZ" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RTNH8ERENR0A5JR7W7FJ" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVHA6DK0V7GN9WH4HFGD" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RXYFQKCGXANTJXHM6S6Y" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RAMKA8S8S5BMJA0E5MTE" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6QFH6H43Q6CWFY2PJMR" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVX4KHT1D9DY967NSGFY" [weight=25];
+"ex://kube-DeploymentController-Run-01EJP9R4ETBCWRTMARMD3SRW6M" -> "ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDSXB6Z116C8JAEG6CRF" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY0NMZ9J8C72FES14C7Y" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX737YVMRJNW04W8MM0Q" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9R9FV2M20K553R4BE5CQ5" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV4813SGSYFYRYV49J0X" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVM1VE5XY8YYDJR4DVC1" [weight=25];
+"ex://kube-DeploymentController-worker-01EJP9R6Q8JJ01VPENHSEEAGFV" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE98R4XKYN7NV8HP95D9" [weight=25];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVX4KHT1D9DY967NSGFY" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE72V4KXXSKCYZ6PDSEZ" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RTNH8ERENR0A5JR7W7FJ" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RXYFQKCGXANTJXHM6S6Y" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVHA6DK0V7GN9WH4HFGD" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RV4813SGSYFYRYV49J0X" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RVM1VE5XY8YYDJR4DVC1" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RY0NMZ9J8C72FES14C7Y" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RDSXB6Z116C8JAEG6CRF" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RX737YVMRJNW04W8MM0Q" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?gen=1" -> "ex://kube-DeploymentController-worker-processNextWorkItem-01EJP9RE98R4XKYN7NV8HP95D9" [style=dashed weight=10];
+}

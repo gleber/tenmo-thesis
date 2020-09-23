@@ -1,0 +1,221 @@
+1600617326.499422 @nix {"action":"start","id":123471719825408,"level":3,"text":"_main","type":112}
+1600617326.499503 @nix {"action":"start","id":123471719825409,"level":3,"parent":123471719825408,"text":"evaluating file '/home/gleber/code/nix/inst/share/nix/corepkgs/derivation.nix'","type":113}
+1600617326.499554 @nix {"action":"stop","id":123471719825409}
+1600617326.499597 @nix {"action":"start","id":123471719825410,"level":3,"parent":123471719825408,"text":"_main.eval","type":113}
+1600617326.499643 @nix {"action":"start","id":123471719825411,"level":3,"parent":123471719825410,"text":"evaluating file '/home/gleber/code/nix/tests/config.nix'","type":113}
+1600617326.499691 @nix {"action":"stop","id":123471719825411}
+1600617326.499737 @nix {"action":"stop","id":123471719825410}
+1600617326.499783 @nix {"action":"start","id":123471719825412,"level":3,"parent":123471719825408,"text":"preparing build of 1 derivations","type":112}
+1600617326.499840 @nix {"action":"start","id":123471719825413,"level":4,"parent":123471719825412,"text":"derivation 'dependencies-top' being evaled","type":113}
+1600617326.499890 @nix {"action":"start","fields":["/home/gleber/code/nix/tests/simple.deps.builder.sh"],"id":123471719825414,"level":2,"parent":123471719825413,"text":"copying referenced file","type":114}
+1600617326.499933 @nix {"action":"result","fields":["/home/gleber/code/nix/tests/simple.deps.builder.sh"],"id":123471719825414,"type":108}
+1600617326.499978 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"acquiring global GC lock '/run/user/1000/nix-test/logging-json/var/nix/gc.lock'"}
+1600617326.500076 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"acquiring read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.500131 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.500177 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.500225 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"locking path '/run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh'"}
+1600617326.500273 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"lock acquired on '/run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh.lock'"}
+1600617326.500318 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"lock released on '/run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh.lock'"}
+1600617326.500365 @nix {"action":"msg","id":123471719825413,"level":4,"msg":"copied source '/home/gleber/code/nix/tests/simple.deps.builder.sh' -> '/run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh'"}
+1600617326.500409 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh"],"id":123471719825414,"type":109}
+1600617326.500457 @nix {"action":"stop","id":123471719825414}
+1600617326.500501 @nix {"action":"start","id":123471719825415,"level":4,"parent":123471719825413,"text":"derivation 'dependencies-input-0' being evaled","type":113}
+1600617326.500543 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.500587 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.500628 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"locking path '/run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh'"}
+1600617326.500663 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"lock acquired on '/run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh.lock'"}
+1600617326.500702 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"lock released on '/run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh.lock'"}
+1600617326.500745 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.500792 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.500841 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"locking path '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv'"}
+1600617326.500886 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"lock acquired on '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv.lock'"}
+1600617326.500932 @nix {"action":"msg","id":123471719825415,"level":5,"msg":"lock released on '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv.lock'"}
+1600617326.500983 @nix {"action":"msg","id":123471719825415,"level":4,"msg":"instantiated 'dependencies-input-0' -> '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv'"}
+1600617326.501027 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv"],"id":123471719825415,"type":109}
+1600617326.501125 @nix {"action":"stop","id":123471719825415}
+1600617326.501186 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.501236 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.501285 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"locking path '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv'"}
+1600617326.501332 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"lock acquired on '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv.lock'"}
+1600617326.501375 @nix {"action":"msg","id":123471719825413,"level":5,"msg":"lock released on '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv.lock'"}
+1600617326.501422 @nix {"action":"msg","id":123471719825413,"level":4,"msg":"instantiated 'dependencies-top' -> '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv'"}
+1600617326.501467 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv"],"id":123471719825413,"type":109}
+1600617326.501512 @nix {"action":"stop","id":123471719825413}
+1600617326.501560 @nix {"action":"start","id":123471719825416,"level":3,"parent":123471719825412,"text":"building 1 paths","type":112}
+1600617326.501610 @nix {"action":"start","id":123471719825417,"level":5,"parent":123471719825416,"text":"querying info about missing paths","type":0}
+1600617326.501652 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"starting pool of 11 threads"}
+1600617326.501696 @nix {"action":"stop","id":123471719825417}
+1600617326.501795 @nix {"action":"msg","id":123471719825416,"level":2,"msg":"these 2 derivations will be built:"}
+1600617326.501862 @nix {"action":"msg","id":123471719825416,"level":2,"msg":"  /run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv"}
+1600617326.501909 @nix {"action":"msg","id":123471719825416,"level":2,"msg":"  /run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv"}
+1600617326.501949 @nix {"action":"start","id":123471719825418,"level":0,"parent":123471719825416,"text":"","type":102}
+1600617326.501993 @nix {"action":"start","id":123471719825419,"level":0,"parent":123471719825416,"text":"","type":104}
+1600617326.502040 @nix {"action":"start","id":123471719825420,"level":0,"parent":123471719825416,"text":"","type":103}
+1600617326.502087 @nix {"action":"start","id":123471719825421,"level":5,"parent":123471719825416,"text":"querying info about missing paths","type":0}
+1600617326.502135 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"starting pool of 11 threads"}
+1600617326.502189 @nix {"action":"stop","id":123471719825421}
+1600617326.502243 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': created"}
+1600617326.502360 @nix {"action":"start","fields":["/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv","",1,0],"id":123471719825422,"level":2,"parent":123471719825416,"text":"overall building '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv'","type":105}
+1600617326.502422 @nix {"action":"result","fields":[0,1,0,0],"id":123471719825419,"type":105}
+1600617326.502468 @nix {"action":"result","fields":[0,0,0,0],"id":123471719825420,"type":105}
+1600617326.502516 @nix {"action":"result","fields":[101,0],"id":123471719825418,"type":106}
+1600617326.502636 @nix {"action":"result","fields":[100,0],"id":123471719825418,"type":106}
+1600617326.502744 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': woken up"}
+1600617326.502891 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"entered goal loop"}
+1600617326.502951 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': init"}
+1600617326.502997 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': loading derivation"}
+1600617326.503043 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.503087 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.503136 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': have derivation"}
+1600617326.503185 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv"],"id":123471719825422,"type":108}
+1600617326.503226 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.503273 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.503319 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top': created"}
+1600617326.503361 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top': woken up"}
+1600617326.503406 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top': init"}
+1600617326.503450 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.503494 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.503540 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top': trying next substituter"}
+1600617326.503582 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"path '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top' is required, but there is no substituter that can build it"}
+1600617326.503629 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top': done"}
+1600617326.503677 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': waitee 'substitution of '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top'' done; 0 left"}
+1600617326.503718 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': woken up"}
+1600617326.503760 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top': goal destroyed"}
+1600617326.503804 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': all outputs substituted (maybe)"}
+1600617326.503866 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': created"}
+1600617326.503914 @nix {"action":"start","fields":["/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv","",1,0],"id":123471719825423,"level":2,"parent":123471719825416,"text":"overall building '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv'","type":105}
+1600617326.503962 @nix {"action":"result","fields":[0,2,0,0],"id":123471719825419,"type":105}
+1600617326.504004 @nix {"action":"result","fields":[0,0,0,0],"id":123471719825420,"type":105}
+1600617326.504049 @nix {"action":"result","fields":[101,0],"id":123471719825418,"type":106}
+1600617326.504097 @nix {"action":"result","fields":[100,0],"id":123471719825418,"type":106}
+1600617326.504142 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': woken up"}
+1600617326.504184 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': init"}
+1600617326.504230 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': loading derivation"}
+1600617326.504276 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.504318 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.504366 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': have derivation"}
+1600617326.504416 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv"],"id":123471719825423,"type":108}
+1600617326.504458 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.504504 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.504547 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0': created"}
+1600617326.504592 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0': woken up"}
+1600617326.504639 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0': init"}
+1600617326.504683 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"acquiring write lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.504729 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"downgrading to read lock on '/run/user/1000/nix-test/logging-json/var/nix/temproots/28748'"}
+1600617326.504767 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0': trying next substituter"}
+1600617326.504802 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"path '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0' is required, but there is no substituter that can build it"}
+1600617326.504851 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0': done"}
+1600617326.504895 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': waitee 'substitution of '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0'' done; 0 left"}
+1600617326.504946 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': woken up"}
+1600617326.504984 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"substitution of '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0': goal destroyed"}
+1600617326.505021 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': all outputs substituted (maybe)"}
+1600617326.505067 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': all inputs realised"}
+1600617326.505113 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh"],"id":123471719825423,"type":108}
+1600617326.505210 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"added input paths '/run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh'"}
+1600617326.505271 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': woken up"}
+1600617326.505326 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': trying to build"}
+1600617326.505371 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"locking path '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0'"}
+1600617326.505418 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"lock acquired on '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0.lock'"}
+1600617326.505514 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"removing invalid path '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0'"}
+1600617326.505616 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"starting build hook '/home/gleber/code/nix/inst/libexec/nix/build-remote'"}
+1600617326.505719 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"cannot find machines file '/run/user/1000/nix-test/logging-json/etc/machines'"}
+1600617326.505768 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"got 0 remote builders"}
+1600617326.505809 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"hook reply is 'decline-permanently'"}
+1600617326.505869 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"killing process 28763"}
+1600617326.514057 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': woken up"}
+1600617326.514667 @nix {"action":"msg","id":123471719825416,"level":4,"msg":"executing builder '/nix/store/cdrmdq9ckrffzlajj3hq1mz62l4z1v8c-bash-interactive-4.4-p23/bin/bash'"}
+1600617326.519412 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 3\"}"}
+1600617326.519629 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 4\"}"}
+1600617326.519796 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 5\"}"}
+1600617326.520030 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 6\"}"}
+1600617326.520167 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 7\"}"}
+1600617326.520314 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 8\"}"}
+1600617326.520439 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 9\"}"}
+1600617326.520563 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 10\"}"}
+1600617326.520731 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 11\"}"}
+1600617326.520873 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 12\"}"}
+1600617326.521052 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 13\"}"}
+1600617326.521197 @nix {"action":"start","fields":["/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv","",1,1],"id":123471719825424,"level":2,"parent":123471719825423,"text":"building '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv'","type":105}
+1600617326.521297 @nix {"action":"result","fields":[0,2,1,0],"id":123471719825419,"type":105}
+1600617326.521402 @nix {"action":"result","fields":[0,0,0,0],"id":123471719825420,"type":105}
+1600617326.521452 @nix {"action":"result","fields":[101,0],"id":123471719825418,"type":106}
+1600617326.521498 @nix {"action":"result","fields":[100,0],"id":123471719825418,"type":106}
+1600617326.523113 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': got EOF"}
+1600617326.523184 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': woken up"}
+1600617326.523237 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': build done"}
+1600617326.523288 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"killing process 28777"}
+1600617326.523339 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"builder process for '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv' finished"}
+1600617326.523571 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"scanning for references inside XXX '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0'"}
+1600617326.523760 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"blah for '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0'"}
+1600617326.523832 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"unreferenced input XXX: '/run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh'"}
+1600617326.523894 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0"],"id":123471719825423,"type":109}
+1600617326.523981 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"outputs checked"}
+1600617326.524266 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"lock released on '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0.lock'"}
+1600617326.524327 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': done"}
+1600617326.524382 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': waitee 'building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv'' done; 0 left"}
+1600617326.524436 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': woken up"}
+1600617326.524482 @nix {"action":"result","fields":[1,2,0,0],"id":123471719825419,"type":105}
+1600617326.524533 @nix {"action":"result","fields":[0,0,0,0],"id":123471719825420,"type":105}
+1600617326.524580 @nix {"action":"result","fields":[101,0],"id":123471719825418,"type":106}
+1600617326.524628 @nix {"action":"result","fields":[100,0],"id":123471719825418,"type":106}
+1600617326.524675 @nix {"action":"stop","id":123471719825424}
+1600617326.524721 @nix {"action":"stop","id":123471719825423}
+1600617326.524769 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv': goal destroyed"}
+1600617326.524814 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': all inputs realised"}
+1600617326.524871 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/bd73whr00dmzw3gs67kinns6yyv1jlgg-dependencies-input-0.drv"],"id":123471719825422,"type":108}
+1600617326.524921 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0"],"id":123471719825422,"type":108}
+1600617326.524974 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh"],"id":123471719825422,"type":108}
+1600617326.525025 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"added input paths '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0', '/run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh'"}
+1600617326.525074 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': woken up"}
+1600617326.525116 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': trying to build"}
+1600617326.525161 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"locking path '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top'"}
+1600617326.525204 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"lock acquired on '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top.lock'"}
+1600617326.525250 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"removing invalid path '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top'"}
+1600617326.525292 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': woken up"}
+1600617326.525342 @nix {"action":"msg","id":123471719825416,"level":4,"msg":"executing builder '/nix/store/cdrmdq9ckrffzlajj3hq1mz62l4z1v8c-bash-interactive-4.4-p23/bin/bash'"}
+1600617326.528074 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 3\"}"}
+1600617326.528180 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 4\"}"}
+1600617326.528238 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 5\"}"}
+1600617326.528324 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 6\"}"}
+1600617326.528413 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 7\"}"}
+1600617326.528503 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 8\"}"}
+1600617326.528595 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 9\"}"}
+1600617326.528716 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 10\"}"}
+1600617326.528782 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 11\"}"}
+1600617326.528879 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 12\"}"}
+1600617326.528976 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"@nix {\"action\":\"msg\",\"id\":123471719825416,\"level\":5,\"msg\":\"closing leaked FD 13\"}"}
+1600617326.529035 @nix {"action":"start","fields":["/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv","",1,1],"id":123471719825425,"level":2,"parent":123471719825422,"text":"building '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv'","type":105}
+1600617326.529095 @nix {"action":"result","fields":[1,2,1,0],"id":123471719825419,"type":105}
+1600617326.529155 @nix {"action":"result","fields":[0,0,0,0],"id":123471719825420,"type":105}
+1600617326.529205 @nix {"action":"result","fields":[101,0],"id":123471719825418,"type":106}
+1600617326.529254 @nix {"action":"result","fields":[100,0],"id":123471719825418,"type":106}
+1600617326.543080 @nix {"action":"result","fields":["FOO"],"id":123471719825425,"type":101}
+1600617326.543196 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': got EOF"}
+1600617326.543246 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': woken up"}
+1600617326.543297 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': build done"}
+1600617326.543349 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"killing process 28781"}
+1600617326.543401 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"builder process for '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv' finished"}
+1600617326.543455 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"scanning for references inside XXX '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top'"}
+1600617326.543602 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"found reference to 'dc9zd1kawf2kal6z9cyi4iy0ba8c95my' at offset '43'"}
+1600617326.543666 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"blah for '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top'"}
+1600617326.543719 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"unreferenced input XXX: '/run/user/1000/nix-test/logging-json/store/bvh8wgmd0asn08dg5nxhf9g8v2vw2zbw-dependencies-input-0'"}
+1600617326.543769 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"unreferenced input XXX: '/run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh'"}
+1600617326.543839 @nix {"action":"result","fields":["/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top"],"id":123471719825422,"type":109}
+1600617326.543897 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"outputs checked"}
+1600617326.543974 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"lock released on '/run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top.lock'"}
+1600617326.544034 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': done"}
+1600617326.544088 @nix {"action":"result","fields":[2,2,0,0],"id":123471719825419,"type":105}
+1600617326.544138 @nix {"action":"result","fields":[0,0,0,0],"id":123471719825420,"type":105}
+1600617326.544190 @nix {"action":"result","fields":[101,0],"id":123471719825418,"type":106}
+1600617326.544240 @nix {"action":"result","fields":[100,0],"id":123471719825418,"type":106}
+1600617326.544292 @nix {"action":"stop","id":123471719825425}
+1600617326.544339 @nix {"action":"stop","id":123471719825422}
+1600617326.544391 @nix {"action":"msg","id":123471719825416,"level":5,"msg":"building of '/run/user/1000/nix-test/logging-json/store/j55p0z81q8cak1da2xnikzk4s82g23rk-dependencies-top.drv': goal destroyed"}
+1600617326.544443 @nix {"action":"stop","id":123471719825420}
+1600617326.544493 @nix {"action":"stop","id":123471719825419}
+1600617326.544546 @nix {"action":"stop","id":123471719825418}
+1600617326.544598 @nix {"action":"stop","id":123471719825416}
+1600617326.544643 @nix {"action":"msg","id":123471719825412,"level":5,"msg":"acquiring global GC lock '/run/user/1000/nix-test/logging-json/var/nix/gc.lock'"}
+1600617326.544694 @nix {"action":"stop","id":123471719825412}
+1600617326.544751 @nix {"action":"stop","id":123471719825408}
+1600617326.545048 /run/user/1000/nix-test/logging-json/store/dc9zd1kawf2kal6z9cyi4iy0ba8c95my-dependencies-top

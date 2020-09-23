@@ -1,0 +1,89 @@
+digraph u {
+node [style=filled];
+"30447023161345" [id="30447023161345" label="evalu...s/derivation.nix'" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161347" [id="30447023161347" label="evalu...tests/config.nix'" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161346" [id="30447023161346" label="_main.eval" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161350" [id="30447023161350" label="deriv...t-0' being evaled" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161352" [id="30447023161352" label="query...out missing paths" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161356" [id="30447023161356" label="query...out missing paths" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161357" [id="30447023161357" label="build...cies-input-0.drv'" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161358" [id="30447023161358" label="build...ndencies-top.drv'" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161355" [id="30447023161355" label="" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161354" [id="30447023161354" label="" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161353" [id="30447023161353" label="" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161351" [id="30447023161351" label="building 1 paths" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161348" [id="30447023161348" label="prepa... of 1 derivations" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161344" [id="30447023161344" label="_main" shape=rectangle fillcolor="#FFD9B2"]
+"30447023161349" [id="30447023161349" label="deriv...top' being evaled" shape=rectangle fillcolor="#FFD9B2"]
+subgraph "cluster_e:///run/user/1000/nix-test/logging-json/store/40zj9p2w3lkxkpfr3g938vapxp3fmiac-dependencies-input-0.drv" {
+id="e:///run/user/1000/nix-test/logging-json/store/40zj9p2w3lkxkpfr3g938vapxp3fmiac-dependencies-input-0.drv";
+style=dotted;
+fontsize=7;
+label="NSO /...r3g938vapxp3fmiac-dependencies-input-0.drv";
+"i:///run/user/1000/nix-test/logging-json/store/40zj9p2w3lkxkpfr3g938vapxp3fmiac-dependencies-input-0.drv";
+}
+subgraph "cluster_e:///run/user/1000/nix-test/logging-json/store/sh0p2kw8ylqzjijdi3cxpl70z857mhbq-dependencies-top.drv" {
+id="e:///run/user/1000/nix-test/logging-json/store/sh0p2kw8ylqzjijdi3cxpl70z857mhbq-dependencies-top.drv";
+style=dotted;
+fontsize=7;
+label="NSO /...zjijdi3cxpl70z857mhbq-dependencies-top.drv";
+"i:///run/user/1000/nix-test/logging-json/store/sh0p2kw8ylqzjijdi3cxpl70z857mhbq-dependencies-top.drv";
+}
+subgraph "cluster_e:///run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh" {
+id="e:///run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...2l8a2yy715-builder-dependencies-input-0.sh";
+"i:///run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh";
+}
+subgraph "cluster_e:///run/user/1000/nix-test/logging-json/store/wfchbfd39qcy4j1q13fh4mjb0wkjjvdh-dependencies-input-0" {
+id="e:///run/user/1000/nix-test/logging-json/store/wfchbfd39qcy4j1q13fh4mjb0wkjjvdh-dependencies-input-0";
+style=dotted;
+fontsize=7;
+label="NSO /...y4j1q13fh4mjb0wkjjvdh-dependencies-input-0";
+"i:///run/user/1000/nix-test/logging-json/store/wfchbfd39qcy4j1q13fh4mjb0wkjjvdh-dependencies-input-0";
+}
+subgraph "cluster_e:///run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh" {
+id="e:///run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh";
+style=dotted;
+fontsize=7;
+label="NSO /...17yrlbbagagrj2clzxd-simple.deps.builder.sh";
+"i:///run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh";
+}
+subgraph "cluster_e:///run/user/1000/nix-test/logging-json/store/3hknjp8dvfryb4270bc4fyd1r9jshd9c-dependencies-top" {
+id="e:///run/user/1000/nix-test/logging-json/store/3hknjp8dvfryb4270bc4fyd1r9jshd9c-dependencies-top";
+style=dotted;
+fontsize=7;
+label="NSO /...dvfryb4270bc4fyd1r9jshd9c-dependencies-top";
+"i:///run/user/1000/nix-test/logging-json/store/3hknjp8dvfryb4270bc4fyd1r9jshd9c-dependencies-top";
+}
+"i:///run/user/1000/nix-test/logging-json/store/40zj9p2w3lkxkpfr3g938vapxp3fmiac-dependencies-input-0.drv" [id="i:///run/user/1000/nix-test/logging-json/store/40zj9p2w3lkxkpfr3g938vapxp3fmiac-dependencies-input-0.drv" fillcolor="#B2FFB2" label="NSO /...ncies-input-0.drv" style="dotted, filled" shape=diamond]
+"i:///run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh" [id="i:///run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh" fillcolor="#B2FFB2" label="NSO /...encies-input-0.sh" style="dotted, filled" shape=diamond]
+"i:///run/user/1000/nix-test/logging-json/store/sh0p2kw8ylqzjijdi3cxpl70z857mhbq-dependencies-top.drv" [id="i:///run/user/1000/nix-test/logging-json/store/sh0p2kw8ylqzjijdi3cxpl70z857mhbq-dependencies-top.drv" fillcolor="#B2FFB2" label="NSO /...endencies-top.drv" style="dotted, filled" shape=diamond]
+"i:///run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh" [id="i:///run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh" fillcolor="#B2FFB2" label="NSO /...e.deps.builder.sh" style="dotted, filled" shape=diamond]
+"i:///run/user/1000/nix-test/logging-json/store/wfchbfd39qcy4j1q13fh4mjb0wkjjvdh-dependencies-input-0" [id="i:///run/user/1000/nix-test/logging-json/store/wfchbfd39qcy4j1q13fh4mjb0wkjjvdh-dependencies-input-0" fillcolor="#B2FFB2" label="NSO /...endencies-input-0" style="dotted, filled" shape=diamond]
+"i:///run/user/1000/nix-test/logging-json/store/3hknjp8dvfryb4270bc4fyd1r9jshd9c-dependencies-top" [id="i:///run/user/1000/nix-test/logging-json/store/3hknjp8dvfryb4270bc4fyd1r9jshd9c-dependencies-top" fillcolor="#B2FFB2" label="NSO /...-dependencies-top" style="dotted, filled" shape=diamond]
+"30447023161344" -> "30447023161345"
+"30447023161346" -> "30447023161347"
+"30447023161344" -> "30447023161346"
+"30447023161349" -> "30447023161350"
+"30447023161351" -> "30447023161352"
+"30447023161351" -> "30447023161356"
+"30447023161351" -> "30447023161357"
+"30447023161351" -> "30447023161358"
+"30447023161351" -> "30447023161355"
+"30447023161351" -> "30447023161354"
+"30447023161351" -> "30447023161353"
+"30447023161348" -> "30447023161351"
+"30447023161344" -> "30447023161348"
+"30447023161348" -> "30447023161349"
+"30447023161350" -> "i:///run/user/1000/nix-test/logging-json/store/40zj9p2w3lkxkpfr3g938vapxp3fmiac-dependencies-input-0.drv" [style=dashed]
+"30447023161349" -> "i:///run/user/1000/nix-test/logging-json/store/sh0p2kw8ylqzjijdi3cxpl70z857mhbq-dependencies-top.drv" [style=dashed]
+"i:///run/user/1000/nix-test/logging-json/store/40zj9p2w3lkxkpfr3g938vapxp3fmiac-dependencies-input-0.drv" -> "30447023161357" [style=dashed]
+"i:///run/user/1000/nix-test/logging-json/store/a2k781ggfk1syl2an5y2gx2l8a2yy715-builder-dependencies-input-0.sh" -> "30447023161357" [style=dashed]
+"30447023161357" -> "i:///run/user/1000/nix-test/logging-json/store/wfchbfd39qcy4j1q13fh4mjb0wkjjvdh-dependencies-input-0" [style=dashed]
+"i:///run/user/1000/nix-test/logging-json/store/sh0p2kw8ylqzjijdi3cxpl70z857mhbq-dependencies-top.drv" -> "30447023161358" [style=dashed]
+"i:///run/user/1000/nix-test/logging-json/store/q6ngyanhbcyjr17yrlbbagagrj2clzxd-simple.deps.builder.sh" -> "30447023161358" [style=dashed]
+"i:///run/user/1000/nix-test/logging-json/store/wfchbfd39qcy4j1q13fh4mjb0wkjjvdh-dependencies-input-0" -> "30447023161358" [style=dashed]
+"30447023161358" -> "i:///run/user/1000/nix-test/logging-json/store/3hknjp8dvfryb4270bc4fyd1r9jshd9c-dependencies-top" [style=dashed]
+}

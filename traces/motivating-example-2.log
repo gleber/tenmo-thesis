@@ -1,0 +1,102 @@
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('git-commit-and-push', now(), null, 'git commit + git push', now() + '1 minute');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('git-commit-and-push-1', now(), null, 'git commit + git push #1', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('gcap1', now(), 'EventOperation', '{"event_ulid":"gcap1","operation_id":"gcap1","execution_id":"git-commit-and-push-1","type":"r","incarnation_id":"src-1","entity_id":"src","timestamp":"2020-09-19 23:34:42.65589+00","incarnation_description":"./src/* #1","entity_description":"./src/*"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('git-commit-and-push-2', now(), null, 'git commit + git push #2', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('gcap2', now(), 'EventOperation', '{"event_ulid":"gcap2","operation_id":"gcap2","execution_id":"git-commit-and-push-2","type":"r","incarnation_id":"src-2","entity_id":"src","timestamp":"2020-09-19 23:34:42.65589+00","incarnation_description":"./src/* #2","entity_description":"./src/*"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('gcap1-1', now(), 'EventOperation', '{"event_ulid":"gcap1-1","operation_id":"gcap1-1","execution_id":"git-commit-and-push-1","type":"w","incarnation_id":"repo-1","entity_id":"repo","timestamp":"2020-09-19 23:34:42.65589+00","incarnation_description":"repo #1","entity_description":"repo"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('gcap2-1', now(), 'EventOperation', '{"event_ulid":"gcap2-1","operation_id":"gcap2-1","execution_id":"git-commit-and-push-2","type":"w","incarnation_id":"repo-2","entity_id":"repo","timestamp":"2020-09-19 23:34:42.65589+00","incarnation_description":"repo #2","entity_description":"repo"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('git-commit-and-push-3', now(), null, 'git commit + git push #3', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('gcap3-1', now(), 'EventOperation', '{"event_ulid":"gcap3-1","operation_id":"gcap3-1","execution_id":"git-commit-and-push-3","type":"w","incarnation_id":"repo-3","entity_id":"repo","timestamp":"2020-09-19 23:34:42.65589+00","incarnation_description":"repo #3","entity_description":"repo"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('gcap2', now(), 'EventOperation', '{"event_ulid":"gcap2","operation_id":"gcap2","execution_id":"git-commit-and-push-2","type":"r","incarnation_id":"src-2","entity_id":"src","timestamp":"2020-09-19 23:34:42.65589+00","incarnation_description":"./src/* #2","entity_description":"./src/*"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('gcap3', now(), 'EventOperation', '{"event_ulid":"gcap3","operation_id":"gcap3","execution_id":"git-commit-and-push-3","type":"r","incarnation_id":"src-3","entity_id":"src","timestamp":"2020-09-19 23:34:42.65589+00","incarnation_description":"./src/* #3","entity_description":"./src/*"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('deployment-server', now(), null, 'deployment server loop', now() + '1 hour');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('deployment-1', now(), 'deployment-server', 'deployment #1', now() + '1 hour');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('deployment-3', now(), 'deployment-server', 'deployment #3', now() + '1 hour');
+
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcap3', now(), 'EventOperation', '{"event_ulid":"dgcap3","operation_id":"dgcap3","execution_id":"deployment-3","type":"r","incarnation_id":"repo-3","entity_id":"repo","timestamp":"2020-09-19 23:42:42.65589+00","incarnation_description":"","entity_description":""}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcap1', now(), 'EventOperation', '{"event_ulid":"dgcap1","operation_id":"dgcap1","execution_id":"deployment-1","type":"r","incarnation_id":"repo-1","entity_id":"repo","timestamp":"2020-09-19 23:41:42.65589+00","incarnation_description":"","entity_description":""}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('checkout-1', now(), 'deployment-1', 'checkout #1', now() + '1 minute');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('checkout-3', now(), 'deployment-3', 'checkout #3', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcap1b', now(), 'EventOperation', '{"execution_id":"checkout-1","type":"r","incarnation_id":"repo-1","entity_id":"repo","incarnation_description":"","entity_description":""}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcap1bb', now(), 'EventOperation', '{"execution_id":"checkout-3","type":"r","incarnation_id":"repo-3","entity_id":"repo","incarnation_description":"","entity_description":""}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcap1b', now(), 'EventOperation', '{"execution_id":"checkout-1","type":"w","incarnation_id":"tmp-store-1","entity_id":"tmp-store-1","incarnation_description":"temp #1 src checkout","entity_description":"temp #2 src checkout"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcap1bt', now(), 'EventOperation', '{"execution_id":"checkout-1","type":"w","incarnation_id":"tmp-store-1","entity_id":"tmp-store-1","incarnation_description":"temp #1 src checkout","entity_description":"temp #2 src checkout"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcap1bt2', now(), 'EventOperation', '{"execution_id":"checkout-3","type":"w","incarnation_id":"tmp-store-3","entity_id":"tmp-store-3","incarnation_description":"temp #2 src checkout","entity_description":"temp #2 src checkout"}'::jsonb);
+
+update entities set description = 'temp #1 src checkout' where entity_id = 'tmp-store-1';
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('build-1', now(), 'deployment-1', 'build #1', now() + '1 minute');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('build-3', now(), 'deployment-3', 'build #3', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcabbbb-1', now(), 'EventOperation', '{"execution_id":"build-1","type":"r","incarnation_id":"tmp-src-1","parent_id":"tmp-store-1","entity_id":"tmp-src-1","incarnation_description":"temp #1 ./src/*","entity_description":"temp #1 ./src/*"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dgcabbbb-3', now(), 'EventOperation', '{"execution_id":"build-3","type":"r","incarnation_id":"tmp-src-3","parent_id":"tmp-store-3","entity_id":"tmp-src-3","incarnation_description":"temp #2 ./src/*","entity_description":"temp #2 ./src/*"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbbb1', now(), 'EventOperation', '{"execution_id":"build-1","type":"w","incarnation_id":"tmp-bin-1","entity_id":"tmp-bin-1","incarnation_description":"temp #1 binary","entity_description":"temp #1 binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbbb1', now(), 'EventOperation', '{"execution_id":"build-3","type":"w","incarnation_id":"tmp-bin-3","entity_id":"tmp-bin-3","incarnation_description":"temp #2 binary","entity_description":"temp #2 binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbbb3', now(), 'EventOperation', '{"execution_id":"build-3","type":"w","incarnation_id":"tmp-bin-3","entity_id":"tmp-bin-3","incarnation_description":"temp #2 binary","entity_description":"temp #2 binary"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('diff-3', now(), 'deployment-3', 'diff #3', now() + '1 minute');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('diff-1', now(), 'deployment-1', 'diff #1', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbbb3', now(), 'EventOperation', '{"execution_id":"diff-3","type":"r","incarnation_id":"tmp-bin-3","entity_id":"tmp-bin-3","incarnation_description":"temp #2 binary","entity_description":"temp #2 binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbbb3d', now(), 'EventOperation', '{"execution_id":"diff-3","type":"r","incarnation_id":"tmp-bin-3","entity_id":"tmp-bin-3","incarnation_description":"temp #2 binary","entity_description":"temp #2 binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbbb1d', now(), 'EventOperation', '{"execution_id":"diff-1","type":"r","incarnation_id":"tmp-bin-1","entity_id":"tmp-bin-1","incarnation_description":"temp #1 binary","entity_description":"temp #1 binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbbb1d', now(), 'EventOperation', '{"execution_id":"diff-1","type":"r","incarnation_id":"bin-0","entity_id":"bin","incarnation_description":"binary #0","entity_description":"deployed binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbd1', now(), 'EventOperation', '{"execution_id":"diff-1","type":"r","incarnation_id":"bin-0","entity_id":"bin","incarnation_description":"binary #0","entity_description":"deployed binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbd1', now(), 'EventOperation', '{"execution_id":"diff-3","type":"r","incarnation_id":"bin-0","entity_id":"bin","incarnation_description":"binary #0","entity_description":"deployed binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbd3', now(), 'EventOperation', '{"execution_id":"diff-3","type":"r","incarnation_id":"bin-0","entity_id":"bin","incarnation_description":"binary #0","entity_description":"deployed binary"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('copy-3', now(), 'deployment-1', 'copy #3', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('dfc3', now(), 'EventOperation', '{"execution_id":"copy-3","type":"r","incarnation_id":"tmp-bin-3","entity_id":"tmp-bin-3","incarnation_description":"temp #2 binary","entity_description":"temp #2 binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfbbbd3', now(), 'EventOperation', '{"execution_id":"copy-3","type":"w","incarnation_id":"bin-3","entity_id":"bin","incarnation_description":"binary #3","entity_description":"deployed binary"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfc3w', now(), 'EventOperation', '{"execution_id":"copy-3","type":"w","incarnation_id":"bin-3","entity_id":"bin","incarnation_description":"binary #3","entity_description":"deployed binary"}'::jsonb);
+
+update executions set parent_id = 'deployment-3' where execution_id = 'copy-3';
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('stop-3', now(), 'deployment-3', 'stop #3', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('dfcs3', now(), 'EventOperation', '{"execution_id":"stop-3","type":"w","incarnation_id":"app-0","entity_id":"app","incarnation_description":"app #0","entity_description":"stopped app"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('start-3', now(), 'deployment-3', 'start app #3', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('dfcs3', now(), 'EventOperation', '{"execution_id":"start-3","type":"w","incarnation_id":"app-3","entity_id":"app","incarnation_description":"app #3","entity_description":"app"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfcs3sa', now(), 'EventOperation', '{"execution_id":"start-3","type":"w","incarnation_id":"app-3","entity_id":"app","incarnation_description":"app #3","entity_description":"app"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('dfcs3sar', now(), 'EventOperation', '{"execution_id":"start-3","type":"r","incarnation_id":"bin-3","entity_id":"bin","incarnation_description":"","entity_description":""}'::jsonb);

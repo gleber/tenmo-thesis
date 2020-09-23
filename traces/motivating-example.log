@@ -1,0 +1,61 @@
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('docker-build-app-1', now(), 'deploy-script.sh-run-1', 'build app container', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('123122435', now(), 'EventOperation', '{"event_ulid":"123122435","operation_id":"docker-build-app-1","execution_id":"docker-build-app-1","type":"w","incarnation_id":"docker-image-app-1","entity_id":"docker-image-app","timestamp":"2020-09-19 00:06:42.65589+00"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('deploy-script.sh-run-1', now(), null, 'run deployment script', now() + '1 hour');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('docker-build-app-1', now(), 'deploy-script.sh-run-1', 'build app container', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('123122435', now(), 'EventOperation', '{"event_ulid":"123122435","operation_id":"docker-build-app-1","execution_id":"docker-build-app-1","type":"w","incarnation_id":"docker-image-app-1","entity_id":"docker-image-app","timestamp":"2020-09-19 00:06:42.65589+00","incarnation_description":"docker image app:1","entity_description":"docker image app"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('docker-push-app-1', now(), 'deploy-script.sh-run-1', 'docker push app:1', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('456245624356', now(), 'EventOperation', '{"event_ulid":"456245624356","operation_id":"docker-push-app-1","execution_id":"docker-push-app-1","type":"r","incarnation_id":"docker-image-app-1","entity_id":"docker-image-app","timestamp":"2020-09-19 00:010:42.65589+00","incarnation_description":"docker image app:1","entity_description":"docker image app"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('456245624356234', now(), 'EventOperation', '{"event_ulid":"456245624356234","operation_id":"docker-push-app-1-32","execution_id":"docker-push-app-1","type":"w","incarnation_id":"registry-docker-image-app-1","entity_id":"registry-docker-image-app","timestamp":"2020-09-19 00:011:42.65589+00","incarnation_description":"docker image app:1 @ registry","entity_description":"docker image app @ registry"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('ssh-remote-1', now(), 'deploy-script.sh-run-1', 'ssh remote -- docker pull', now() + '1 minute');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('ssh-remote-docker-pull-1', now(), 'ssh-remote-1', 'docker pull', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('4562456243562341', now(), 'EventOperation', '{"event_ulid":"4562456243562341","operation_id":"ssh-remote-docker-pull-1-op","execution_id":"ssh-remote-docker-pull-1","type":"r","incarnation_id":"registry-docker-image-app-1","entity_id":"registry-docker-image-app","timestamp":"2020-09-19 00:011:42.65589+00","incarnation_description":"docker image app:1 @ registry","entity_description":"docker image app @ registry"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('45624562435623412', now(), 'EventOperation', '{"event_ulid":"45624562435623412","operation_id":"ssh-remote-docker-pull-1-write-img-op","execution_id":"ssh-remote-docker-pull-1","type":"w","incarnation_id":"remote-docker-image-app-1","entity_id":"remote-docker-image-app","timestamp":"2020-09-19 00:015:42.65589+00","incarnation_description":"docker image app:1 @ remote","entity_description":"docker image app @ remote"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('ssh-remote-docker-stop-1', now(), 'ssh-remote-1', 'docker stop -n app', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('456245624356234123', now(), 'EventOperation', '{"event_ulid":"456245624356234123","operation_id":"456245624356234123","execution_id":"ssh-remote-docker-stop-1","type":"w","incarnation_id":"remote-app-1","entity_id":"remote-app","timestamp":"2020-09-19 00:019:42.65589+00","incarnation_description":"stopped app @ remote","entity_description":"app @ remote"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('scp1', now(), 'deploy-script.sh-run-1', 'scp config', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('scp1', now(), 'EventOperation', '{"event_ulid":"scp1","operation_id":"scp1","execution_id":"scp1","type":"r","incarnation_id":"config-1","entity_id":"config","timestamp":"2020-09-19 00:21:42.65589+00","incarnation_description":"config 1","entity_description":"config"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('scp12', now(), 'EventOperation', '{"event_ulid":"scp12","operation_id":"scp12","execution_id":"scp1","type":"w","incarnation_id":"remote-config-1","entity_id":"remote-config","timestamp":"2020-09-19 00:23:42.65589+00","incarnation_description":"config 1 @ remote","entity_description":"config @ remote"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('remote-docker-daemon', now(), null, 'remote docker daemon', now() + '15 hour');
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('ssh-remote-docker-run-1', now(), 'deploy-script.sh-run-1', 'ssh remote -- docker run', now() + '1 minute');
+
+insert into events (ulid, created_at, event_type, payload) values ('srdr1', now(), 'EventOperation', '{"event_ulid":"srdr1","operation_id":"srdr1","execution_id":"ssh-remote-docker-run-1","type":"r","incarnation_id":"remote-app-1","entity_id":"remote-app","timestamp":"2020-09-19 00:27:42.65589+00","incarnation_description":"stopped app @ remote","entity_description":"app @ remote"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('srdr1', now(), 'EventOperation', '{"event_ulid":"srdr1","operation_id":"srdr1","execution_id":"ssh-remote-docker-run-1","type":"r","incarnation_id":"remote-docker-image-app-1","entity_id":"remote-docker-image-app","timestamp":"2020-09-19 00:30:42.65589+00","incarnation_description":"","entity_description":""}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('srdr12', now(), 'EventOperation', '{"event_ulid":"srdr12","operation_id":"srdr12","execution_id":"ssh-remote-docker-run-1","type":"r","incarnation_id":"remote-docker-image-app-1","entity_id":"remote-docker-image-app","timestamp":"2020-09-19 00:30:42.65589+00","incarnation_description":"","entity_description":""}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('ssh-remote-2', now(), 'deploy-script.sh-run-1', 'ssh remote -- docker pull', now() + '1 minute');
+update executions set description = 'ssh remote -- docker stop' where execution_id = 'ssh-remote-2';
+update executions set parent_id = 'ssh-remote-2' where execution_id = 'ssh-remote-docker-stop-1';
+
+insert into events (ulid, created_at, event_type, payload) values ('srdr2', now(), 'EventOperation', '{"event_ulid":"srdr2","operation_id":"srdr2","execution_id":"ssh-remote-docker-run-1","type":"w","incarnation_id":"remote-app-2","entity_id":"remote-app","timestamp":"2020-09-19 00:37:42.65589+00","incarnation_description":"updated app @ remote","entity_description":"app @ remote"}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('bac1', now(), 'EventOperation', '{"event_ulid":"bac1","operation_id":"bac1","execution_id":"docker-build-app-1","type":"r","incarnation_id":"cwd-1","entity_id":"cwd","timestamp":"2020-09-19 00:21:42.65589+00","incarnation_description":"app sources 1","entity_description":"app sources"}'::jsonb);
+
+insert into executions (execution_id, begin_timestamp, creator_id, parent_id, description, end_timestamp) values ('remote-app-container', now(), 'remote-docker-daemon', 'ssh-remote-docker-run-1', 'app container @ remote', now() + '5 hour');
+update executions set description = 'docker run -n app' where execution_id = 'ssh-remote-docker-run-1';
+
+insert into executions (execution_id, begin_timestamp, parent_id, description, end_timestamp) values ('ssh-remote-3', now(), 'deploy-script.sh-run-1', 'ssh remote -- docker run', now() + '1 minute');
+update executions set parent_id = 'ssh-remote-3' where execution_id = 'ssh-remote-docker-run-1';
+
+insert into events (ulid, created_at, event_type, payload) values ('rac11', now(), 'EventOperation', '{"event_ulid":"rac11","operation_id":"rac11","execution_id":"remote-app-container","type":"r","incarnation_id":"remote-app-2","entity_id":"remote-app","timestamp":"2020-09-19 00:52:42.65589+00","incarnation_description":"","entity_description":""}'::jsonb);
+
+insert into events (ulid, created_at, event_type, payload) values ('rac112', now(), 'EventOperation', '{"event_ulid":"rac112","operation_id":"rac112","execution_id":"remote-app-container","type":"r","incarnation_id":"remote-config-1","entity_id":"remote-config","timestamp":"2020-09-19 00:52:42.65589+00","incarnation_description":"","entity_description":""}'::jsonb);

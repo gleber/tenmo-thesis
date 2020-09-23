@@ -1,0 +1,111 @@
+digraph u {
+node [style=filled];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" [id="ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" label="kubec...resource building" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" [id="ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" label="kubectl apply one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" [id="ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" label="kubectl apply one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" [id="ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" label="kubectl apply one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" [id="ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" label="kubectl apply one" shape=rectangle fillcolor="#FFD9B2"]
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" [id="ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" label="kubectl apply" shape=rectangle fillcolor="#FFD9B2"]
+subgraph "cluster_en://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json" {
+id="en://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json";
+style=dotted;
+fontsize=7;
+label="file ...yf82fvpzfw7p7bzgjm3-kubenix-generated.json";
+"i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C";
+}
+subgraph "cluster_en://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx" {
+id="en://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx";
+style=dotted;
+fontsize=7;
+label="in-me...ps/v1/namespaces/default/deployments/nginx";
+"i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ";
+}
+subgraph "cluster_en://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config" {
+id="en://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config";
+style=dotted;
+fontsize=7;
+label="in-me...namespaces/default/configmaps/nginx-config";
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW";
+}
+subgraph "cluster_en://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static" {
+id="en://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static";
+style=dotted;
+fontsize=7;
+label="in-me...namespaces/default/configmaps/nginx-static";
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC";
+}
+subgraph "cluster_en://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx" {
+id="en://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx";
+style=dotted;
+fontsize=7;
+label="in-me...1/api/v1/namespaces/default/services/nginx";
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA";
+}
+subgraph "cluster_en:///apis/apps/v1/namespaces/default/deployments/nginx" {
+id="en:///apis/apps/v1/namespaces/default/deployments/nginx";
+style=dotted;
+fontsize=7;
+label="resource deployments/nginx";
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX";
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDS7VP68NAQGK4CFW6VH";
+}
+subgraph "cluster_en://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config" {
+id="en://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config";
+style=dotted;
+fontsize=7;
+label="resource configmaps/nginx-config";
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDTFQFNCK6GYB5DNJY0Z";
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RE2ZXX51FPC9WT303FQB";
+}
+subgraph "cluster_en://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static" {
+id="en://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static";
+style=dotted;
+fontsize=7;
+label="resource configmaps/nginx-static";
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REFBRQDS6A0JNZF73E80";
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REHF3W1074H5NWN2MF90";
+}
+subgraph "cluster_en://https://192.168.1.1/api/v1/namespaces/default/services/nginx" {
+id="en://https://192.168.1.1/api/v1/namespaces/default/services/nginx";
+style=dotted;
+fontsize=7;
+label="resource services/nginx";
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REKAW44WKNW8CC1A80V0";
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REP7AB85EW3554GWPR7H";
+}
+"i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C" [id="i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C" fillcolor="#B2FFB2" label="file ...ix-generated.json" style="dotted, filled" shape=diamond];
+"i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ" [id="i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ" fillcolor="#B2FFB2" label="in-me...deployments/nginx" style="dotted, filled" shape=diamond];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX" [id="i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX" fillcolor="#B2FFB2" label="resou...deployments/nginx" style="dotted, filled" shape=diamond];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDS7VP68NAQGK4CFW6VH" [id="i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDS7VP68NAQGK4CFW6VH" fillcolor="#B2FFB2" label="resou...deployments/nginx" style="dotted, filled" shape=diamond];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW" [id="i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW" fillcolor="#B2FFB2" label="in-me...maps/nginx-config" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDTFQFNCK6GYB5DNJY0Z" [id="i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDTFQFNCK6GYB5DNJY0Z" fillcolor="#B2FFB2" label="resou...maps/nginx-config" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RE2ZXX51FPC9WT303FQB" [id="i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RE2ZXX51FPC9WT303FQB" fillcolor="#B2FFB2" label="resou...maps/nginx-config" style="dotted, filled" shape=diamond];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC" [id="i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC" fillcolor="#B2FFB2" label="in-me...maps/nginx-static" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REFBRQDS6A0JNZF73E80" [id="i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REFBRQDS6A0JNZF73E80" fillcolor="#B2FFB2" label="resou...maps/nginx-static" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REHF3W1074H5NWN2MF90" [id="i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REHF3W1074H5NWN2MF90" fillcolor="#B2FFB2" label="resou...maps/nginx-static" style="dotted, filled" shape=diamond];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA" [id="i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA" fillcolor="#B2FFB2" label="in-me...lt/services/nginx" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REKAW44WKNW8CC1A80V0" [id="i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REKAW44WKNW8CC1A80V0" fillcolor="#B2FFB2" label="resource services/nginx" style="dotted, filled" shape=diamond];
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REP7AB85EW3554GWPR7H" [id="i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REP7AB85EW3554GWPR7H" fillcolor="#B2FFB2" label="resource services/nginx" style="dotted, filled" shape=diamond];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" [weight=25];
+"ex://kubectl-apply-01EJP9RCAVZB25SQGSVJGAV4V9" -> "ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" [weight=25];
+"i://file:///nix/store/va46ws49g08xvyf82fvpzfw7p7bzgjm3-kubenix-generated.json?ulid=01EJP9RCQ95JT85A4AJNP67V6C" -> "ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" [style=dashed weight=10];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" -> "i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ" [style=dashed weight=15];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" -> "i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW" [style=dashed weight=15];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" -> "i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC" [style=dashed weight=15];
+"ex://kubectl-apply-builder-01EJP9RCQ1Y5Q05S9BEP0N17D2" -> "i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA" [style=dashed weight=15];
+"i://in-memory-/apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDM2KBXHW0N01QMZSCTZ" -> "ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" [style=dashed weight=10];
+"i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDPT8G67DTE7VN8XX7CX" -> "ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" [style=dashed weight=10];
+"ex://kubectl-apply-one-01EJP9RDP6M59FTSSRFK74JKSD" -> "i:///apis/apps/v1/namespaces/default/deployments/nginx?ulid=01EJP9RDS7VP68NAQGK4CFW6VH" [style=dashed weight=15];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDMY6BEN4XZBX83ZX0AW" -> "ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" [style=dashed weight=10];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RDTFQFNCK6GYB5DNJY0Z" -> "ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" [style=dashed weight=10];
+"ex://kubectl-apply-one-01EJP9RDSYQ8BXNDKD34BPEVV5" -> "i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-config?ulid=01EJP9RE2ZXX51FPC9WT303FQB" [style=dashed weight=15];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9RDN6VFPTHWG7P6NBGWFC" -> "ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" [style=dashed weight=10];
+"i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REFBRQDS6A0JNZF73E80" -> "ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" [style=dashed weight=10];
+"ex://kubectl-apply-one-01EJP9REENA5M3JB3ECSTCDZ3D" -> "i://https://192.168.1.1/api/v1/namespaces/default/configmaps/nginx-static?ulid=01EJP9REHF3W1074H5NWN2MF90" [style=dashed weight=15];
+"i://in-memory-https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9RDNKD3K51RJACSTS28PA" -> "ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" [style=dashed weight=10];
+"i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REKAW44WKNW8CC1A80V0" -> "ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" [style=dashed weight=10];
+"ex://kubectl-apply-one-01EJP9REJJBGX9ZERMGAEVWEAY" -> "i://https://192.168.1.1/api/v1/namespaces/default/services/nginx?ulid=01EJP9REP7AB85EW3554GWPR7H" [style=dashed weight=15];
+}
