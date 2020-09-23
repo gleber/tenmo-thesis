@@ -1,0 +1,19 @@
+[submodule "integraions/nix"]
+	path = integrations/nix
+	url = https://github.com/gleber/nix.git
+	branch = tenmo
+[submodule "integraions/tenmo"]
+	path = integrations/tenmo
+	url = https://github.com/gleber/tenmo.git
+[submodule "integraions/kubenix"]
+	path = integrations/kubenix
+	url = https://github.com/gleber/kubenix.git
+	branch = tenmo
+[submodule "integraions/kubernetes"]
+	path = integrations/kubernetes
+	url = https://github.com/gleber/kubernetes.git
+	branch = tenmo
+[submodule "integrations/nixpkgs"]
+	path = integrations/nixpkgs
+	url = https://github.com/gleber/nixpkgs.git
+	branch = tenmo
