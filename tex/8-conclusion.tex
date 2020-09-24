@@ -28,8 +28,8 @@ Focus use case&Distributed serving systems&Advanced Persistent Threat&Control pl
 \hline
 Execution tracing&Yes&Yes&Yes\\
 Object tracking&No&Yes&Yes\\
-Object versioning&--&No&Yes\\
-Interaction tracking&No~$^{1}$&Yes&Yes\\
+Object versioning&--~$^{1}$&No&Yes\\
+Interaction tracking&No~$^{2}$&Yes&Yes\\
 \hline
 \multicolumn{4}{c}{HCSP support} \\
 \hline
@@ -58,7 +58,8 @@ Trace sampling&Yes&No&No\\
 Maturity&Production&Academic&Academic\\
 \bottomrule
 \hline
-\multicolumn{4}{l}{$^{1}$\footnotesize{Dapper does record RPCs, but they are not a first class citizen of the Dapper model.}} \\
+\multicolumn{4}{l}{$^{1}$\footnotesize{Not applicable due to lack of capabilities to track objects.}} \\
+\multicolumn{4}{l}{$^{2}$\footnotesize{Dapper does record RPCs, but they are not a first class citizen of the Dapper model.}} \\
 \end{tabular}
 \caption{Summary system comparison.}
 \label{tbl:comparison}
